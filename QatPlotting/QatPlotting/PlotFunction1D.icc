@@ -54,12 +54,20 @@ public:
       return false;
     }
     else if (y1 < min || y2 < min) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+      if (QLineF(p1,p2).intersect(QLineF(rect->topLeft(),rect->topRight()),&p)!=QLineF::BoundedIntersection){
+#else
       if (QLineF(p1,p2).intersects(QLineF(rect->topLeft(),rect->topRight()),&p)!=QLineF::BoundedIntersection){
+#endif
 	return false;
       }
     }
     else if (y1 > max || y2 > max) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 1)
+      if (QLineF(p1,p2).intersect(QLineF(rect->bottomLeft(),rect->bottomRight()),&p)!=QLineF::BoundedIntersection){
+#else
       if (QLineF(p1,p2).intersects(QLineF(rect->bottomLeft(),rect->bottomRight()),&p)!=QLineF::BoundedIntersection){
+#endif
 	return false;
       }
     }
