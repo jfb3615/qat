@@ -33,6 +33,7 @@
 #include <QGraphicsItemGroup>
 #include <QPainterPath>
 #include <QGraphicsPathItem>
+#include <QtGlobal>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -143,7 +144,7 @@ void PlotResidual1D::describeYourselfTo(AbsPlotter *plotter) const {
   LinToLog *toLogX= plotter->isLogX() ? new LinToLog (plotter->qrect()->left(),plotter->qrect()->right()) : NULL;
   LinToLog *toLogY= plotter->isLogY() ? new LinToLog (plotter->qrect()->top(),plotter->qrect()->bottom()) : NULL;
 
-  QMatrix m=plotter->matrix(),mInverse=m.inverted();
+  QTransform m=plotter->matrix(),mInverse=m.inverted();
 
 
   for (unsigned int i=0;i<c->histogram->nBins();i++) {
@@ -190,7 +191,7 @@ void PlotResidual1D::describeYourselfTo(AbsPlotter *plotter) const {
       }
       
       shape->setPen(pen);
-      shape->setMatrix(mInverse);
+      shape->setTransform(mInverse);
       plotter->scene()->addItem(shape);
       plotter->group()->addToGroup(shape);
       
@@ -199,13 +200,13 @@ void PlotResidual1D::describeYourselfTo(AbsPlotter *plotter) const {
 	if (plotter->qrect()->contains(plus)) {
 	  QGraphicsLineItem *line=new QGraphicsLineItem(pLine);
 	  line->setPen(pen);
-	  line->setMatrix(mInverse);
+	  line->setTransform(mInverse);
 	  plotter->scene()->addItem(line);
 	  plotter->group()->addToGroup(line);
 	  
 	  QGraphicsLineItem *topLine=new QGraphicsLineItem(QLineF(m.map(plus)+had,m.map(plus)-had));
 	  topLine->setPen(pen);
-	  topLine->setMatrix(mInverse);
+	  topLine->setTransform(mInverse);
 	  plotter->scene()->addItem(topLine);
 	  plotter->group()->addToGroup(topLine);
 	  
@@ -213,13 +214,17 @@ void PlotResidual1D::describeYourselfTo(AbsPlotter *plotter) const {
 	else {
 	  QPointF intersection;
 	  QLineF bottomLine(plotter->qrect()->bottomLeft(),plotter->qrect()->bottomRight());
+#if QT_VERSION <= QT_VERSION_CHECK(5, 14, 0)
 	  QLineF::IntersectType type=bottomLine.intersect(QLineF(loc,plus),&intersection);
+#else
+	  QLineF::IntersectType type=bottomLine.intersects(QLineF(loc,plus),&intersection);
+#endif
 	  if (type==QLineF::BoundedIntersection) {
 	    QPointF plus=intersection;
 	    QLineF  pLine(m.map(loc)-vad, m.map(plus));
 	    QGraphicsLineItem *line=new QGraphicsLineItem(pLine);
 	    line->setPen(pen);
-	    line->setMatrix(mInverse);
+	    line->setTransform(mInverse);
 	    plotter->scene()->addItem(line);
 	    plotter->group()->addToGroup(line);
 	  }
@@ -231,13 +236,13 @@ void PlotResidual1D::describeYourselfTo(AbsPlotter *plotter) const {
 	if (plotter->qrect()->contains(mnus)) {
 	  QGraphicsLineItem *line=new QGraphicsLineItem(mLine);
 	  line->setPen(pen);
-	  line->setMatrix(mInverse);
+	  line->setTransform(mInverse);
 	  plotter->scene()->addItem(line);
 	  plotter->group()->addToGroup(line);
 	  
 	  QGraphicsLineItem *bottomLine=new QGraphicsLineItem(QLineF(m.map(mnus)+had,m.map(mnus)-had));
 	  bottomLine->setPen(pen);
-	  bottomLine->setMatrix(mInverse);
+	  bottomLine->setTransform(mInverse);
 	  plotter->scene()->addItem(bottomLine);
 	  plotter->group()->addToGroup(bottomLine);
 	  
@@ -245,13 +250,17 @@ void PlotResidual1D::describeYourselfTo(AbsPlotter *plotter) const {
 	else {
 	  QPointF intersection;
 	  QLineF topLine(plotter->qrect()->topLeft(),plotter->qrect()->topRight());
+#if QT_VERSION <= QT_VERSION_CHECK(5, 14, 0)
 	  QLineF::IntersectType type=topLine.intersect(QLineF(loc,mnus),&intersection);
+#else
+	  QLineF::IntersectType type=topLine.intersects(QLineF(loc,mnus),&intersection);
+#endif
 	  if (type==QLineF::BoundedIntersection) {
 	    QPointF mnus=intersection;
 	    QLineF  mLine(m.map(loc)+vad, m.map(mnus));
 	    QGraphicsLineItem *line=new QGraphicsLineItem(mLine);
 	    line->setPen(pen);
-	    line->setMatrix(mInverse);
+	    line->setTransform(mInverse);
 	    plotter->scene()->addItem(line);
 	    plotter->group()->addToGroup(line);
 	  }
@@ -263,19 +272,23 @@ void PlotResidual1D::describeYourselfTo(AbsPlotter *plotter) const {
     else if (plotter->qrect()->contains(mnus)) {
       QPointF intersection;
       QLineF bottomLine(plotter->qrect()->bottomLeft(),plotter->qrect()->bottomRight());
+#if QT_VERSION <= QT_VERSION_CHECK(5, 14, 0)
       QLineF::IntersectType type=bottomLine.intersect(QLineF(loc,mnus),&intersection);
+#else
+      QLineF::IntersectType type=bottomLine.intersects(QLineF(loc,mnus),&intersection);
+#endif
       if (type==QLineF::BoundedIntersection) {
 	QPointF loc=intersection;
 	QLineF  mLine(m.map(loc), m.map(mnus));
 	QGraphicsLineItem *line=new QGraphicsLineItem(mLine);
 	line->setPen(pen);
-	line->setMatrix(mInverse);
+	line->setTransform(mInverse);
 	plotter->scene()->addItem(line);
 	plotter->group()->addToGroup(line);
 	
 	QGraphicsLineItem *bottomLine=new QGraphicsLineItem(QLineF(m.map(mnus)+had,m.map(mnus)-had));
 	bottomLine->setPen(pen);
-	bottomLine->setMatrix(mInverse);
+	bottomLine->setTransform(mInverse);
 	plotter->scene()->addItem(bottomLine);
 	plotter->group()->addToGroup(bottomLine);
 	
@@ -284,19 +297,23 @@ void PlotResidual1D::describeYourselfTo(AbsPlotter *plotter) const {
     else if (plotter->qrect()->contains(plus)) {
       QPointF intersection;
       QLineF topLine(plotter->qrect()->topLeft(),plotter->qrect()->topRight());
+#if QT_VERSION <= QT_VERSION_CHECK(5, 14, 0)
       QLineF::IntersectType type=topLine.intersect(QLineF(loc,plus),&intersection);
+#else
+      QLineF::IntersectType type=topLine.intersects(QLineF(loc,plus),&intersection);
+#endif
       if (type==QLineF::BoundedIntersection) {
 	QPointF loc=intersection;
 	QLineF  pLine(m.map(loc), m.map(plus));
 	QGraphicsLineItem *line=new QGraphicsLineItem(pLine);
 	line->setPen(pen);
-	line->setMatrix(mInverse);
+	line->setTransform(mInverse);
 	plotter->scene()->addItem(line);
 	plotter->group()->addToGroup(line);
 	
 	QGraphicsLineItem *topLine=new QGraphicsLineItem(QLineF(m.map(plus)+had,m.map(plus)-had));
 	topLine->setPen(pen);
-	topLine->setMatrix(mInverse);
+	topLine->setTransform(mInverse);
 	plotter->scene()->addItem(topLine);
 	plotter->group()->addToGroup(topLine);
 	

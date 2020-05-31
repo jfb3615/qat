@@ -64,7 +64,7 @@ std::ostream & operator << (std::ostream & o, const QPoint &p ) {
 }
 
 
-std::ostream & operator << (std::ostream & o, const QMatrix &m ) {
+std::ostream & operator << (std::ostream & o, const QTransform &m ) {
   return o << '(' << m.m11() 
 	   << ' ' 
 	   << m.m12() 
@@ -556,7 +556,7 @@ void PlotView::create() {
   LinToLog *toLogY= c->yAxisStyle==LOG ? new LinToLog (c->qrect.top(),c->qrect.bottom()) : NULL;
   LinToLog *toLogX= c->xAxisStyle==LOG ? new LinToLog (c->qrect.left(),c->qrect.right()) : NULL;
   // Master transformer:
-  QMatrix m;
+  QTransform m;
   m.scale(c->graphBoxSize.width()/c->qrect.width(),-c->graphBoxSize.height()/c->qrect.height());
   m.translate(-c->qrect.bottomLeft().x(),  -c->qrect.bottomLeft().y());
   // End master transformer..
@@ -925,7 +925,7 @@ void PlotView::create() {
 
   delete toLogY;
 
-  c->g->setMatrix(m);
+  c->g->setTransform(m);
   c->g->setPos(c->graphBoxTopLeft);   
 
   setGrid(c->control->ui().gridCheckBox->isChecked());
@@ -949,11 +949,11 @@ void PlotView::resizeEvent (QResizeEvent */*event*/) {
   c->resizeBoxes(w,h);
 
 
-  QMatrix m;
+  QTransform m;
   m.scale(c->graphBoxSize.width()/c->qrect.width(),-c->graphBoxSize.height()/c->qrect.height());
   m.translate(-c->qrect.bottomLeft().x(),  -c->qrect.bottomLeft().y());
   
-  c->g->setMatrix(m);
+  c->g->setTransform(m);
   c->g->setPos(c->graphBoxTopLeft);
 
   c->graphBox->setRect(QRect(c->graphBoxTopLeft,c->graphBoxSize));
@@ -1192,9 +1192,9 @@ void PlotView::updateYLabel() {
   c->yLabelTextItem->setDocument(document);
 
   QPointF q=c->yLabelBox->sceneBoundingRect().bottomLeft();
-  QMatrix M;
+  QTransform M;
   M.rotate(-90);
-  c->yLabelTextItem->setMatrix(M);
+  c->yLabelTextItem->setTransform(M);
   c->yLabelTextItem->setPos(q);
   c->yLabelTextItem->update();
 
@@ -1205,9 +1205,9 @@ void PlotView::updateVLabel() {
   QTextDocument *document=textEdit->document();
   c->vLabelTextItem->setDocument(document);
   QPointF q=c->vLabelBox->sceneBoundingRect().bottomLeft();
-  QMatrix M;
+  QTransform M;
   M.rotate(-90);
-  c->vLabelTextItem->setMatrix(M);
+  c->vLabelTextItem->setTransform(M);
   c->vLabelTextItem->setPos(q);
   c->vLabelTextItem->update();
 
@@ -1267,7 +1267,7 @@ void PlotView::print() {
 
     copy();
     QPixmap px = QApplication::clipboard()->pixmap();
-    QMatrix m;
+    QTransform m;
     m.scale(5,5);
     QPixmap ps = px.transformed(m);
 
@@ -1340,9 +1340,9 @@ QGraphicsScene *PlotView::scene() {
 }
 
 
-QMatrix PlotView::matrix() {
+QTransform PlotView::matrix() {
   // Master transformer:
-  QMatrix m;
+  QTransform m;
   m.scale(c->graphBoxSize.width()/c->qrect.width(),-c->graphBoxSize.height()/c->qrect.height());
   m.translate(-c->qrect.bottomLeft().x(),  -c->qrect.bottomLeft().y());
   // End master transformer..

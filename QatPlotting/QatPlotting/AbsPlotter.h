@@ -35,7 +35,7 @@ class Graphic;
 class QRectF;
 class PRectF;
 class Plotable;
-class QMatrix;
+class QTransform;
 class QGraphicsItemGroup;
 class QGraphicsScene;
 class AbsPlotter {
@@ -58,7 +58,7 @@ public:
   virtual QGraphicsItemGroup *group()=0;
 
   // Get the transformation matrix.
-  virtual QMatrix matrix()=0;
+  virtual QTransform matrix()=0;
 
   // Set the Plot Rectangle
   virtual void setRect(PRectF) = 0;

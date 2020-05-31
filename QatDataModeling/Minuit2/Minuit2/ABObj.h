@@ -96,7 +96,7 @@ public:
   double f() const {return fFactor;}
 
   // Joe Boudreau:  implicit definition is deprecated:  
-  ABObj()=default;
+  ABObj()=delete;
 
 private:
 

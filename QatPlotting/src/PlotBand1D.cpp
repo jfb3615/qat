@@ -28,6 +28,7 @@
 #include <QGraphicsPathItem>
 #include <QPainterPath>
 #include <QGraphicsScene>
+#include <QtGlobal>
 #include <stdexcept>
 #include <tuple>
 #include <vector>
@@ -58,12 +59,20 @@ public:
       return false;
     }
     else if (y1 < min || y2 < min) {
+#if QT_VERSION <= QT_VERSION_CHECK(5, 14, 0)
       if (QLineF(p1,p2).intersect(QLineF(rect->topLeft(),rect->topRight()),&p)!=QLineF::BoundedIntersection){
+#else
+      if (QLineF(p1,p2).intersects(QLineF(rect->topLeft(),rect->topRight()),&p)!=QLineF::BoundedIntersection){
+#endif
 	return false;
       }
     }
     else if (y1 > max || y2 > max) {
+#if QT_VERSION <= QT_VERSION_CHECK(5, 14, 0)
       if (QLineF(p1,p2).intersect(QLineF(rect->bottomLeft(),rect->bottomRight()),&p)!=QLineF::BoundedIntersection){
+#else
+      if (QLineF(p1,p2).intersects(QLineF(rect->bottomLeft(),rect->bottomRight()),&p)!=QLineF::BoundedIntersection){
+#endif
 	return false;
       }
     }
@@ -93,7 +102,7 @@ public:
     return true;
   }
 
-  static void moveTo(QPainterPath *path, const QMatrix & m, const QPointF & p, const LinToLog *linToLogX=NULL, const LinToLog *linToLogY=NULL) {
+  static void moveTo(QPainterPath *path, const QTransform & m, const QPointF & p, const LinToLog *linToLogX=NULL, const LinToLog *linToLogY=NULL) {
     double x=p.x(),y=p.y();
     if (linToLogX) x = (*linToLogX)(x);
     if (linToLogY) y = (*linToLogY)(y);
@@ -101,7 +110,7 @@ public:
     path->moveTo(m.map(QPointF(x,y)));
   }
 
-  static void lineTo(QPainterPath *path, const QMatrix & m, const QPointF & p, const LinToLog *linToLogX=NULL, const LinToLog *linToLogY=NULL) {
+  static void lineTo(QPainterPath *path, const QTransform & m, const QPointF & p, const LinToLog *linToLogX=NULL, const LinToLog *linToLogY=NULL) {
     double x=p.x(),y=p.y();
     if (linToLogX) x = (*linToLogX)(x);
     if (linToLogY) y = (*linToLogY)(y);
@@ -208,7 +217,7 @@ void PlotBand1D::describeYourselfTo(AbsPlotter *plotter) const {
   QBrush brush=properties().brush;
 
 
-  QMatrix m=plotter->matrix(),mInverse=m.inverted();
+  QTransform m=plotter->matrix(),mInverse=m.inverted();
 
   {
     unsigned int dim = c->function1->dimensionality();
@@ -288,7 +297,7 @@ void PlotBand1D::describeYourselfTo(AbsPlotter *plotter) const {
 	QGraphicsPathItem *polyline=new QGraphicsPathItem(*path);
 	polyline->setPen(pen);
 	polyline->setBrush(brush);
-	polyline->setMatrix(mInverse);
+	polyline->setTransform(mInverse);
 	plotter->scene()->addItem(polyline);
 	plotter->group()->addToGroup(polyline);
 	delete path;

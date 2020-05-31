@@ -110,7 +110,7 @@ void PlotPoint::describeYourselfTo(AbsPlotter *plotter) const{
   QBrush brush=properties().brush;
   int symbolSize=properties().symbolSize;
   PlotPoint::Properties::SymbolStyle symbolStyle=properties().symbolStyle;
-  QMatrix m=plotter->matrix(),mInverse=m.inverted();
+  QTransform m=plotter->matrix(),mInverse=m.inverted();
 
   if (toLogX) x = (*toLogX)(x);
   if (toLogY) y = (*toLogY)(y);
@@ -151,7 +151,7 @@ void PlotPoint::describeYourselfTo(AbsPlotter *plotter) const{
     
     shape->setPen(pen);
     shape->setBrush(brush);
-    shape->setMatrix(mInverse);
+    shape->setTransform(mInverse);
     plotter->scene()->addItem(shape);
     plotter->group()->addToGroup(shape);
     

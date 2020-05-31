@@ -73,7 +73,7 @@ class PlotView: public QGraphicsView, public AbsPlotter {
   virtual QGraphicsItemGroup *group();
 
   // 4. The matrix used in placing those items:
-  virtual QMatrix matrix();
+  virtual QTransform matrix();
  
   // Add a plotable item to this plotter:
   virtual void add (Plotable *);

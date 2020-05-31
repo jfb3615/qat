@@ -112,7 +112,7 @@ void PlotShadeBox::describeYourselfTo(AbsPlotter * plotter) const {
   LinToLog *toLogX= plotter->isLogX() ? new LinToLog (plotter->qrect()->left(),plotter->qrect()->right()) : NULL;
   LinToLog *toLogY= plotter->isLogY() ? new LinToLog (plotter->qrect()->top(),plotter->qrect()->bottom()) : NULL;
 
-  QMatrix m=plotter->matrix(),mInverse=m.inverted();
+  QTransform m=plotter->matrix(),mInverse=m.inverted();
 
   
   for (unsigned int i=0;i<c->points.size();i++) {
@@ -149,7 +149,7 @@ void PlotShadeBox::describeYourselfTo(AbsPlotter * plotter) const {
         
     shape->setPen(pen);
     shape->setBrush(brush);
-    shape->setMatrix(mInverse);
+    shape->setTransform(mInverse);
     plotter->scene()->addItem(shape);
     plotter->group()->addToGroup(shape);
   }

@@ -159,7 +159,7 @@ void PlotErrorEllipse::describeYourselfTo(AbsPlotter *plotter) const{
 
   QPen pen =properties().pen;
   QBrush brush=properties().brush;
-  QMatrix m=plotter->matrix(),mInverse=m.inverted();
+  QTransform m=plotter->matrix(),mInverse=m.inverted();
 
   QPainterPath path;
   bool started=false;
@@ -181,7 +181,7 @@ void PlotErrorEllipse::describeYourselfTo(AbsPlotter *plotter) const{
   QGraphicsPathItem *polyline=new QGraphicsPathItem(path);
   polyline->setPen(pen);
   polyline->setBrush(brush);
-  polyline->setMatrix(mInverse);
+  polyline->setTransform(mInverse);
   plotter->scene()->addItem(polyline);
   plotter->group()->addToGroup(polyline);
 

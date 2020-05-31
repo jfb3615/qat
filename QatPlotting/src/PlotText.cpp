@@ -108,7 +108,7 @@ void PlotText::describeYourselfTo(AbsPlotter *plotter) const{
   double x=c->point.x();
   double y=c->point.y();
 
-  QMatrix m=plotter->matrix(),mInverse=m.inverted();
+  QTransform m=plotter->matrix(),mInverse=m.inverted();
 
   if (toLogX) x = (*toLogX)(x);
   if (toLogY) y = (*toLogY)(y);
@@ -126,7 +126,7 @@ void PlotText::describeYourselfTo(AbsPlotter *plotter) const{
 
   item->setDocument(c->textDocument);
   item->setPos(Q-P);
-  item->setMatrix(mInverse);
+  item->setTransform(mInverse);
   plotter->scene()->addItem(item);
   plotter->group()->addToGroup(item);
   

@@ -54,7 +54,7 @@ public:
       return false;
     }
     else if (y1 < min || y2 < min) {
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 14, 0)
       if (QLineF(p1,p2).intersect(QLineF(rect->topLeft(),rect->topRight()),&p)!=QLineF::BoundedIntersection){
 #else
       if (QLineF(p1,p2).intersects(QLineF(rect->topLeft(),rect->topRight()),&p)!=QLineF::BoundedIntersection){
@@ -63,7 +63,7 @@ public:
       }
     }
     else if (y1 > max || y2 > max) {
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 1)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 14, 1)
       if (QLineF(p1,p2).intersect(QLineF(rect->bottomLeft(),rect->bottomRight()),&p)!=QLineF::BoundedIntersection){
 #else
       if (QLineF(p1,p2).intersects(QLineF(rect->bottomLeft(),rect->bottomRight()),&p)!=QLineF::BoundedIntersection){
@@ -105,7 +105,7 @@ public:
     return true;
   }
 
-  static void moveTo(QPainterPath *path, const QMatrix & m, const QPointF & p, const LinToLog *linToLogX=NULL, const LinToLog *linToLogY=NULL) {
+  static void moveTo(QPainterPath *path, const QTransform & m, const QPointF & p, const LinToLog *linToLogX=NULL, const LinToLog *linToLogY=NULL) {
     double x=p.x(),y=p.y();
     if (linToLogX) x = (*linToLogX)(x);
     if (linToLogY) y = (*linToLogY)(y);
@@ -113,7 +113,7 @@ public:
     path->moveTo(m.map(QPointF(x,y)));
   }
 
-  static void lineTo(QPainterPath *path, const QMatrix & m, const QPointF & p, const LinToLog *linToLogX=NULL, const LinToLog *linToLogY=NULL) {
+  static void lineTo(QPainterPath *path, const QTransform & m, const QPointF & p, const LinToLog *linToLogX=NULL, const LinToLog *linToLogY=NULL) {
     double x=p.x(),y=p.y();
     if (linToLogX) x = (*linToLogX)(x);
     if (linToLogY) y = (*linToLogY)(y);

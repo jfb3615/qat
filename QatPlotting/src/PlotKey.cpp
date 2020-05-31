@@ -120,7 +120,7 @@ void PlotKey::describeYourselfTo(AbsPlotter *plotter) const{
   double x=c->point.x();
   double y=c->point.y();
 
-  QMatrix m=plotter->matrix(),mInverse=m.inverted();
+  QTransform m=plotter->matrix(),mInverse=m.inverted();
 
   if (toLogX) x = (*toLogX)(x);
   if (toLogY) y = (*toLogY)(y);
@@ -134,14 +134,14 @@ void PlotKey::describeYourselfTo(AbsPlotter *plotter) const{
 
   item->setDocument(c->textDocument);
   item->setPos(Q-P);
-  item->setMatrix(mInverse);
+  item->setTransform(mInverse);
   plotter->scene()->addItem(item);
   plotter->group()->addToGroup(item);
 
   QFont font=c->textDocument->defaultFont();
   QFontMetrics fontMetrics(font);
   int lineSpacing=fontMetrics.lineSpacing();
-  int charWidth=fontMetrics.width(' ');
+  int charWidth=fontMetrics.horizontalAdvance(' ');
   int count=0;
   for (const Plotable * p : c->plotable) {
     const PlotProfile *profile=dynamic_cast<const PlotProfile *> (p);
@@ -184,7 +184,7 @@ void PlotKey::describeYourselfTo(AbsPlotter *plotter) const{
 	}
 	shape->setPen(pen);
 	shape->setBrush(brush);
-	shape->setMatrix(mInverse);
+	shape->setTransform(mInverse);
 	plotter->scene()->addItem(shape);
 	plotter->group()->addToGroup(shape);
       }
@@ -226,7 +226,7 @@ void PlotKey::describeYourselfTo(AbsPlotter *plotter) const{
 	}
 	shape->setPen(pen);
 	shape->setBrush(brush);
-	shape->setMatrix(mInverse);
+	shape->setTransform(mInverse);
 	plotter->scene()->addItem(shape);
 	plotter->group()->addToGroup(shape);
       }
@@ -272,7 +272,7 @@ void PlotKey::describeYourselfTo(AbsPlotter *plotter) const{
 	}
 	shape->setPen(pen);
 	shape->setBrush(brush);
-	shape->setMatrix(mInverse);
+	shape->setTransform(mInverse);
 	plotter->scene()->addItem(shape);
 	plotter->group()->addToGroup(shape);
       }
@@ -284,7 +284,7 @@ void PlotKey::describeYourselfTo(AbsPlotter *plotter) const{
 	  QPointF LP=MQ-ctr;
 	  QGraphicsLineItem *line=new QGraphicsLineItem(LP.x(),LP.y(), LP.x()+11*charWidth, LP.y()); 
 	  line->setPen(pen);
-	  line->setMatrix(mInverse);
+	  line->setTransform(mInverse);
 	  plotter->scene()->addItem(line);
 	  plotter->group()->addToGroup(line);
 	}
@@ -294,7 +294,7 @@ void PlotKey::describeYourselfTo(AbsPlotter *plotter) const{
 	  shape = new QGraphicsRectItem(QRectF(MQ-ctr,QSizeF(11*charWidth,0.75*lineSpacing)));
 	  shape->setPen(pen);
 	  shape->setBrush(brush);
-	  shape->setMatrix(mInverse);
+	  shape->setTransform(mInverse);
 	  plotter->scene()->addItem(shape);
 	  plotter->group()->addToGroup(shape);
 	}
@@ -309,7 +309,7 @@ void PlotKey::describeYourselfTo(AbsPlotter *plotter) const{
       QPen pen =properties.pen;
       QGraphicsLineItem *line=new QGraphicsLineItem(LP.x(),LP.y(), LP.x()+11*charWidth, LP.y()); 
       line->setPen(pen);
-      line->setMatrix(mInverse);
+      line->setTransform(mInverse);
       plotter->scene()->addItem(line);
       plotter->group()->addToGroup(line);
       continue;
@@ -322,7 +322,7 @@ void PlotKey::describeYourselfTo(AbsPlotter *plotter) const{
       QPen pen =properties.pen;
       QGraphicsLineItem *line=new QGraphicsLineItem(LP.x(),LP.y(), LP.x()+11*charWidth, LP.y()); 
       line->setPen(pen);
-      line->setMatrix(mInverse);
+      line->setTransform(mInverse);
       plotter->scene()->addItem(line);
       plotter->group()->addToGroup(line);
       continue;
@@ -335,7 +335,7 @@ void PlotKey::describeYourselfTo(AbsPlotter *plotter) const{
       QPen pen =properties.pen;
       QGraphicsLineItem *line=new QGraphicsLineItem(LP.x(),LP.y(), LP.x()+11*charWidth, LP.y()); 
       line->setPen(pen);
-      line->setMatrix(mInverse);
+      line->setTransform(mInverse);
       plotter->scene()->addItem(line);
       plotter->group()->addToGroup(line);
       continue;

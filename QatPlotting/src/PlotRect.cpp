@@ -103,7 +103,7 @@ void PlotRect::describeYourselfTo(AbsPlotter *plotter) const{
 
   QPen pen =properties().pen;
   QBrush brush=properties().brush;
-  QMatrix m=plotter->matrix(),mInverse=m.inverted();
+  QTransform m=plotter->matrix(),mInverse=m.inverted();
 
   if (toLogX) x0 = (*toLogX)(x0);
   if (toLogY) y0 = (*toLogY)(y0);
@@ -120,7 +120,7 @@ void PlotRect::describeYourselfTo(AbsPlotter *plotter) const{
   
   shape->setPen(pen);
   shape->setBrush(brush);
-  shape->setMatrix(mInverse);
+  shape->setTransform(mInverse);
   plotter->scene()->addItem(shape);
   plotter->group()->addToGroup(shape);
   

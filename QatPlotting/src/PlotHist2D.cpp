@@ -112,7 +112,7 @@ const QRectF & PlotHist2D::rectHint() const {
 void PlotHist2D::describeYourselfTo(AbsPlotter *plotter) const {
   QPen pen =properties().pen;
   QBrush brush=properties().brush;
-  QMatrix m=plotter->matrix(),mInverse=m.inverted();
+  QTransform m=plotter->matrix(),mInverse=m.inverted();
   
   if (plotter->isLogX()) return;
   if (plotter->isLogY()) return;
@@ -160,7 +160,7 @@ void PlotHist2D::describeYourselfTo(AbsPlotter *plotter) const {
 	
 	shape->setPen(pen);
 	shape->setBrush(brush);
-	shape->setMatrix(mInverse);
+	shape->setTransform(mInverse);
 	plotter->scene()->addItem(shape);
 	plotter->group()->addToGroup(shape);
 	

@@ -94,7 +94,7 @@ void PlotFunction1D::describeYourselfTo(AbsPlotter *plotter) const {
   QBrush brush=properties().brush;
 
 
-  QMatrix m=plotter->matrix(),mInverse=m.inverted();
+  QTransform m=plotter->matrix(),mInverse=m.inverted();
 
   unsigned int dim = c->function->dimensionality();
   if (dim!=1) throw std::runtime_error("PlotFunction1D:  requires a function of exactly 1 argument");
@@ -191,7 +191,7 @@ void PlotFunction1D::describeYourselfTo(AbsPlotter *plotter) const {
 	QGraphicsPathItem *polyline=new QGraphicsPathItem(*path);
 	polyline->setPen(pen);
 	polyline->setBrush(brush);
-	polyline->setMatrix(mInverse);
+	polyline->setTransform(mInverse);
 	plotter->scene()->addItem(polyline);
 	plotter->group()->addToGroup(polyline);
 	delete path;
@@ -217,7 +217,6 @@ void PlotFunction1D::describeYourselfTo(AbsPlotter *plotter) const {
 	if (!path) path = new QPainterPath();
 	if (empty) {
 	  empty=false;
-	  QPointF intersection;
 	  Clockwork::moveTo(path,m, QPointF(x,yBase), toLogX,toLogY);
 	}
 	
@@ -247,7 +246,7 @@ void PlotFunction1D::describeYourselfTo(AbsPlotter *plotter) const {
 	QGraphicsPathItem *polyline=new QGraphicsPathItem(*path);
 	polyline->setPen(pen);
 	polyline->setBrush(brush);
-	polyline->setMatrix(mInverse);
+	polyline->setTransform(mInverse);
 	plotter->scene()->addItem(polyline);
 	plotter->group()->addToGroup(polyline);
 	delete path;

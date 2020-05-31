@@ -116,7 +116,7 @@ void PlotOrbit::describeYourselfTo(AbsPlotter *plotter) const {
   QPen pen = properties().pen;
 
 
-  QMatrix m=plotter->matrix(),mInverse=m.inverted();
+  QTransform m=plotter->matrix(),mInverse=m.inverted();
 
   {  
     unsigned int dimX = c->functionX->dimensionality();
@@ -204,7 +204,7 @@ void PlotOrbit::describeYourselfTo(AbsPlotter *plotter) const {
       if (closePath) {
 	QGraphicsPathItem *polyline=new QGraphicsPathItem(*path);
 	polyline->setPen(pen);
-	polyline->setMatrix(mInverse);
+	polyline->setTransform(mInverse);
 	plotter->scene()->addItem(polyline);
 	plotter->group()->addToGroup(polyline);
 	delete path;
