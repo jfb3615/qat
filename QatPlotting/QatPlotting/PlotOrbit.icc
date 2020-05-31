@@ -60,12 +60,12 @@ public:
       return false;
     }
     else if (y1 < min || y2 < min) {
-      if (QLineF(p1,p2).intersect(QLineF(rect->topLeft(),rect->topRight()),&p)!=QLineF::BoundedIntersection){
+      if (QLineF(p1,p2).intersects(QLineF(rect->topLeft(),rect->topRight()),&p)!=QLineF::BoundedIntersection){
 	return false;
       }
     }
     else if (y1 > max || y2 > max) {
-      if (QLineF(p1,p2).intersect(QLineF(rect->bottomLeft(),rect->bottomRight()),&p)!=QLineF::BoundedIntersection){
+      if (QLineF(p1,p2).intersects(QLineF(rect->bottomLeft(),rect->bottomRight()),&p)!=QLineF::BoundedIntersection){
 	return false;
       }
     }
