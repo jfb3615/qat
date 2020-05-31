@@ -1,0 +1,49 @@
+//---------------------------------------------------------------------------//
+// !!                                                                     !! //
+//                                                                           //
+//  Copyright (C) 2016 Joe Boudreau                                          //
+//                                                                           //
+//  This file is part of the QAT Toolkit for computational science           //
+//                                                                           //
+//  QAT is free software: you can redistribute it and/or modify              //
+//  it under the terms of the GNU Lesser General Public License as           //
+//  published by the Free Software Foundation, either version 3 of           //
+//  the License, or (at your option) any later version.                      //
+//                                                                           //
+//  QAT is distributed in the hope that it will be useful,                   //
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
+//  GNU Lesser General Public License for more details.                      //
+//                                                                           //
+//  You should have received a copy of the GNU Lesser General Public         //
+//  License along with QAT.  If not, see <http://www.gnu.org/licenses/>.     //
+//                                                                           //
+//---------------------------------------------------------------------------//
+
+#include <stdexcept>
+template <class T>
+inline Query<T>::Query(const T & t) 
+  :
+  _failed(false),
+  _instance(t)
+{
+}
+
+template <class T>
+inline Query<T>::Query() 
+  :
+  _failed(true)
+{
+}
+
+template <class T> 
+inline Query<T>::operator T() const {
+  if (_failed) throw std::runtime_error("Query: attempt to access to a failed query");
+  return _instance;  
+}
+
+template <class T>
+inline bool Query<T>::isValid() const {
+  return !_failed;
+}
+

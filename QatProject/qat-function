@@ -1,0 +1,21 @@
+#!/bin/bash
+if [ $# -ne 1 ]
+then
+    echo usage:  $0 FunctionName
+    exit 1
+else
+
+    os=`uname`
+    if [ $os == "Darwin" ]
+    then
+	prefix="/usr/local"
+    else
+	prefix="/usr"
+    fi
+    name=$1
+    cppname=$1.cpp
+   hname=$1.h
+   sed s.\<Function\>.$name.g ${prefix}/share/qat/templates/templateFunction.cpp > $cppname
+   sed s.\<Function\>.$name.g ${prefix}/share/qat/templates/templateFunction.h    > $hname
+fi
+

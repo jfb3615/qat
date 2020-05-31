@@ -1,0 +1,155 @@
+<ui version="4.0" >
+ <class>QatProjectForm</class>
+ <widget class="QWidget" name="QatProjectForm" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>463</width>
+    <height>344</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>qat-project</string>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item row="2" column="2" colspan="2" >
+    <widget class="QCheckBox" name="plotViewCheckBox" >
+     <property name="text" >
+      <string>With PlotView</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2" >
+    <widget class="QGroupBox" name="hioGroupBox" >
+     <property name="title" >
+      <string>Histogram I/O</string>
+     </property>
+     <layout class="QGridLayout" >
+      <property name="margin" >
+       <number>9</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item row="0" column="1" >
+       <widget class="QRadioButton" name="zeroToOneRadioButton" >
+        <property name="text" >
+         <string>0 --> 1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" >
+       <widget class="QRadioButton" name="oneToOneRadioButton" >
+        <property name="text" >
+         <string>1 --> 1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" >
+       <widget class="QRadioButton" name="nToOneRadioButton" >
+        <property name="text" >
+         <string>N --> 1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QRadioButton" name="oneToZeroRadioButton" >
+        <property name="text" >
+         <string>1 --> 0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" >
+       <widget class="QRadioButton" name="nToZeroRadioButton" >
+        <property name="text" >
+         <string>N --> 0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QRadioButton" name="zeroToZeroRadioButton" >
+        <property name="text" >
+         <string>0 --> 0</string>
+        </property>
+        <property name="checked" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="3" >
+    <widget class="QPushButton" name="directoryNamePushButton" >
+     <property name="text" >
+      <string>Change</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="2" >
+    <widget class="QLabel" name="directoryLabel" >
+     <property name="frameShape" >
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="text" >
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="QLabel" name="directoryNameLabel" >
+     <property name="text" >
+      <string>Directory name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="2" >
+    <widget class="QLineEdit" name="programNameLineEdit" />
+   </item>
+   <item row="0" column="0" >
+    <widget class="QLabel" name="programNameLabel" >
+     <property name="text" >
+      <string>Program name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2" >
+    <widget class="QPushButton" name="quitButton" >
+     <property name="text" >
+      <string>Quit</string>
+     </property>
+     <property name="shortcut" >
+      <string>Q</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2" colspan="2" >
+    <widget class="QPushButton" name="createProjectButton" >
+     <property name="text" >
+      <string>Create Project</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>programNameLineEdit</tabstop>
+  <tabstop>directoryNamePushButton</tabstop>
+  <tabstop>zeroToZeroRadioButton</tabstop>
+  <tabstop>zeroToOneRadioButton</tabstop>
+  <tabstop>oneToOneRadioButton</tabstop>
+  <tabstop>nToOneRadioButton</tabstop>
+  <tabstop>plotViewCheckBox</tabstop>
+  <tabstop>quitButton</tabstop>
+  <tabstop>createProjectButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

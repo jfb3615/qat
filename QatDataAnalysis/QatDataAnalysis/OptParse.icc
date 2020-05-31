@@ -1,0 +1,45 @@
+#include "QatDataAnalysis/Query.h"
+#include <string>
+#include <vector>
+#include <stdexcept>
+class NumericInput::Clockwork {
+public:
+
+
+
+  struct InputData {
+    std::string name;
+    std::string doc;
+    Query<double> value;
+    Query<int>    iValue;
+  };
+
+
+  std::vector<InputData> inputData;
+
+};
+
+template <typename T>
+inline T NumericInput::getByName  (const std::string & name) const {
+  
+  for (unsigned int i=0;i<c->inputData.size();i++) {
+    std::string trimmedVar= (c->inputData[i].name.substr(0,c->inputData[i].name.find(' ')));
+    if (trimmedVar==name) {
+      return std::is_integral<T>::value ? c->inputData[i].iValue : c->inputData[i].value;
+    }
+  }
+  throw std::runtime_error("Cannot parse parameter " + name);
+  return 0;
+}
+
+template <typename T>
+void NumericInput::declare(const std::string & name, const std::string & doc, T val){
+  Clockwork::InputData data;
+  data.name=name;
+  data.doc =doc;
+  data.value=val;
+  data.iValue=val;
+  c->inputData.push_back(data);
+}
+
+

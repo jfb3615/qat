@@ -1,0 +1,33 @@
+#!/bin/bash
+if [ $# -ne 1 ]
+then
+   name=testprogram.cpp
+   dir=TESTPROGRAM
+else
+   name=$1.cpp
+   dir=`echo $1 | awk '{print toupper($0)}'`
+fi
+
+if [ -e $dir ]
+then
+    echo directory $dir already exists, exiting!
+fi
+
+mkdir -p $dir
+cd $dir
+
+cat > $name  <<EOF
+#include <iostream>
+int main() {
+  return 0; 
+}
+EOF
+
+target=`basename $name .cpp`
+
+
+echo CXXFLAGS= "-std=c++11 -g -O0 -gdwarf-2" > Makefile
+echo all:${target} >> Makefile
+echo clean: >> Makefile
+echo -e  "\trm -f *.o *~ ${target}" >> Makefile
+

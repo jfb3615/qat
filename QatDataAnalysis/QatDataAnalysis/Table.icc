@@ -1,0 +1,118 @@
+//---------------------------------------------------------------------------//
+// !!                                                                     !! //
+//                                                                           //
+//  Copyright (C) 2016 Joe Boudreau                                          //
+//                                                                           //
+//  This file is part of the QAT Toolkit for computational science           //
+//                                                                           //
+//  QAT is free software: you can redistribute it and/or modify              //
+//  it under the terms of the GNU Lesser General Public License as           //
+//  published by the Free Software Foundation, either version 3 of           //
+//  the License, or (at your option) any later version.                      //
+//                                                                           //
+//  QAT is distributed in the hope that it will be useful,                   //
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
+//  GNU Lesser General Public License for more details.                      //
+//                                                                           //
+//  You should have received a copy of the GNU Lesser General Public         //
+//  License along with QAT.  If not, see <http://www.gnu.org/licenses/>.     //
+//                                                                           //
+//---------------------------------------------------------------------------//
+
+#include "QatDataAnalysis/AttributeList.h"
+#include "QatDataAnalysis/AttributeListLink.h"
+#include "QatDataAnalysis/ValueList.h"
+#include "QatDataAnalysis/Value.h"
+#include "QatDataAnalysis/Tuple.h"
+#include <algorithm>
+#include <list>
+#include <set>
+template class Link<Tuple>;
+
+class Table::Clockwork {
+
+public:
+
+
+  std::string                name;
+
+  TupleLink                  tuple;
+  TupleStoreLink             store;
+  std::vector<std::string>   nameList;  // Cached again for speed.
+
+
+};
+
+inline std::string & Table::name() {
+  return c->name;
+}
+
+inline const std::string & Table::name() const {
+  return c->name;
+}
+
+inline size_t Table::numTuples() const {
+  return c->store->size();
+}
+
+template <typename T> inline void Table::read (size_t index, const std::string & aname, T & t) const {
+  if (!(*this)[index]->read(t,  this->attribute(aname).attrId()))   {
+    std::string message ("Error retreiving attribute ");
+    message += aname;
+    message += " from table ";
+    message += name();
+    throw std::runtime_error(message.c_str());
+  };
+}
+
+template <typename T> inline void Table::add (const std::string & name, const T & t) {
+  
+  
+  if (numTuples()==0) {
+    Value v(&t, sizeof(t));
+    AttributeListLink a = AttributeListLink(c->tuple->attributeList());
+    a->add(name,typeid(t));
+    c->tuple->valueList().add(v);
+  }
+  else {
+    std::vector<std::string>::const_iterator a = std::lower_bound(c->nameList.begin(),
+								  c->nameList.end(),
+								  name);
+    int n = a-c->nameList.begin();
+    c->tuple->valueList()[n].setValue(t);
+  }
+  
+}
+
+
+template <typename T> inline void Table::add (const Attribute & a, const T & t) {
+  if (c->store->size()==0) {
+    throw std::runtime_error ("Table::add: you are using an attribute for an undefined table");
+  }
+  else {
+    size_t n = a.attrId();
+    c->tuple->valueList()[n].setValue(t);
+  }
+}
+
+inline const Attribute & Table::attribute (unsigned int i) const {
+  if (c->store->size()==0) throw std::runtime_error ("Table::attribute.  Attribute list not formed");
+  if (i<c->tuple->attributeList()->size()) 
+    return (*c->tuple->attributeList())[i];
+  else 
+    throw std::range_error ("Table::attribute range error");
+}
+
+
+inline const Attribute & Table::attribute (const std::string & name) const {
+  if (c->store->size()==0) throw std::runtime_error ("Table::attribute.  Attribute list not formed");
+  AttributeList::ConstIterator a = 
+    std::find_if(c->tuple->attributeList()->begin(), c->tuple->attributeList()->end(),Attribute::NameEquals(name));
+  if (a!=c->tuple->attributeList()->end()) 
+    return *a;
+  else 
+    throw std::range_error ("Table::attribute range error");
+}
+
+

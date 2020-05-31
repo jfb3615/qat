@@ -1,0 +1,231 @@
+//---------------------------------------------------------------------------//
+// !!                                                                     !! //
+//                                                                           //
+//  Copyright (C) 2016 Joe Boudreau                                          //
+//                                                                           //
+//  This file is part of the QAT Toolkit for computational science           //
+//                                                                           //
+//  QAT is free software: you can redistribute it and/or modify              //
+//  it under the terms of the GNU Lesser General Public License as           //
+//  published by the Free Software Foundation, either version 3 of           //
+//  the License, or (at your option) any later version.                      //
+//                                                                           //
+//  QAT is distributed in the hope that it will be useful,                   //
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
+//  GNU Lesser General Public License for more details.                      //
+//                                                                           //
+//  You should have received a copy of the GNU Lesser General Public         //
+//  License along with QAT.  If not, see <http://www.gnu.org/licenses/>.     //
+//                                                                           //
+//---------------------------------------------------------------------------//
+
+namespace Genfun {
+  ButcherTableau::ButcherTableau(const std::string &xname, unsigned int xorder):_name(xname),_order(xorder){
+  }
+  
+  
+  const std::string & ButcherTableau::name() const {
+    return _name;
+  }
+  
+  
+  
+  unsigned int ButcherTableau::order() const{
+    return _order;
+  }
+  
+  
+  
+  unsigned int ButcherTableau::nSteps() const{
+    return _A.size();
+  }
+
+// don't generate warnings about intentional shadowing
+#if defined __GNUC__ 
+  #if __GNUC__ > 3 && __GNUC_MINOR__ > 6
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wshadow"
+  #endif
+#endif 
+#ifdef __clang__
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wshadow"
+#endif
+
+  double & ButcherTableau::A(unsigned int i, unsigned int j) {
+    
+    if (i>=_A.size()) {
+      unsigned int newSize=i+1; // (shadowed)
+      for (unsigned int ii=0;ii<_A.size();ii++) {
+	_A[ii].resize(newSize,0.0);
+      }
+      for (unsigned int ii=_A.size();ii<newSize;ii++) {
+	_A.push_back(std::vector<double>(newSize,0));
+      }
+      
+      if (j>=_A[i].size()) {
+	unsigned int newSize=j+1;  // (shadow)
+	for (unsigned int ii=0;ii<_A.size();ii++) {
+	  _A[ii].resize(newSize,0.0);
+	}
+      }
+    }
+    return _A[i][j];
+  }
+  
+#if defined __GNUC__ 
+  #if __GNUC__ > 3 && __GNUC_MINOR__ > 6
+    #pragma GCC diagnostic pop
+  #endif
+#endif 
+#ifdef __clang__
+  #pragma clang diagnostic pop
+#endif
+
+  double & ButcherTableau::b(unsigned int i){
+    if (i>=_b.size()) _b.resize(i+1);
+    return _b[i];
+  }
+
+  double & ButcherTableau::c(unsigned int i){
+    if (i>=_c.size()) _c.resize(i+1);
+    return _c[i];
+  }
+  
+  const double & ButcherTableau::A(unsigned int i, unsigned int j) const{
+    return _A[i][j];
+  }
+  
+  const double & ButcherTableau::b(unsigned int i) const{
+    return _b[i];
+  }
+  
+  const double & ButcherTableau::c(unsigned int i) const{
+    return _c[i];
+  }
+}
+
+std::ostream & operator << (std::ostream & o, const Genfun::ButcherTableau & b) {
+  o << "Name " << b.name() << " of order " << b.order() << std::endl;
+  o << "A" << std::endl;
+  for (unsigned int i=0;i<b.nSteps();i++) {
+    for (unsigned int j=0;j<b.nSteps();j++) {
+      o << b.A(i,j) << " ";
+    }
+    o << std::endl;
+  }
+  o<< std::endl;
+  o << "c" << std::endl;
+  for (unsigned int j=0;j<b.nSteps();j++) {
+    o << b.c(j) << std::endl;
+  }
+  o<< std::endl;
+  o << "b" << std::endl;
+  for (unsigned int j=0;j<b.nSteps();j++) {
+    o << b.b(j) << " ";
+  }
+  o << std::endl;
+  return o;
+}
+
+namespace Genfun {
+  EulerTableau::EulerTableau():
+    ButcherTableau("Euler Method", 1)
+  {
+    A(0,0)=0;
+    b(0)=1;
+    c(0)=1;
+  }
+
+  MidpointTableau::MidpointTableau():
+    ButcherTableau("Midpoint Method", 2)
+  {
+    A(1,0)=1/2.0;
+    c(0)=0;
+    c(1)=1/2.0;
+    b(0)=0;
+    b(1)=1;
+    
+  }
+
+  TrapezoidTableau::TrapezoidTableau():
+    ButcherTableau("Trapezoid Method", 2)
+  {
+    A(1,0)=1;
+    c(0)=0;
+    c(1)=1;
+    b(0)=1/2.0;
+    b(1)=1/2.0;
+
+  }
+
+  RK31Tableau::RK31Tableau():
+    ButcherTableau("RK31 Method", 3)
+  {
+    A(0,0)      ;    A(0,1)      ;   A(0,2);
+    A(1,0)=2/3.0;    A(1,1)      ;   A(1,2);
+    A(2,0)=1/3.0;    A(2,1)=1/3.0;   A(2,2);
+
+    c(0)=0;
+    c(1)=2/3.0;
+    c(2)=2/3.0;
+    b(0)=1/4.0;
+    b(1)=0;
+    b(2)=3/4.0;
+  }
+
+
+  RK32Tableau::RK32Tableau():
+    ButcherTableau("RK32 Method", 3)
+  {
+    A(0,0)      ;    A(0,1)      ;   A(0,2);
+    A(1,0)=1/2.0;    A(1,1)      ;   A(1,2);
+    A(2,0)=-1   ;    A(2,1)= 2   ;   A(2,2);
+
+    c(0)=0;
+    c(1)=1/2.0;
+    c(2)=1;
+    b(0)=1/6.0;
+    b(1)=2/3.0;
+    b(2)=1/6.0;
+
+  }
+
+  ClassicalRungeKuttaTableau::ClassicalRungeKuttaTableau():
+    ButcherTableau("Classical Runge Kutta Method", 4)
+  {
+    A(0,0)      ;    A(0,1)       ;   A(0,2)    ; A(0,3);
+    A(1,0)=1/2.0;    A(1,1)       ;   A(1,2)    ; A(1,3);
+    A(2,0)=0    ;    A(2,1)=1/2.0 ;   A(2,2)    ; A(2,3);
+    A(3,0)=0    ;    A(3,1)=0     ;   A(3,2)=1  ; A(3,3);
+
+    c(0)=0;
+    c(1)=1/2.0;
+    c(2)=1/2.0;
+    c(3)=1;
+    b(0)=1/6.0;
+    b(1)=1/3.0;
+    b(2)=1/3.0;
+    b(3)=1/6.0;
+  }
+
+  ThreeEighthsRuleTableau::ThreeEighthsRuleTableau():
+    ButcherTableau("Three-Eighths Rule Method", 4)
+  {
+    A(0,0)        ;    A(0,1)       ;   A(0,2)    ; A(0,3);
+    A(1,0)=1/3.0  ;    A(1,1)       ;   A(1,2)    ; A(1,3);
+    A(2,0)=-1/3.0 ;    A(2,1)=1     ;   A(2,2)    ; A(2,3);
+    A(3,0)=1      ;    A(3,1)=-1    ;   A(3,2)=1  ; A(3,3);
+
+    c(0)=0;
+    c(1)=1/3.0;
+    c(2)=2/3.0;
+    c(3)=1;
+    b(0)=1/8.0;
+    b(1)=3/8.0;
+    b(2)=3/8.0;
+    b(3)=1/8.0;
+  }
+}
+

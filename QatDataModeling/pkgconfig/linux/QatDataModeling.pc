@@ -1,0 +1,7 @@
+Name: QatDataModeling
+Description: Qat Library.  Classes for chisquare and likelihood fits. 
+Version: 2.0.0
+Requires: QatDataAnalysis, QatGenericFunctions, gsl, eigen3
+
+Libs: -lQatDataModeling
+

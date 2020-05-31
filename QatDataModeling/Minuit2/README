@@ -1,0 +1,11 @@
+Minuit2 is the successor to MINUIT, writen by Fred James and ported to
+to C++ by Lorenzo Moneta (CERN), Matthias Winkler (CERN), and Andras
+Zsenei (CERN). The source code .cxx and header files .h have been copied
+without modification from version 5.34.14 released 2014/01/24. For more
+information see:
+
+http://seal.web.cern.ch/seal/snapshot/work-packages/mathlibs/minuit/
+
+
+
+

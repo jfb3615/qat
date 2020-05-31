@@ -1,0 +1,267 @@
+//---------------------------------------------------------------------------//
+// !!                                                                     !! //
+//                                                                           //
+//  Copyright (C) 2016 Joe Boudreau                                          //
+//                                                                           //
+//  This file is part of the QAT Toolkit for computational science           //
+//                                                                           //
+//  QAT is free software: you can redistribute it and/or modify              //
+//  it under the terms of the GNU Lesser General Public License as           //
+//  published by the Free Software Foundation, either version 3 of           //
+//  the License, or (at your option) any later version.                      //
+//                                                                           //
+//  QAT is distributed in the hope that it will be useful,                   //
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
+//  GNU Lesser General Public License for more details.                      //
+//                                                                           //
+//  You should have received a copy of the GNU Lesser General Public         //
+//  License along with QAT.  If not, see <http://www.gnu.org/licenses/>.     //
+//                                                                           //
+//---------------------------------------------------------------------------//
+
+namespace Genfun {
+  ExtendedButcherTableau::ExtendedButcherTableau(const std::string &mname, 
+						 unsigned int xorder,
+						 unsigned int xorderHat):_name(mname),
+									_order(xorder),
+									_orderHat(xorderHat){
+  }
+  
+  
+  const std::string & ExtendedButcherTableau::name() const {
+    return _name;
+  }
+  
+  
+  
+  unsigned int ExtendedButcherTableau::order() const{
+    return _order;
+  }
+
+  unsigned int ExtendedButcherTableau::orderHat() const{
+    return _orderHat;
+  }
+  
+  
+  
+  unsigned int ExtendedButcherTableau::nSteps() const{
+    return _A.size();
+  }
+  
+
+// don't generate warnings about intentional shadowing
+#if defined __GNUC__ 
+  #if __GNUC__ > 3 && __GNUC_MINOR__ > 6
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wshadow"
+  #endif
+#endif
+#ifdef __clang__
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wshadow"
+#endif
+  
+  double & ExtendedButcherTableau::A(unsigned int i, unsigned int j) {
+    
+    if (i>=_A.size()) {
+      unsigned int newSize=i+1; // (shadowed)
+      for (unsigned int ii=0;ii<_A.size();ii++) {
+	_A[ii].resize(newSize,0.0);
+      }
+      for (unsigned int ii=_A.size();ii<newSize;ii++) {
+	_A.push_back(std::vector<double>(newSize,0));
+      }
+      
+      if (j>=_A[i].size()) {
+	unsigned int newSize=j+1;  // (shadow)
+	for (unsigned int ii=0;ii<_A.size();ii++) {
+	  _A[ii].resize(newSize,0.0);
+	}
+      }
+    }
+    return _A[i][j];
+  }
+
+#if defined __GNUC__ 
+  #if __GNUC__ > 3 && __GNUC_MINOR__ > 6
+    #pragma GCC diagnostic pop
+  #endif
+#endif
+#ifdef __clang__
+  #pragma clang diagnostic pop
+#endif
+
+  double & ExtendedButcherTableau::b(unsigned int i){
+    if (i>=_b.size()) _b.resize(i+1);
+    return _b[i];
+  }
+
+  double & ExtendedButcherTableau::bHat(unsigned int i){
+    if (i>=_bHat.size()) _bHat.resize(i+1);
+    return _bHat[i];
+  }
+
+  double & ExtendedButcherTableau::c(unsigned int i){
+    if (i>=_c.size()) _c.resize(i+1);
+    return _c[i];
+  }
+  
+  const double & ExtendedButcherTableau::A(unsigned int i, unsigned int j) const{
+    return _A[i][j];
+  }
+  
+  const double & ExtendedButcherTableau::b(unsigned int i) const{
+    return _b[i];
+  }
+  
+  const double & ExtendedButcherTableau::bHat(unsigned int i) const{
+    return _bHat[i];
+  }
+  
+  const double & ExtendedButcherTableau::c(unsigned int i) const{
+    return _c[i];
+  }
+}
+
+std::ostream & operator << (std::ostream & o, const Genfun::ExtendedButcherTableau & b) {
+  o << "Name " << b.name() << " of order " << b.order() << std::endl;
+  o << "A" << std::endl;
+  for (unsigned int i=0;i<b.nSteps();i++) {
+    for (unsigned int j=0;j<b.nSteps();j++) {
+      o << b.A(i,j) << " ";
+    }
+    o << std::endl;
+  }
+  o<< std::endl;
+  o << "c" << std::endl;
+  for (unsigned int j=0;j<b.nSteps();j++) {
+    o << b.c(j) << std::endl;
+  }
+  o<< std::endl;
+  o << "b" << std::endl;
+  for (unsigned int j=0;j<b.nSteps();j++) {
+    o << b.b(j) << " ";
+  }
+  o<< std::endl;
+  o << "bHat" << std::endl;
+  for (unsigned int j=0;j<b.nSteps();j++) {
+    o << b.bHat(j) << " ";
+  }
+  o << std::endl;
+  return o;
+}
+
+namespace Genfun {
+
+
+
+  HeunEulerXtTableau::HeunEulerXtTableau():
+    ExtendedButcherTableau("Heun-Euler Embedded Method", 2,1)
+  {
+    A(0,0)      ;    A(0,1)      ;
+    A(1,0)=1    ;    A(1,1)      ;
+
+    c(0)=0;
+    c(1)=1;
+
+    b(0)=1/2.0;
+    b(1)=1/2.0;
+
+    bHat(0)=1;
+    bHat(1)=0;
+  }
+
+
+
+  BogackiShampineXtTableau::BogackiShampineXtTableau():
+    ExtendedButcherTableau("Bogacki-Shampine Embedded Method", 3,2)
+  {
+    A(0,0);         A(0,1);        A(0,2);       A(0,3);
+    A(1,0)=1/2.0;   A(1,1);        A(1,2);       A(1,3);
+    A(2,0)=0;       A(2,1)=3/4.0;  A(2,2);       A(2,3);
+    A(3,0)=2/9.0;   A(3,1)=1/3.0;  A(3,2)=4/9.0; A(3,3);
+
+    c(0)=0;
+    c(1)=1/2.;
+    c(2)=3/4.;
+    c(3)=1.0;
+
+    b(0)=2/9.0;
+    b(1)=1/3.0;
+    b(2)=4/9.0;
+    b(3)=0;
+
+    bHat(0)=7/24.0;
+    bHat(1)=1/4.0;
+    bHat(2)=1/3.0;
+    bHat(3)=1/8.0;
+  }
+  FehlbergRK45F2XtTableau::FehlbergRK45F2XtTableau():
+  ExtendedButcherTableau("FehlbergRK4(5) method formula 2", 4, 5)
+  {
+    A(0,0)               ;   A(0,1)                     ;        A(0,2)                 ;       A(0,3)           ;     A(0,4)        ;   A(0,5);
+    A(1,0)=1/4.          ;   A(1,1)                     ;        A(1,2)                 ;       A(1,3)           ;     A(1,4)        ;   A(1,5);
+    A(2,0)=3/32.         ;   A(2,1)=9/32.               ;        A(2,2)                 ;       A(2,3)           ;     A(2,4)        ;   A(2,5);
+    A(3,0)=1932/2197.    ;   A(3,1)=-7020/2197.         ;        A(3,2)=7296/2197.      ;       A(3,3)           ;     A(3,4)        ;   A(3,5);
+    A(4,0)=439/216.      ;   A(4,1)=-8.                 ;        A(4,2)=3680/513.       ;       A(4,3)=-845/4104.;     A(4,4)        ;   A(4,5);
+    A(5,0)=-8/27.        ;   A(5,1)=2.                  ;        A(5,2)=-3544/2565.     ;       A(5,3)=1859/4104.;     A(5,4)=-11/40.;   A(5,5);
+
+    c(0)=0;
+    c(1)=1/4.;
+    c(2)=3/8.;
+    c(3)=12/13.;
+    c(4)=1;
+    c(5)=1/2.;
+
+    b(0)=25/216.;
+    b(1)=0;
+    b(2)=1408/2565.;
+    b(3)=2197/4104.;
+    b(4)=-1/5.;
+    b(5)=0;
+
+    bHat(0)=16/135.;
+    bHat(1)=0;
+    bHat(2)=6656/12825.;
+    bHat(3)=28561/56430.;
+    bHat(4)=-9/50.;
+    bHat(5)=2/55.;
+
+  }
+
+  CashKarpXtTableau::CashKarpXtTableau():
+  ExtendedButcherTableau("FehlbergRK4(5) method formula 2", 4, 5) {
+    
+    A(0,0)              ;   A(0,1)         ;        A(0,2)           ;       A(0,3)              ;     A(0,4)          ;  A(0,5);
+    A(1,0) = 1/5.       ;   A(1,1)         ;        A(1,2)           ;       A(1,3)              ;     A(1,4)          ;  A(1,5);
+    A(2,0) = 3/40.      ;   A(2,1)=9/40.   ;        A(2,2)           ;       A(2,3)              ;     A(2,4)          ;  A(2,5);
+    A(3,0) = 3/10.      ;   A(3,1)=-9/10.  ;        A(3,2)=6/5.      ;       A(3,3)              ;     A(3,4)          ;  A(3,5);
+    A(4,0) = -11/54.    ;   A(4,1)=5/2.    ;        A(4,2)=-70/27.   ;       A(4,3)=35/27.       ;     A(4,4)          ;  A(4,5);
+    A(5,0) = 1631/55296.;   A(5,1)=175/512.;        A(5,2)=575/13824.;       A(5,3)=44275/110592.;     A(5,4)=253/4096.;  A(5,5);
+
+    c(0)=0;
+    c(1)=1/5.0;
+    c(2)=3/10.;
+    c(3)=3/5.;
+    c(4)=1;
+    c(5)=7/8.;
+
+    b(0)=37/378.;
+    b(1)=0;
+    b(2)=250/621.;
+    b(3)=125/594.;
+    b(4)=0;
+    b(5)=512/1771.;
+
+    bHat(0)=2825/27648.;
+    bHat(1)=0;
+    bHat(2)=18575/48384.;
+    bHat(3)=13525/55296.;
+    bHat(4)=277/14336.;
+    bHat(5)=1/4.;
+
+  }
+
+}
+

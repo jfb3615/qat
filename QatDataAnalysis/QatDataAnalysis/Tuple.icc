@@ -1,0 +1,142 @@
+//---------------------------------------------------------------------------//
+// !!                                                                     !! //
+//                                                                           //
+//  Copyright (C) 2016 Joe Boudreau                                          //
+//                                                                           //
+//  This file is part of the QAT Toolkit for computational science           //
+//                                                                           //
+//  QAT is free software: you can redistribute it and/or modify              //
+//  it under the terms of the GNU Lesser General Public License as           //
+//  published by the Free Software Foundation, either version 3 of           //
+//  the License, or (at your option) any later version.                      //
+//                                                                           //
+//  QAT is distributed in the hope that it will be useful,                   //
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
+//  GNU Lesser General Public License for more details.                      //
+//                                                                           //
+//  You should have received a copy of the GNU Lesser General Public         //
+//  License along with QAT.  If not, see <http://www.gnu.org/licenses/>.     //
+//                                                                           //
+//---------------------------------------------------------------------------//
+
+#include "QatDataAnalysis/AttributeListConstLink.h"
+#include "QatDataAnalysis/TupleLink.h"
+
+inline Tuple::Tuple(AttributeListConstLink attributeList):
+  _attributeList(attributeList),_status(true),_doubleRep(NULL),
+  _doubleRepStale(true){
+}
+
+inline Tuple::Tuple(AttributeListConstLink attributeList, const ValueList & valList):
+  _attributeList(attributeList),
+  _valList(valList),
+  _status(true),
+  _doubleRep(NULL),
+  _doubleRepStale(true){
+}
+
+
+inline Tuple::~Tuple() {
+  delete _doubleRep;
+
+}
+
+inline ValueList & Tuple::valueList() {
+  // If a nonconst version is ever accessed, we must assume that
+  // the data values are going to change!!
+  _doubleRepStale=true;
+  return _valList;
+}
+
+inline const ValueList & Tuple::valueList() const {
+  return _valList;
+}
+
+inline const Tuple & Tuple::read (int & i, unsigned int pos) const {
+  const std::string &typeName = (*_attributeList)[pos].typeName();
+  if (typeName=="i") {
+    i = * (int *) _valList[pos].asCharStar();
+    _status=true;
+  }
+  else {
+    _status=false;
+  }
+  return *this;
+}
+
+
+inline const Tuple & Tuple::read (double & d, unsigned int pos) const {
+  const std::string &typeName = (*_attributeList)[pos].typeName();
+  if (typeName=="d") {
+    d = * (double *) _valList[pos].asCharStar();
+    _status=true;
+  }
+  else {
+    _status=false;
+  }
+  return *this;
+}
+
+inline const Tuple & Tuple::read (float & d, unsigned int pos) const {
+  const std::string &typeName = (*_attributeList)[pos].typeName();
+  if (typeName=="f") {
+    d = * (float *) _valList[pos].asCharStar();
+    _status=true;
+  }
+  else {
+    _status=false;
+  }
+  return *this;
+}
+
+inline const Tuple & Tuple::read (unsigned int & i, unsigned int pos) const {
+  const std::string &typeName = (*_attributeList)[pos].typeName();
+  if (typeName=="j"|| typeName=="m") {
+    i = * (unsigned int *) _valList[pos].asCharStar();
+    _status=true;
+  }
+  else {
+    _status=false;
+  }
+  return *this;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+inline void Tuple::fastread (int & i, unsigned int pos) const {
+  i = * (int *) _valList[pos].asCharStar();
+}
+
+
+inline void Tuple::fastread (double & d, unsigned int pos) const {
+  d = * (double *) _valList[pos].asCharStar();
+}
+
+inline void Tuple::fastread (float & d, unsigned int pos) const {
+  d = * (float *) _valList[pos].asCharStar();
+}
+
+inline void Tuple::fastread (unsigned int & i, unsigned int pos) const {
+  i = * (unsigned int *) _valList[pos].asCharStar();
+}
+
+
+inline void Tuple::uncache() const {
+  delete _doubleRep;
+  _doubleRep=NULL;
+  _doubleRepStale=true;	
+}

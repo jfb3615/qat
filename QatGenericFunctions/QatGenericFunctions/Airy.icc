@@ -1,0 +1,73 @@
+//---------------------------------------------------------------------------//
+// !!                                                                     !! //
+//                                                                           //
+//  Copyright (C) 2016 Joe Boudreau                                          //
+//                                                                           //
+//  This file is part of the QAT Toolkit for computational science           //
+//                                                                           //
+//  QAT is free software: you can redistribute it and/or modify              //
+//  it under the terms of the GNU Lesser General Public License as           //
+//  published by the Free Software Foundation, either version 3 of           //
+//  the License, or (at your option) any later version.                      //
+//                                                                           //
+//  QAT is distributed in the hope that it will be useful,                   //
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
+//  GNU Lesser General Public License for more details.                      //
+//                                                                           //
+//  You should have received a copy of the GNU Lesser General Public         //
+//  License along with QAT.  If not, see <http://www.gnu.org/licenses/>.     //
+//                                                                           //
+//---------------------------------------------------------------------------//
+#include "gsl/gsl_sf_airy.h"
+#include <stdexcept>
+#include <cmath>
+
+
+namespace Genfun {
+  
+  FUNCTION_OBJECT_IMP(Airy)
+    inline
+    Airy::Airy(Type type):
+      _type(type)
+  {
+  }
+
+  inline
+  Airy::~Airy() {
+  }
+
+  inline
+  Airy::Airy(const Airy & right):
+    _type(right._type)
+  {
+  }
+  
+  
+  
+  inline
+  double Airy::operator() (double x) const {
+    gsl_sf_result result;
+    if (_type==Ai) {
+      int status = gsl_sf_airy_Ai_e(x, GSL_PREC_DOUBLE, &result);
+      if (status!=0) {
+	std::cerr << "Warning, GSL function gsl_sf_airy_ai" 
+		  << " return code" << status << std::endl;
+
+	throw std::logic_error("Impossible condition in Airy");
+      }
+      return result.val;
+    }
+    else if (_type==Bi) {
+      int status = gsl_sf_airy_Bi_e( x, GSL_PREC_DOUBLE,  &result);
+      if (status!=0) {
+	std::cerr << "Warning, GSL function gsl_sf_airy_bi" 
+		  << " return code" << status << std::endl;
+	throw std::logic_error("Impossible condition in Airy");
+      }
+      return result.val;
+    }
+    return result.val;
+  }
+  
+} // end namespace Genfun

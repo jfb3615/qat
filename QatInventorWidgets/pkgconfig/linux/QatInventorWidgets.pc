@@ -1,0 +1,8 @@
+Name: QatInventorWidgets
+Description: Qat Library.  Widgets using the Coin/Open Inventor 3D libraries
+Version: 2.0.0
+Requires: SoQt, QatPlotWidgets
+
+Libs: -lQatInventorWidgets
+
+

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QatViewerWidget</class>
+ <widget class="QWidget" name="QatViewerWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>591</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QWidget" name="widget" native="true"/>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="modeGroupBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>80</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Modes:</string>
+     </property>
+     <widget class="QCommandLinkButton" name="setHomeButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>40</y>
+        <width>168</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>set</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QCommandLinkButton" name="goHomeButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>80</y>
+        <width>168</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>go</string>
+      </property>
+     </widget>
+     <widget class="QCommandLinkButton" name="seekButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>130</y>
+        <width>168</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>seek</string>
+      </property>
+     </widget>
+     <widget class="QCommandLinkButton" name="omniButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>170</y>
+        <width>168</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>omni</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,99 @@
+//---------------------------------------------------------------------------//
+// !!                                                                     !! //
+//                                                                           //
+//  Copyright (C) 2016 Joe Boudreau                                          //
+//                                                                           //
+//  This file is part of the QAT Toolkit for computational science           //
+//                                                                           //
+//  QAT is free software: you can redistribute it and/or modify              //
+//  it under the terms of the GNU Lesser General Public License as           //
+//  published by the Free Software Foundation, either version 3 of           //
+//  the License, or (at your option) any later version.                      //
+//                                                                           //
+//  QAT is distributed in the hope that it will be useful,                   //
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
+//  GNU Lesser General Public License for more details.                      //
+//                                                                           //
+//  You should have received a copy of the GNU Lesser General Public         //
+//  License along with QAT.  If not, see <http://www.gnu.org/licenses/>.     //
+//                                                                           //
+//---------------------------------------------------------------------------//
+
+#include <gsl/gsl_sf_legendre.h>
+#include <cmath>
+#include <sstream>
+#include <stdexcept>
+
+
+namespace Genfun {
+
+FUNCTION_OBJECT_IMP(AssociatedLegendre)
+
+//
+inline
+AssociatedLegendre::AssociatedLegendre(unsigned int l,  int m, NormalizationType type):
+  AbsFunction(),
+  _l(l),
+  _m(m),
+  _normType(type)
+{
+  if (abs(m)>l) throw std::range_error("M>L in Associated Legendre");
+}
+
+inline
+AssociatedLegendre::~AssociatedLegendre() {
+}
+
+inline
+AssociatedLegendre::AssociatedLegendre(const AssociatedLegendre & right):
+AbsFunction(),
+_l(right._l),
+_m(right._m),
+_normType(right._normType)
+{
+}
+
+inline
+unsigned int AssociatedLegendre::l() const {
+  return _l;
+}
+
+inline
+int AssociatedLegendre::m() const {
+  return _m;
+}
+
+
+inline
+double AssociatedLegendre::operator() (double x) const {
+  gsl_sf_result result;
+  int status = -1;
+  if (_normType==STD) {
+    status=gsl_sf_legendre_Plm_e    (_l, abs(_m), x, &result);
+  }
+  else if (_normType==TWIDDLE) {
+    status=gsl_sf_legendre_sphPlm_e (_l, abs(_m), x, &result);
+  }
+  else {
+    throw std::logic_error("Impossible condition in AssociatedLegendre");
+  }
+
+  double factor=1.0;
+  if (_normType==STD) {
+    if (_m<0) factor = pow(-1,_m)* exp(lgamma(_l+_m+1)-lgamma(_l-_m+1));
+  }
+  else if (_normType==TWIDDLE) {
+    if (_m<0) factor = pow(-1,_m);
+  }
+
+  if (status!=0) {
+    std::ostringstream stream;
+    stream << "Warning, Error from gsl in AssociatedLegendre; " 
+	   << " return code " << status << std::endl;
+    throw std::runtime_error(stream.str());
+  }
+  return factor * result.val;
+}
+
+} // end namespace Genfun

@@ -1,0 +1,105 @@
+//---------------------------------------------------------------------------//
+// !!                                                                     !! //
+//                                                                           //
+//  Copyright (C) 2016 Joe Boudreau                                          //
+//                                                                           //
+//  This file is part of the QAT Toolkit for computational science           //
+//                                                                           //
+//  QAT is free software: you can redistribute it and/or modify              //
+//  it under the terms of the GNU Lesser General Public License as           //
+//  published by the Free Software Foundation, either version 3 of           //
+//  the License, or (at your option) any later version.                      //
+//                                                                           //
+//  QAT is distributed in the hope that it will be useful,                   //
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
+//  GNU Lesser General Public License for more details.                      //
+//                                                                           //
+//  You should have received a copy of the GNU Lesser General Public         //
+//  License along with QAT.  If not, see <http://www.gnu.org/licenses/>.     //
+//                                                                           //
+//---------------------------------------------------------------------------//
+
+#include "QatGenericFunctions/Variable.h"
+#include "QatGenericFunctions/FixedConstant.h"
+#include <gsl/gsl_sf_legendre.h>
+#include <cmath>
+#include <sstream>
+#include <stdexcept>
+
+
+namespace Genfun {
+
+FUNCTION_OBJECT_IMP_INLINE(LegendrePolynomial)
+
+//
+inline
+LegendrePolynomial::LegendrePolynomial(unsigned int l, NormalizationType type):
+  AbsFunction(),
+  _l(l),
+  _normType(type)
+{
+}
+
+inline
+LegendrePolynomial::~LegendrePolynomial() {
+}
+
+inline
+LegendrePolynomial::LegendrePolynomial(const LegendrePolynomial & right):
+AbsFunction(),
+_l(right._l),
+_normType(right._normType)
+{
+}
+
+inline
+unsigned int LegendrePolynomial::l() const {
+  return _l;
+}
+
+
+inline
+double LegendrePolynomial::operator() (double x) const {
+  gsl_sf_result result;
+  int status = -1;
+  double retVal=0;
+  status=gsl_sf_legendre_Pl_e    (_l, x, &result);
+  if (_normType==STD) {
+    retVal=result.val;
+  }
+  else if (_normType==TWIDDLE) {
+    retVal=result.val*sqrt((2.0*_l+1)/2.0);
+  }
+  else {
+    throw std::logic_error("Impossible condition in LegendrePolynomial");
+  }
+  
+  if (status!=0) {
+    std::ostringstream stream;
+    stream << "Warning, Error from gsl in LegendrePolynomial; " 
+	   << " return code " << status << std::endl;
+    throw std::runtime_error(stream.str());
+  }
+  return retVal;
+}
+
+inline
+Derivative LegendrePolynomial::partial(unsigned int index) const {
+  if (index!=0) throw std::range_error("LegendrePolynomial: partial derivative index out of range");
+  if (_l>0) {
+    Variable X;
+    const AbsFunction & fPrime = _normType==TWIDDLE ? 
+      (1/(X*X-1))*(X*LegendrePolynomial(_l,STD) - LegendrePolynomial(_l-1,STD)) * (_l*sqrt((2.0*_l+1)/2.0))
+      :
+      (1/(X*X-1))*(X*LegendrePolynomial(_l,STD) - LegendrePolynomial(_l-1,STD)) * (_l                     );
+    return Derivative(& fPrime);
+  }
+  else {
+    const AbsFunction & fPrime   = FixedConstant(0.0);
+    return Derivative(& fPrime);
+  }
+}
+
+
+} // end namespace Genfun

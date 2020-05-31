@@ -1,0 +1,211 @@
+//---------------------------------------------------------------------------//
+// !!                                                                     !! //
+//                                                                           //
+//  Copyright (C) 2016 Joe Boudreau                                          //
+//                                                                           //
+//  This file is part of the QAT Toolkit for computational science           //
+//                                                                           //
+//  QAT is free software: you can redistribute it and/or modify              //
+//  it under the terms of the GNU Lesser General Public License as           //
+//  published by the Free Software Foundation, either version 3 of           //
+//  the License, or (at your option) any later version.                      //
+//                                                                           //
+//  QAT is distributed in the hope that it will be useful,                   //
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
+//  GNU Lesser General Public License for more details.                      //
+//                                                                           //
+//  You should have received a copy of the GNU Lesser General Public         //
+//  License along with QAT.  If not, see <http://www.gnu.org/licenses/>.     //
+//                                                                           //
+//---------------------------------------------------------------------------//
+
+// -*- C++ -*-
+// $Id: CutBase.icc,v 1.3 2008/11/19 16:11:44 boudreau Exp $
+//-------------------------------------------------------------------//
+//                                                                   //
+// Implementations for the Cut class                                 //
+//                                                                   //
+//-------------------------------------------------------------------//
+template <class Type>
+Cut<Type>::Cut() {}
+
+template <class Type>
+Cut<Type>::Cut(const Cut<Type> & ) {}
+
+template <class Type>
+Cut<Type>::~Cut() {}
+ 
+template <class Type>
+typename Cut<Type>::OR Cut<Type>::operator || (const Cut<Type> & A) const {
+   return OR(*this,A);
+}
+
+template <class Type>
+typename Cut<Type>::AND Cut<Type>::operator && (const Cut<Type> & A) const {
+  return AND(*this,A);
+}
+
+template <class Type>
+typename Cut<Type>::NOT Cut<Type>::operator ! () const {
+  return NOT(*this);
+}
+//-------------------------------------------------------------------//
+//                                                                   //
+// Implementations for the AND class                                 //
+//                                                                   //
+//-------------------------------------------------------------------//
+
+template <class Type>
+Cut<Type>::AND::AND(const AND & right):Cut<Type>(),
+				       _pA(right._pA->clone()),
+				       _pB(right._pB->clone())
+{
+
+}
+
+template <class Type>
+Cut<Type>::AND::AND(const Cut<Type> & A, const Cut<Type> & B):Cut<Type>(),
+							      _pA(A.clone()),
+							      _pB(B.clone())
+{
+}
+
+template <class Type>
+Cut<Type>::AND::~AND()
+{
+  delete _pA;
+  delete _pB;
+}
+
+
+template <class Type>
+typename Cut<Type>::AND *Cut<Type>::AND::clone() const
+{
+  return new AND(*this);
+}
+
+template <class Type> 
+bool Cut<Type>::AND::operator () (const Type & t) const {
+  return _pA->operator()(t) && _pB->operator()(t);
+}
+
+//-------------------------------------------------------------------//
+//                                                                   //
+// Implementations for the OR class                                  //
+//                                                                   //
+//-------------------------------------------------------------------//
+
+template <class Type>
+Cut<Type>::OR::OR(const OR & right):Cut<Type>(),
+				    _pA(right._pA->clone()),
+				    _pB(right._pB->clone())
+{
+
+}
+
+template <class Type>
+Cut<Type>::OR::OR(const Cut<Type> & A, const Cut<Type> & B):Cut<Type>(),
+							    _pA(A.clone()),
+							    _pB(B.clone())
+{
+}
+
+template <class Type>
+Cut<Type>::OR::~OR()
+{
+  delete _pA;
+  delete _pB;
+}
+
+
+template <class Type>
+typename Cut<Type>::OR *Cut<Type>::OR::clone() const
+{
+  return new OR(*this);
+}
+
+template <class Type> 
+bool Cut<Type>::OR::operator () (const Type & t) const {
+  return _pA->operator()(t) || _pB->operator()(t);
+}
+
+
+//-------------------------------------------------------------------//
+//                                                                   //
+// Implementations for the NOT class                                 //
+//                                                                   //
+//-------------------------------------------------------------------//
+
+template <class Type>
+Cut<Type>::NOT::NOT(const NOT & right):Cut<Type>(),
+				       _pA(right._pA->clone())
+{
+
+}
+
+template <class Type>
+Cut<Type>::NOT::NOT(const Cut<Type> & A):Cut<Type>(),
+					 _pA(A.clone())
+{
+}
+
+template <class Type>
+Cut<Type>::NOT::~NOT()
+{
+  delete _pA;
+}
+
+
+template <class Type>
+typename Cut<Type>::NOT *Cut<Type>::NOT::clone() const
+{
+  return new NOT(*this);
+}
+
+template <class Type> 
+bool Cut<Type>::NOT::operator () (const Type & t) const {
+  return !_pA->operator()(t);
+}
+
+
+//-------------------------------------------------------------------//
+//                                                                   //
+// Implementations for the Predicate class, representing a unary     //
+// No-op and useful as a user-level data type, because it is         //
+// concrete, and clones on copy, therefore is useful in e.g. STL     // 
+// routines.                                                         //
+//                                                                   //
+//-------------------------------------------------------------------//
+
+template <class Type>
+Cut<Type>::Predicate::Predicate(const Predicate & right):
+  _pA(right._pA->clone())
+{
+
+}
+
+template <class Type>
+Cut<Type>::Predicate::Predicate(const Cut<Type> & A):
+  _pA(A.clone())
+{
+}
+
+template <class Type>
+Cut<Type>::Predicate::~Predicate()
+{
+  delete _pA;
+}
+
+
+template <class Type>
+typename Cut<Type>::Predicate *Cut<Type>::Predicate::clone() const
+{
+  return new Predicate(*this);
+}
+
+template <class Type> 
+bool Cut<Type>::Predicate::operator () (const Type & t) const {
+  return _pA->operator()(t);
+}
+

@@ -1,0 +1,6 @@
+Name: QatGenericFunctions
+Description: Qat Library.  Perform function arithmetic (like floating point)
+Version: 2.0.0
+Requires: gsl, eigen3
+
+Libs: -lQatGenericFunctions 

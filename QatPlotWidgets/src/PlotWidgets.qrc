@@ -1,0 +1,39 @@
+<RCC>
+    <qresource prefix="/resource-1" >
+        <file>ICONS/BrushBDiagPattern.png</file>
+        <file>ICONS/BrushCrossPattern.png</file>
+        <file>ICONS/BrushDense1Pattern.png</file>
+        <file>ICONS/BrushDense2Pattern.png</file>
+        <file>ICONS/BrushDense3Pattern.png</file>
+        <file>ICONS/BrushDense4Pattern.png</file>
+        <file>ICONS/BrushDense5Pattern.png</file>
+        <file>ICONS/BrushDense6Pattern.png</file>
+        <file>ICONS/BrushDense7Pattern.png</file>
+        <file>ICONS/BrushDiagCrossPattern.png</file>
+        <file>ICONS/BrushFDiagPattern.png</file>
+        <file>ICONS/BrushHorPattern.png</file>
+        <file>ICONS/BrushNoBrush.png</file>
+        <file>ICONS/BrushSolidPattern.png</file>
+        <file>ICONS/BrushVerPattern.png</file>
+        <file>ICONS/QtSolid.png</file>
+        <file>ICONS/black.png</file>
+        <file>ICONS/blue.png</file>
+        <file>ICONS/brush-styles.png</file>
+        <file>ICONS/circle.png</file>
+        <file>ICONS/cyan.png</file>
+        <file>ICONS/gray.png</file>
+        <file>ICONS/green.png</file>
+        <file>ICONS/mauve.png</file>
+        <file>ICONS/nosymbol.png</file>
+        <file>ICONS/qpen-dash.png</file>
+        <file>ICONS/qpen-dashdot.png</file>
+        <file>ICONS/qpen-dashdotdot.png</file>
+        <file>ICONS/qpen-dot.png</file>
+        <file>ICONS/qpen-none.png</file>
+        <file>ICONS/qpen-solid.png</file>
+        <file>ICONS/red.png</file>
+        <file>ICONS/square.png</file>
+        <file>ICONS/tridown.png</file>
+        <file>ICONS/triup.png</file>
+    </qresource>
+</RCC>

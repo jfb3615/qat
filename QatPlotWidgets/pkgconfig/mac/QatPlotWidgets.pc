@@ -1,0 +1,8 @@
+Name: QatPlotWidgets
+Description: Qat Library.  The PlotView class for data vis & related. 
+Version: 2.0.0
+Requires: Qt5PrintSupport, Qt5Svg, Qt5Widgets, QatPlotting, QatDataAnalysis, QatGenericFunctions, gsl, eigen3
+Cflags: -I/usr/local/include 
+Libs: -L/usr/local/lib -lQatPlotWidgets
+
+

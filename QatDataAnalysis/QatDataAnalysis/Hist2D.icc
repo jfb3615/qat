@@ -1,0 +1,167 @@
+//---------------------------------------------------------------------------//
+// !!                                                                     !! //
+//                                                                           //
+//  Copyright (C) 2016 Joe Boudreau                                          //
+//                                                                           //
+//  This file is part of the QAT Toolkit for computational science           //
+//                                                                           //
+//  QAT is free software: you can redistribute it and/or modify              //
+//  it under the terms of the GNU Lesser General Public License as           //
+//  published by the Free Software Foundation, either version 3 of           //
+//  the License, or (at your option) any later version.                      //
+//                                                                           //
+//  QAT is distributed in the hope that it will be useful,                   //
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
+//  GNU Lesser General Public License for more details.                      //
+//                                                                           //
+//  You should have received a copy of the GNU Lesser General Public         //
+//  License along with QAT.  If not, see <http://www.gnu.org/licenses/>.     //
+//                                                                           //
+//---------------------------------------------------------------------------//
+
+#include <algorithm>
+
+
+
+class Hist2D::Clockwork {
+	
+public:
+  
+  std::string         name; 
+  size_t              nBinsX;
+  size_t              nBinsY;
+  double              minX;
+  double              maxX;
+  double              minY;
+  double              maxY;
+  double              binWidthX;
+  double              binWidthY;
+  size_t              overUnderFlow[3][3];
+  size_t              overflow;
+  double              xW;
+  double              xxW;
+  double              yW;
+  double              yyW;
+  double              xyW;
+  double              sumWeight;
+  mutable double      minContents;
+  mutable double      maxContents;
+  std::vector<double> contents;
+  std::vector<double> errors;
+
+
+};
+
+
+
+inline size_t Hist2D::ii(size_t i, size_t j) const {
+  return c->nBinsX*j + i;
+}
+
+inline std::string & Hist2D::name() { return c->name;}
+
+inline const std::string & Hist2D::name() const { return c->name;}
+
+inline size_t Hist2D::nBinsX() const { return c->nBinsX;}
+inline size_t Hist2D::nBinsY() const { return c->nBinsY;}
+
+inline double Hist2D::minX() const {return c->minX;}
+inline double Hist2D::minY() const {return c->minY;}
+
+inline double Hist2D::maxX() const {return c->maxX;}
+inline double Hist2D::maxY() const {return c->maxY;}
+
+inline double Hist2D::binWidthX () const {return c->binWidthX;}
+inline double Hist2D::binWidthY () const {return c->binWidthY;}
+
+inline double Hist2D::binUpperEdgeX(unsigned int i, unsigned int  ) const {return c->minX + (i+1)*c->binWidthX;}
+inline double Hist2D::binUpperEdgeY(unsigned int  , unsigned int j) const {return c->minY + (j+1)*c->binWidthY;}
+
+inline double Hist2D::binLowerEdgeX(unsigned int i, unsigned int  ) const {return c->minX + i*c->binWidthX;}
+inline double Hist2D::binLowerEdgeY(unsigned int  , unsigned int j) const {return c->minY + j*c->binWidthY;}
+
+inline double Hist2D::binCenterX(unsigned int i, unsigned int  ) const { return c->minX + (i+0.5)*c->binWidthX;}
+inline double Hist2D::binCenterY(unsigned int  , unsigned int j) const { return c->minY + (j+0.5)*c->binWidthY;}
+
+inline double Hist2D::bin(unsigned int i, unsigned int j) const {return c->contents[ii(i,j)];}
+
+inline double Hist2D::binError(unsigned int i, unsigned int j) const {return sqrt(c->errors[ii(i,j)]);}
+
+
+inline size_t Hist2D::overflow() const {return c->overflow;}
+
+inline size_t Hist2D::overflow(Hist2D::OVF a, Hist2D::OVF b) const { 
+  return c->overUnderFlow[a][b];
+}
+
+inline double Hist2D::varianceX()  const { 
+  if (c->sumWeight==0) {
+    return 0;
+  }
+  else {
+    return  c->xxW/c->sumWeight-(c->xW*c->xW/c->sumWeight/c->sumWeight);
+  }
+}
+inline double Hist2D::varianceY()  const { 
+  if (c->sumWeight==0) {
+    return 0;
+  }
+  else {
+    return  c->yyW/c->sumWeight-(c->yW*c->yW/c->sumWeight/c->sumWeight);
+  }
+}
+inline double Hist2D::varianceXY() const { 
+  if (c->sumWeight==0) {
+    return 0;
+  }
+  else {
+    return  c->xyW/c->sumWeight-(c->xW*c->yW/c->sumWeight/c->sumWeight);
+  }
+}
+
+inline double Hist2D::meanX() const { 
+  if (c->sumWeight==0) {
+    return 0;
+  }
+  else {
+    return  c->xW/c->sumWeight;
+  }  
+}
+
+inline double Hist2D::meanY() const { 
+  if (c->sumWeight==0) {
+    return 0;
+  }
+  else {
+    return  c->yW/c->sumWeight;
+  }  
+}
+
+inline double Hist2D::sum() const { return c->sumWeight;}
+
+inline double Hist2D::minContents () const { 
+  if (c->minContents==0) {
+    if (entries()!=0) {
+      std::vector<double>::const_iterator min = std::min_element(c->contents.begin(),c->contents.end());
+      if (min!=c->contents.end()) {
+	c->minContents=*min;
+      }
+    }
+  }
+  return c->minContents;
+}
+
+inline double Hist2D::maxContents() const {
+  if (c->maxContents==0) {
+    if (entries()!=0) {
+      std::vector<double>::const_iterator max = std::max_element(c->contents.begin(),c->contents.end());
+      if (max!=c->contents.end()) {
+	c->maxContents=*max;
+      }
+    }
+  }
+  return c->maxContents;
+}
+
+inline size_t Hist2D::entries() const {return c->overUnderFlow[InRange][InRange];}

@@ -1,0 +1,8 @@
+Name: QatDataAnalysis
+Description: Qat Library.  Classes for data analysis.
+Version: 2.0.0
+Requires: QatGenericFunctions, gsl, eigen3
+
+Cflags: -I/usr/local/include
+Libs: -L/usr/local/lib -lQatDataAnalysis
+

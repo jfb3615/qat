@@ -1,0 +1,101 @@
+//---------------------------------------------------------------------------//
+// !!                                                                     !! //
+//                                                                           //
+//  Copyright (C) 2016 Joe Boudreau                                          //
+//                                                                           //
+//  This file is part of the QAT Toolkit for computational science           //
+//                                                                           //
+//  QAT is free software: you can redistribute it and/or modify              //
+//  it under the terms of the GNU Lesser General Public License as           //
+//  published by the Free Software Foundation, either version 3 of           //
+//  the License, or (at your option) any later version.                      //
+//                                                                           //
+//  QAT is distributed in the hope that it will be useful,                   //
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of           //
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            //
+//  GNU Lesser General Public License for more details.                      //
+//                                                                           //
+//  You should have received a copy of the GNU Lesser General Public         //
+//  License along with QAT.  If not, see <http://www.gnu.org/licenses/>.     //
+//                                                                           //
+//---------------------------------------------------------------------------//
+
+class Tuple;
+inline Attribute::Attribute(const std::string & name, const std::type_info & type):       
+  _name(name),                                                          
+  _type(typeOf(type)),                                               
+  _attrId(-1){}                                                         
+//                                                                      
+inline Attribute::Attribute(const std::string & name):                                    
+  _name(name),                                                          
+  _type(UNKNOWN),                                                        
+  _attrId(-1){}                                                         
+
+inline std::string & Attribute::name() {return _name;}                                    
+
+inline const std::string & Attribute::name() const {return _name;}                        
+
+
+inline std::string  Attribute::typeName() const {return typenameOf(_type);}                
+
+inline const Attribute::Type & Attribute::type() const { return _type;}
+
+inline int & Attribute::attrId() { return _attrId;}                          
+inline unsigned int  Attribute::attrId() const { return _attrId;}                          
+
+//                                                                      
+// Relational operators                                                 
+inline bool Attribute::operator < (const Attribute & a) const {                           
+  return (_attrId != -1 && _attrId < a._attrId ) || _name < a._name;    
+}                                                                       
+//                                                                      
+// Equality operator:                                                   
+inline bool Attribute::operator== (const Attribute & a) const {                           
+  return (_attrId != -1 && _attrId ==a._attrId ) || _name == a._name;   
+}                                                                       
+//                                                                      
+                                                                          
+//                                                                      
+class Attribute::NameEquals {                                                      
+public:                                                                 
+  NameEquals(const std::string & name) : _name(name) {}                 
+  bool operator () (const Attribute & a ) const {                       
+    return _name==a.name();                                             
+  }                                                                     
+private:                                                                
+  std::string _name;                                                    
+};                                                                      
+
+inline Attribute::Type Attribute::typeOf(const std::type_info & type ) {
+  const std::string  & tn = type.name();
+  if (tn=="d") {
+    return DOUBLE;
+  }
+  else if (tn=="f") {
+    return FLOAT;
+  }
+  else if (tn=="i") {
+    return INT;
+  }
+  else if (tn=="j" || tn=="m") {
+    return UINT;
+  }
+  else return UNKNOWN;
+}
+
+inline std::string Attribute::typenameOf(const Type type ) {
+  if (type==DOUBLE) {
+    return typeid((double) 0).name();
+  }
+  else if (type==FLOAT) {
+    return typeid((float) (0)).name();
+  }
+  else if (type==INT) {
+    return typeid((int) 0).name();
+  }
+  else if (type==UINT) {
+    return typeid((size_t) 0).name();
+  }
+  else return "?";
+}
+

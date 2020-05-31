@@ -1,0 +1,39 @@
+// -----------------------------------------------------------------------
+// File adapted by Joe Boudreau from original example described in Linux
+// Gazette by Rob Tougher, http://tldp.org/LDP/LG/issue74/tougher.html
+// (2002).  The example was updated in 2013 to use standard exceptions and was
+// endowed with a template method to allow exchange of arbitrary data
+// structures via sockets.  
+//-------------------------------------------------------------------------
+
+#include <errno.h>
+#include <iostream>
+template <class T> inline bool Socket::send ( const T & query ) const
+{
+  int remaining = sizeof(query);
+  char * ptr= (char *) (&query); 
+  while (remaining) {
+    int status = ::send ( m_sock, ptr, remaining, MSG_NOSIGNAL );
+    if ( status == -1 ) return false;
+    remaining -= status;
+    ptr       += status;
+  }
+  return true;
+    
+}
+
+
+template <class T> bool Socket::recv ( T & query ) const
+{
+  int remaining = sizeof(query);
+  char *ptr = (char *) (&query);
+  
+  while (remaining) {
+    int status = ::recv ( m_sock, ptr, remaining, 0 );
+    if ( status == -1 )  return false;
+    remaining -= status;
+    ptr       += status;
+  }
+  return true;
+}
+

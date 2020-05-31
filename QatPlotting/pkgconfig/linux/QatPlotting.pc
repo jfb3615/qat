@@ -1,0 +1,8 @@
+Name: QatPlotting
+Description: Qat Library.  Classes representing plotting primitives & cet. 
+Version: 2.0.0
+Requires: Qt5Widgets, QatDataAnalysis, QatGenericFunctions
+
+Libs: -lQatPlotting
+
+
