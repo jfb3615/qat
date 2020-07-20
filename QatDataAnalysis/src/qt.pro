@@ -1,11 +1,11 @@
 VERSION=3.0.1
 
 isEmpty(PREFIX) {
-  PREFIX=usr/local
+  PREFIX=/usr/local
 }
   
 isEmpty(QATLIBDIR) {
-  QATLIBDIR=/$$PREFIX/lib
+  QATLIBDIR=$$PREFIX/lib
 }
 
 TEMPLATE = lib dll
@@ -23,10 +23,10 @@ HEADERS +=            ../QatDataAnalysis/*.h ../QatDataAnalysis/*.icc
 
 SOURCES +=            *.cpp
 
-target.path=/$$QATLIBDIR
+target.path=$$QATLIBDIR
 INSTALLS += target
 
-headers.path=/$$PREFIX/include/QatDataAnalysis
+headers.path=$$PREFIX/include/QatDataAnalysis
 headers.files= ../QatDataAnalysis/*h ../QatDataAnalysis/*.icc
 INSTALLS += headers
 
