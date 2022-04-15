@@ -38,11 +38,11 @@ mac {
    system(which h5cc) {
    H5CC = $$system(which h5cc )
    H5DIR = $$system(dirname $$H5CC)/..
-   message("HDF5 located in $$H5DIR")
+   H5CLN = $$clean_path($$H5DIR)
+   message("HDF5 installation located under $$H5CLN")
 
-   H5INC=$$system(dirname $$H5CC)/../include
-   H5LIB=$$system(dirname $$H5CC)/../lib
-   message($$H5LIB)
+   H5INC=$$H5CLN/include
+   H5LIB=$$H5CLN/lib
  
    INCLUDEPATH += $$H5INC
    LIBS        += -L$$H5LIB   }
