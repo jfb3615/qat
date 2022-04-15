@@ -15,7 +15,7 @@ isEmpty(QATLIBDIR) {
 TEMPLATE = lib
 TARGET = QatInventorWidgets
 DEPENDPATH += .
-INCLUDEPATH += . .. /usr/local/include ../../SoQt/src  ../../QatPlotWidgets ../../QatPlotting ../../QatDataAnalysis ../../QatGenericFunctions
+INCLUDEPATH += . .. $$PREFIX/include  ../../QatPlotWidgets ../../QatPlotting ../../QatDataAnalysis ../../QatGenericFunctions
 DESTDIR=../../../lib
 FORMS=PolarFunctionView.ui
 CONFIG += qt debug c++17
@@ -40,5 +40,26 @@ linux {
 }
 INSTALLS += pc
 
+mac{
+   message(Searching for Coin/SoQt package on mac)
+   system(which coin-config) {
+   COINCONFIG = $$system(which coin-config )
+   COINDIR    = $$system(dirname $$COINCONFIG)/..
+   COINCLN = $$clean_path($$COINDIR)
+   message("COIN installation located under $$COINCLN")
 
-LIBS += -L../../SoQt/src/Inventor/Qt/ -L$(DESTDIR) -lSoQt -L$$QATLIBDIR -lCoin -lQatPlotWidgets -lQatPlotting -lQatDataAnalysis -lQatGenericFunctions
+   COININC=$$COINCLN/include
+   COINLIB=$$COINCLN/lib
+ 
+   INCLUDEPATH += $$COININC
+   LIBS        += -L$$COINLIB
+   }
+   else {
+     message("Cannot locate COIN package. Is it installed"?)
+     message("Configuration of COIN/SOQT failed")
+   }
+
+
+}
+
+LIBS += -L$(DESTDIR) -L$$QATLIBDIR -lSoQt -lCoin -lQatPlotWidgets -lQatPlotting -lQatDataAnalysis -lQatGenericFunctions
