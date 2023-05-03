@@ -23,7 +23,7 @@ add_library(Qoot SHARED ${sources} ${headers})
 
 
 target_link_libraries(Qoot PUBLIC ${ROOT_LIBRARIES} QatDataAnalysis QatGenericFunctions )
-target_include_directories(Qoot PUBLIC ${ROOT_INCLUDE_DIRS} 
+target_include_directories(Qoot PUBLIC ${ROOT_INCLUDE_DIR} 
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
    $<INSTALL_INTERFACE:include> )
 
