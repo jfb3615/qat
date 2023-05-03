@@ -30,12 +30,9 @@ class PlotFunction1DProperties {
 
   QPen   pen;
   QBrush brush;
-  double baseLine;
+  double baseLine{0.0};
+  unsigned int nPoints{500};
 
-
-  // Construct Default:
-  PlotFunction1DProperties(): 
-    baseLine(0.0){}
 
 };
 

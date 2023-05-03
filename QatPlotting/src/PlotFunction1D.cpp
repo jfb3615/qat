@@ -103,7 +103,7 @@ void PlotFunction1D::describeYourselfTo(AbsPlotter *plotter) const {
   double minY=plotter->qrect()->top(),  maxY=plotter->qrect()->bottom();
  
 
-  int NPOINTS = 200; 
+  int NPOINTS = properties().nPoints; 
   double delta = plotter->isLogX()? (log(maxX)-log(minX))/NPOINTS: (maxX-minX)/NPOINTS;
 
   const LinToLog *toLogX= plotter->isLogX() ? new LinToLog (plotter->qrect()->left(),plotter->qrect()->right()) : NULL;
