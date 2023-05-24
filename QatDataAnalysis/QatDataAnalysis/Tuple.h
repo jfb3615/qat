@@ -97,6 +97,10 @@ class Tuple:public RCSBase {
   inline const Tuple & read   (unsigned int & i, unsigned int pos) const;
   inline void fastread        (unsigned int & i, unsigned int pos) const;
 
+  // Read a long unsigned int:
+  inline const Tuple & read   (size_t & i, unsigned int pos) const;
+  inline void fastread        (size_t  & i, unsigned int pos) const;
+
   // Read a double:
   inline const Tuple & read   (double & d, unsigned int pos) const;
   inline void fastread        (double & d, unsigned int pos) const;

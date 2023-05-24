@@ -77,8 +77,11 @@ inline Attribute::Type Attribute::typeOf(const std::type_info & type ) {
   else if (tn=="i") {
     return INT;
   }
-  else if (tn=="j" || tn=="m") {
+  else if (tn=="j") {
     return UINT;
+  }
+  else if (tn=="m") {
+    return UINT64;
   }
   else return UNKNOWN;
 }
@@ -94,6 +97,9 @@ inline std::string Attribute::typenameOf(const Type type ) {
     return typeid((int) 0).name();
   }
   else if (type==UINT) {
+    return typeid((unsigned int) 0).name();
+  }
+  else if (type==UINT64) {
     return typeid((size_t) 0).name();
   }
   else return "?";

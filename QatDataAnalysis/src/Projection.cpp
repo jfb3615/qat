@@ -103,7 +103,10 @@ Table Projection::operator * (const Table & table) const
 	bList->add(name,typeid(int(0)));
       }
       else if ((*a).type()==Attribute::UINT)  {
-	bList->add(name,typeid(size_t(0)));
+	bList->add(name,typeid((unsigned int) (0)));
+      }
+      else if ((*a).type()==Attribute::UINT64)  {
+	bList->add(name,typeid(size_t (0)));
       }
       else {
 	throw std::runtime_error("Error unknown type in projection operation");

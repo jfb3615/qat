@@ -34,6 +34,7 @@ class Attribute {                                                         //
     FLOAT,                                                                //
     INT,                                                                  //
     UINT,                                                                 //
+    UINT64,                                                               //
     UNKNOWN};                                                             //
   //                                                                      //
   //                                                                      //

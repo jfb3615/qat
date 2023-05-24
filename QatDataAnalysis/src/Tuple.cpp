@@ -59,6 +59,13 @@ std::ostream & Tuple::print (std::ostream & o) const {
       }
     }
       
+    {
+      size_t value=0;
+      if (this->read(value,i)) {
+	o << value << " "; continue;
+      }
+    }
+      
 
     o << (*_attributeList)[i].typeName() << "(?)" ;
   }
@@ -105,6 +112,13 @@ const Genfun::Argument & Tuple::asDoublePrec() const {
       case Attribute::UINT:
 	{
 	  unsigned int value;
+	  fastread(value,i);
+	  a[i]=value;
+	  break;
+	}
+      case Attribute::UINT64:
+	{
+	  size_t value;
 	  fastread(value,i);
 	  a[i]=value;
 	  break;

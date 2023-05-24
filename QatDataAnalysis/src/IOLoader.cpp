@@ -46,20 +46,25 @@ public:
   
   std::vector<std::string>                 _knownShort  ={"RootDriver", "HDF5Driver"};
 #ifdef __APPLE__
-  std::vector<std::string>                 _knownFull   ={"libQoot.dylib", "libQHDF5.dylib"};
+  std::vector<std::string>                 _knownFull   ={"libQoot.dylib", "libQHDF5.dylib", "libSQLite.dylib"};
   std::map<std::string, std::string>       _fullName    ={{"RootDriver", "libQoot.dylib"},
-						          {"HDF5Driver", "libQHDF5.dylib"}};
+						          {"HDF5Driver", "libQHDF5.dylib"},
+							  {"SQLiteDriver", "libQSQLite.dylib"}};
+  };
   
   std::map<std::string, std::string>       _shortName   ={{"libQoot.dylib", "RootDriver"},
-							  {"libQHDF5.dylib", "HDF5Driver"}};
+							  {"libQHDF5.dylib", "HDF5Driver"},
+							  {"libQSQLite.dylib", "SQLiteDriver"}};
   
 #else
-  std::vector<std::string>                 _knownFull   ={"libQoot.so", "libQHDF5.so"};
-  std::map<std::string, std::string>       _fullName    ={{"RootDriver", "libQoot.so"},
-						          {"HDF5Driver", "libQHDF5.so"}};
+std::vector<std::string>                 _knownFull   ={"libQoot.so", "libQHDF5.so", "libQSQLite.so"};
+std::map<std::string, std::string>       _fullName    ={{"RootDriver", "libQoot.so"},
+							{"HDF5Driver", "libQHDF5.so"},
+							{"SQLiteDriver", "libQSQLite.so"}};
   
   std::map<std::string, std::string>       _shortName   ={{"libQoot.so", "RootDriver"},
-							  {"libQHDF5.so", "HDF5Driver"}};
+							  {"libQHDF5.so", "HDF5Driver"},
+							  {"libQSQLite.so", "SQLiteDriver"}};
   
 #endif
   std::map<std::string, CreationMethod>    _create;
@@ -132,7 +137,7 @@ public:
 	    entry = readdir(directory);
 	  }
 	  closedir(directory);
-	  if (_driverLocation.size()==2) break;
+	  if (_driverLocation.size()==3) break;
 	}
 	thisDir=strtok(NULL, (char *) ":");
       }
@@ -154,7 +159,7 @@ const IODriver *IOLoader::ioDriver(const std::string & shortName ) const {
 
 
   if (c->_driverLocation.find(shortName)==c->_driverLocation.end()) {
-    std::cout << shortName << " load failed" << std::endl;
+    std::cout << shortName << " load failed (cannot find driver)" << std::endl;
     return NULL;
   }
   

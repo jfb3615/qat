@@ -161,6 +161,10 @@ TupleConstLink HDF5IOStore::operator [] (size_t i) const {
       memcpy((void *) vList[a].asCharStar(), buffer+length, sizeof(unsigned int));
       length+=sizeof(unsigned int);
     }
+    else if ((*internalTuple->attributeList())[a].type()==Attribute::UINT64) {
+      memcpy((void *) vList[a].asCharStar(), buffer+length, sizeof(size_t));
+      length+=sizeof(size_t);
+    }
   }
   
   return internalTuple;
@@ -230,6 +234,9 @@ buffer(0)
     else if (H5Tequal(typeName,H5T_NATIVE_UINT)) {
       length+=sizeof(unsigned int);
     }
+    else if (H5Tequal(typeName,H5T_NATIVE_ULONG)) {
+      length+=sizeof(size_t);
+    }
     else {
       std::cerr << "[HDF5Driver:  Unknown type " << typeName << " "  << " will be ignored on input]" << std::endl;
     }
@@ -262,6 +269,11 @@ buffer(0)
       internalTable->add(name,size_t(0));
       H5Tinsert (_memtype, name.c_str(),offset, H5T_NATIVE_UINT);
       offset+=sizeof(unsigned int);    
+    }
+    else if (H5Tequal(typeName,H5T_NATIVE_ULONG)) {
+      internalTable->add(name,size_t(0));
+      H5Tinsert (_memtype, name.c_str(),offset, H5T_NATIVE_ULONG);
+      offset+=sizeof(size_t);    
     }
     else {
       std::cerr << "[HDF5Driver:  Unknown type " << typeName << " "  << " will be ignored on input]" << std::endl;
@@ -429,6 +441,7 @@ void HDF5Driver::write (HistogramManager *mgr) const {
       else if ((**t).attribute(a).type()==Attribute::FLOAT)     length+=sizeof(float);
       else if ((**t).attribute(a).type()==Attribute::INT)       length+=sizeof(int);
       else if ((**t).attribute(a).type()==Attribute::UINT)      length+=sizeof(unsigned int);
+      else if ((**t).attribute(a).type()==Attribute::UINT64)    length+=sizeof(size_t);
     }
 
     hid_t memtype = H5Tcreate(H5T_COMPOUND,length);
@@ -461,6 +474,12 @@ void HDF5Driver::write (HistogramManager *mgr) const {
 	    H5Tinsert (filetype, (**t).attribute(a).name().c_str(),offset, H5T_NATIVE_UINT);
 	    offset+=sizeof(unsigned int);
 	  }
+	else if ((**t).attribute(a).type()==Attribute::UINT64)      
+	  {
+	    H5Tinsert (memtype, (**t).attribute(a).name().c_str(),offset, H5T_NATIVE_ULONG);
+	    H5Tinsert (filetype, (**t).attribute(a).name().c_str(),offset, H5T_NATIVE_ULONG);
+	    offset+=sizeof(size_t);
+	  }
 	else 
 	  {
 	    throw std::logic_error("Logic error in HDF5Driver");
@@ -489,6 +508,7 @@ void HDF5Driver::write (HistogramManager *mgr) const {
 	if ((**t).attribute(v).type()==Attribute::FLOAT) bt=sizeof(float); 
 	if ((**t).attribute(v).type()==Attribute::INT)   bt=sizeof(int); 
 	if ((**t).attribute(v).type()==Attribute::UINT)  bt=sizeof(unsigned int); 
+	if ((**t).attribute(v).type()==Attribute::UINT64)  bt=sizeof(size_t); 
 	memcpy(buff+pos,thisTuple->valueList()[v].asCharStar(),bt);
 	pos+=bt;
       }
@@ -535,8 +555,8 @@ void HDF5Driver::write (HistogramManager *mgr) const {
     hid_t filetype = H5Tcreate (H5T_COMPOUND, length);
     size_t offset=0;
     {
-      H5Tinsert (filetype, "nBins",offset, H5T_NATIVE_UINT);
-      H5Tinsert (memtype,  "nBins",offset, H5T_NATIVE_UINT);
+      H5Tinsert (filetype, "nBins",offset, H5T_NATIVE_ULONG);
+      H5Tinsert (memtype,  "nBins",offset, H5T_NATIVE_ULONG);
       offset+=sizeof(size_t);
     }
     {
@@ -555,18 +575,18 @@ void HDF5Driver::write (HistogramManager *mgr) const {
       offset+=sizeof(double);
     }
     {
-      H5Tinsert (filetype, "overflow",offset, H5T_NATIVE_UINT);
-      H5Tinsert (memtype,  "overflow",offset, H5T_NATIVE_UINT);
+      H5Tinsert (filetype, "overflow",offset, H5T_NATIVE_ULONG);
+      H5Tinsert (memtype,  "overflow",offset, H5T_NATIVE_ULONG);
       offset+=sizeof(size_t);
     }
     {
-      H5Tinsert (filetype, "underflow",offset, H5T_NATIVE_UINT);
-      H5Tinsert (memtype,  "underflow",offset, H5T_NATIVE_UINT);
+      H5Tinsert (filetype, "underflow",offset, H5T_NATIVE_ULONG);
+      H5Tinsert (memtype,  "underflow",offset, H5T_NATIVE_ULONG);
       offset+=sizeof(size_t);
     }
     {
-      H5Tinsert (filetype, "entries",offset, H5T_NATIVE_UINT);
-      H5Tinsert (memtype,  "entries",offset, H5T_NATIVE_UINT);
+      H5Tinsert (filetype, "entries",offset, H5T_NATIVE_ULONG);
+      H5Tinsert (memtype,  "entries",offset, H5T_NATIVE_ULONG);
       offset+=sizeof(size_t);
     }
     {
@@ -653,13 +673,13 @@ void HDF5Driver::write (HistogramManager *mgr) const {
     hid_t filetype = H5Tcreate (H5T_COMPOUND, length);
     size_t offset=0;
     {
-      H5Tinsert (filetype, "nBinsX",offset, H5T_NATIVE_UINT);
-      H5Tinsert (memtype,  "nBinsX",offset, H5T_NATIVE_UINT);
+      H5Tinsert (filetype, "nBinsX",offset, H5T_NATIVE_ULONG);
+      H5Tinsert (memtype,  "nBinsX",offset, H5T_NATIVE_ULONG);
       offset+=sizeof(size_t);
     }
     {
-      H5Tinsert (filetype, "nBinsY",offset, H5T_NATIVE_UINT);
-      H5Tinsert (memtype,  "nBinsY",offset, H5T_NATIVE_UINT);
+      H5Tinsert (filetype, "nBinsY",offset, H5T_NATIVE_ULONG);
+      H5Tinsert (memtype,  "nBinsY",offset, H5T_NATIVE_ULONG);
       offset+=sizeof(size_t);
     }
     {
@@ -700,8 +720,8 @@ void HDF5Driver::write (HistogramManager *mgr) const {
       offset+=9*sizeof(size_t);
     }
     {
-      H5Tinsert (filetype, "overflow",offset, H5T_NATIVE_UINT);
-      H5Tinsert (memtype,  "overflow",offset, H5T_NATIVE_UINT);
+      H5Tinsert (filetype, "overflow",offset, H5T_NATIVE_ULONG);
+      H5Tinsert (memtype,  "overflow",offset, H5T_NATIVE_LONG);
       offset+=sizeof(size_t);
     }
     {
@@ -844,13 +864,13 @@ void HDF5Driver::read(HistogramManager *mgr) const {
 	hid_t filetype = H5Tcreate (H5T_COMPOUND, length);
 	size_t offset=0;
 	{
-	  H5Tinsert (filetype, "nBinsX",offset, H5T_NATIVE_UINT);
-	  H5Tinsert (memtype,  "nBinsX",offset, H5T_NATIVE_UINT);
+	  H5Tinsert (filetype, "nBinsX",offset, H5T_NATIVE_ULONG);
+	  H5Tinsert (memtype,  "nBinsX",offset, H5T_NATIVE_ULONG);
 	  offset+=sizeof(size_t);
 	}
 	{
-	  H5Tinsert (filetype, "nBinsY",offset, H5T_NATIVE_UINT);
-	  H5Tinsert (memtype,  "nBinsY",offset, H5T_NATIVE_UINT);
+	  H5Tinsert (filetype, "nBinsY",offset, H5T_NATIVE_ULONG);
+	  H5Tinsert (memtype,  "nBinsY",offset, H5T_NATIVE_ULONG);
 	  offset+=sizeof(size_t);
 	}
 	{
@@ -891,8 +911,8 @@ void HDF5Driver::read(HistogramManager *mgr) const {
 	  offset+=9*sizeof(size_t);
 	}
 	{
-	  H5Tinsert (filetype, "overflow",offset, H5T_NATIVE_UINT);
-	  H5Tinsert (memtype,  "overflow",offset, H5T_NATIVE_UINT);
+	  H5Tinsert (filetype, "overflow",offset, H5T_NATIVE_ULONG);
+	  H5Tinsert (memtype,  "overflow",offset, H5T_NATIVE_ULONG);
 	  offset+=sizeof(size_t);
 	}
 	{
@@ -1004,8 +1024,8 @@ void HDF5Driver::read(HistogramManager *mgr) const {
 	hid_t filetype = H5Tcreate (H5T_COMPOUND, length);
 	size_t offset=0;
 	{
-	  H5Tinsert (filetype, "nBins",offset, H5T_NATIVE_UINT);
-	  H5Tinsert (memtype,  "nBins",offset, H5T_NATIVE_UINT);
+	  H5Tinsert (filetype, "nBins",offset, H5T_NATIVE_ULONG);
+	  H5Tinsert (memtype,  "nBins",offset, H5T_NATIVE_ULONG);
 	  offset+=sizeof(size_t);
 	}
 	{
@@ -1024,18 +1044,18 @@ void HDF5Driver::read(HistogramManager *mgr) const {
 	  offset+=sizeof(double);
 	}
 	{
-	  H5Tinsert (filetype, "overflow",offset, H5T_NATIVE_UINT);
-	  H5Tinsert (memtype,  "overflow",offset, H5T_NATIVE_UINT);
+	  H5Tinsert (filetype, "overflow",offset, H5T_NATIVE_ULONG);
+	  H5Tinsert (memtype,  "overflow",offset, H5T_NATIVE_ULONG);
 	  offset+=sizeof(size_t);
 	}
 	{
-	  H5Tinsert (filetype, "underflow",offset, H5T_NATIVE_UINT);
-	  H5Tinsert (memtype,  "underflow",offset, H5T_NATIVE_UINT);
+	  H5Tinsert (filetype, "underflow",offset, H5T_NATIVE_ULONG);
+	  H5Tinsert (memtype,  "underflow",offset, H5T_NATIVE_ULONG);
 	  offset+=sizeof(size_t);
 	}
 	{
-	  H5Tinsert (filetype, "entries",offset, H5T_NATIVE_UINT);
-	  H5Tinsert (memtype,  "entries",offset, H5T_NATIVE_UINT);
+	  H5Tinsert (filetype, "entries",offset, H5T_NATIVE_ULONG);
+	  H5Tinsert (memtype,  "entries",offset, H5T_NATIVE_ULONG);
 	  offset+=sizeof(size_t);
 	}
 	{

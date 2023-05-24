@@ -92,8 +92,21 @@ inline const Tuple & Tuple::read (float & d, unsigned int pos) const {
 
 inline const Tuple & Tuple::read (unsigned int & i, unsigned int pos) const {
   const std::string &typeName = (*_attributeList)[pos].typeName();
-  if (typeName=="j"|| typeName=="m") {
+  if (typeName=="j") {
     i = * (unsigned int *) _valList[pos].asCharStar();
+    _status=true;
+  }
+  else {
+    _status=false;
+  }
+  return *this;
+}
+
+
+inline const Tuple & Tuple::read (size_t & i, unsigned int pos) const {
+  const std::string &typeName = (*_attributeList)[pos].typeName();
+  if (typeName=="m") {
+    i = * (size_t *) _valList[pos].asCharStar();
     _status=true;
   }
   else {
@@ -116,9 +129,12 @@ inline const Tuple & Tuple::read (unsigned int & i, unsigned int pos) const {
 
 
 
-
 inline void Tuple::fastread (int & i, unsigned int pos) const {
   i = * (int *) _valList[pos].asCharStar();
+}
+
+inline void Tuple::fastread (size_t  & i, unsigned int pos) const {
+  i = * (size_t *) _valList[pos].asCharStar();
 }
 
 
