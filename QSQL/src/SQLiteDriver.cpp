@@ -464,6 +464,7 @@ void SQLiteDriver::write (HistogramManager *mgr) const {
       int status = sqlite3_exec(_od, sql.c_str(),0,0, &errmsg);
       if (status != SQLITE_OK) {
 	std::cerr << "Error creating ntuple table" << std::endl;
+	std::cerr << sql << std::endl;
       }
     }
 
@@ -508,6 +509,7 @@ void SQLiteDriver::write (HistogramManager *mgr) const {
       int status = sqlite3_exec(_od, sql.c_str(),0,0, &errmsg);
       if (status != SQLITE_OK) {
 	std::cerr << "Error filling ntuple table" << std::endl;
+	std::cerr <<  sql << std::endl;
       }
     }
   }
