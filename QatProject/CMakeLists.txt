@@ -38,9 +38,11 @@ install( TARGETS qat-project
    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
    COMPONENT Runtime )
 
+configure_file(qat-function.in qat-function)
 
 
-install( FILES ${SCRIPTS}
+install( PROGRAMS testprogram
+   ${CMAKE_BINARY_DIR}/QatProject/qat-function
    DESTINATION ${CMAKE_INSTALL_BINDIR}
    COMPONENT Runtime )
 
