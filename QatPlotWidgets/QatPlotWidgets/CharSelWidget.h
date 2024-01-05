@@ -39,7 +39,7 @@ class CharSelWidget: public QWidget {
   public slots:
     
     void charSel(int row, int col);
-    void setFamily (const QString & family);
+    void setFont (const QFont & font);
 
     
  signals:

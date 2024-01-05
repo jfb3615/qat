@@ -205,7 +205,7 @@ public:
     if (e->buttons()==Qt::RightButton) {
       popup->popup(e->widget()->mapToGlobal(e->pos().toPoint()));
     }
-    else if (e->buttons()==Qt::MidButton
+    else if (e->buttons()==Qt::MiddleButton
 	     || ((e->buttons()==Qt::LeftButton) && isShift)
 	     ) {
       double slX = (pvParent->qrect()->right() - pvParent->qrect()->left())/double(rect().width());

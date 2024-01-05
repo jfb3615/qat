@@ -2,6 +2,7 @@ Name: QatDataModeling
 Description: Qat Library.  Classes for chisquare and likelihood fits. 
 Version: 2.0.0
 Requires: QatDataAnalysis, QatGenericFunctions
-Cflags: -I/usr/local/include
-Libs: -L/usr/local/lib -lQatDataModeling
 
+
+Cflags: -I@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_INCLUDEDIR@
+Libs: -L@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@ -l@PROJECT_NAME@

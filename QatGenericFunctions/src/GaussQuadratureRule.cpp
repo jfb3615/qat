@@ -28,7 +28,10 @@
 #include "QatGenericFunctions/Exp.h"
 #include "QatGenericFunctions/Sqrt.h"
 #include "QatGenericFunctions/Power.h"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #include "Eigen/Dense"
+#pragma GCC diagnostic pop
 namespace Genfun {
 
 

@@ -39,7 +39,7 @@ LabelEditorDialog::LabelEditorDialog(QWidget *parent): QDialog(parent) ,c(new Cl
   connect (c->ui.boldButton,         SIGNAL(clicked()), this, SLOT(textBold()));
   connect (c->ui.italicButton,       SIGNAL(clicked()), this, SLOT(textItalic()));
   connect (c->ui.scriptButton,       SIGNAL(clicked()), this, SLOT(textScript()));
-  connect (c->ui.fontComboBox,       SIGNAL(activated( const QString & ) ), this, SLOT(textFamily(const QString &)));
+  connect (c->ui.fontComboBox,       SIGNAL(currentFontChanged( const QFont & ) ), this, SLOT(textFont(const QFont &)));
   connect (c->ui.fontSizeSpinBox,    SIGNAL(valueChanged(int)),             this, SLOT(textSize(int)));
   connect (c->ui.colorButton,        SIGNAL(clicked()),                     this, SLOT(textColor()));        
   connect (c->ui.specialCButton,     SIGNAL(clicked()),                     this, SLOT(toggleChars()));
@@ -52,7 +52,7 @@ LabelEditorDialog::LabelEditorDialog(QWidget *parent): QDialog(parent) ,c(new Cl
 
   c->cw=new CharSelWidget(0);
   c->ui.frame->setWidget(c->cw);
-  connect (c->ui.fontComboBox,       SIGNAL(activated( const QString &)),   c->cw,   SLOT(setFamily(const QString & )));
+  connect (c->ui.fontComboBox,       SIGNAL(currentFontChanged( const QFont &)),   c->cw,   SLOT(setFont(const QFont & )));
   connect (c->cw, SIGNAL(selChar(const QString &)), c->ui.textEdit, SLOT(insertPlainText(const QString & )));
   
   //c->cw->updateSize("12");
@@ -84,12 +84,14 @@ QTextEdit *LabelEditorDialog::textEdit() {
 
 
 
-void LabelEditorDialog::textFamily( const QString &f )
+void LabelEditorDialog::textFont( const QFont &f )
 {
+  QStringList families{f.family()};
+  QTextCharFormat format;
+  format.setFontFamilies(families);
   QTextEdit * tE = c->ui.textEdit;
-  QTextCharFormat format; 
-  format.setFontFamily(f);
   tE->mergeCurrentCharFormat(format);
+
 }
 
 
@@ -183,7 +185,7 @@ void LabelEditorDialog::updateCharFormat(const QTextCharFormat &f) {
   df.setFontItalic(false);
   df.setFontWeight(QFont::Normal);
   df.setFontPointSize(24);
-  df.setFontFamily("Arial");
+  df.setFontFamilies(QStringList("Arial"));
 
   QTextCharFormat F = f.fontPointSize()!=0.0 ? f: df;
   if (F.verticalAlignment()==QTextCharFormat::AlignNormal)     c->ui.scriptButton->setText(QString("-"));
@@ -202,8 +204,8 @@ void LabelEditorDialog::updateCharFormat(const QTextCharFormat &f) {
 
   c->ui.fontSizeSpinBox->setValue(int(F.fontPointSize()+0.5));
 
-  QString fam=F.fontFamily();
-  c->ui.fontComboBox->setEditText(fam);
+  QVariant fam=F.fontFamilies();
+  c->ui.fontComboBox->setEditText(fam.toStringList().at(0));
 
   
   QColor color=F.foreground().color();

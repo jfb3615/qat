@@ -1,8 +1,0 @@
-Name: Qat3DWidgets
-Description: Qat Library.  Contains QatViewerWidget, a high-level viewer. 
-Version: 2.0.0
-Requires: Qt5Widgets, Qt53DCore, Qt53DRender, Qt53DInput, Qt53DExtras
-
-Libs: -lQat3DWidgets
-
-

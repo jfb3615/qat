@@ -180,7 +180,6 @@ void PlotFunction1DDialog::addParameter(Genfun::Parameter *p) {
   
   {
     QTableWidgetItem *item = new QTableWidgetItem(p->getName().c_str());
-    item->setFlags(0);
     c->ui.parameterTableWidget->setItem(c->parameters.size()-1, 0, item);
   }
 

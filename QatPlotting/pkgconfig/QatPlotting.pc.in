@@ -1,0 +1,10 @@
+Name: QatPlotting
+Description: Qat Library.  Classes representing plotting primitives & cet. 
+Version: 2.0.0
+Requires: Qt6Widgets, QatDataAnalysis, QatGenericFunctions
+
+
+Cflags: -I@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_INCLUDEDIR@
+Libs: -L@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@ -l@PROJECT_NAME@
+
+

@@ -45,7 +45,7 @@ class LabelEditorDialog: public QDialog
 
  private slots:
 
-     void textFamily( const QString &f );
+     void textFont( const QFont &f );
      void textSize(int i);
      void textBold();
      void textItalic();
