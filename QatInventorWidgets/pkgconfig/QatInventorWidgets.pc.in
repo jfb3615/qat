@@ -3,6 +3,6 @@ Description: Qat Library.  Widgets using the Coin/Open Inventor 3D libraries
 Version: 2.0.0
 Requires: SoQt, QatPlotWidgets
 
-Libs: -lQatInventorWidgets
 
-
+Cflags: -I@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_INCLUDEDIR@
+Libs: -L@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@ -l@PROJECT_NAME@

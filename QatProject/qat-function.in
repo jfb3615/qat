@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ $# -ne 1 ]
+then
+    echo usage:  $0 FunctionName
+    exit 1
+else
+    name=$1
+    cppname=$1.cpp
+   hname=$1.h
+   sed s.\<Function\>.$name.g @CMAKE_INSTALL_PREFIX@/share/qat/templates/templateFunction.cpp > $cppname
+   sed s.\<Function\>.$name.g @CMAKE_INSTALL_PREFIX@/share/qat/templates/templateFunction.h    > $hname
+fi
+

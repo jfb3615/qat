@@ -79,9 +79,7 @@ void CharSelWidget::charSel(int row, int col)
   QTableWidgetItem *item=c->ui.tableWidget->item(row,col);
   emit selChar(item->text());
 }
-void CharSelWidget::setFamily (const QString & family) {
-  QFont font=c->ui.tableWidget->font();
-  font.setFamily(family);
+void CharSelWidget::setFont (const QFont & font) {
   c->ui.tableWidget->setFont(font);
   c->ui.tableWidget->update();
 }

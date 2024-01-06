@@ -1,0 +1,7 @@
+Name: QatPlotWidgets
+Description: Qat Library.  The PlotView class for data vis & related. 
+Version: 2.0.0
+Requires: Qt6PrintSupport, Qt6Svg, Qt6Widgets, QatPlotting, QatDataAnalysis, QatGenericFunctions, gsl, eigen3
+
+Cflags: -I@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_INCLUDEDIR@
+Libs: -L@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@ -l@PROJECT_NAME@

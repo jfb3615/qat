@@ -1,7 +1,7 @@
 # Set up the project.
 cmake_minimum_required( VERSION 3.10 )
 set  (CMAKE_CXX_STANDARD 17)
-project( "QOOT" VERSION 3.0.3 LANGUAGES CXX )
+project( "QOOT" VERSION ${Qat_VERSION} LANGUAGES CXX )
 set    ( CMAKE_BUILD_TYPE RelWithDebInfo )
 
 # Add the project's modules directory to CMAKE_MODULE_PATH:
@@ -26,6 +26,11 @@ target_link_libraries(Qoot PUBLIC ${ROOT_LIBRARIES} QatDataAnalysis QatGenericFu
 target_include_directories(Qoot PUBLIC ${ROOT_INCLUDE_DIR} 
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
    $<INSTALL_INTERFACE:include> )
+
+
+set_target_properties( Qoot PROPERTIES
+   VERSION ${PROJECT_VERSION}
+   SOVERSION ${PROJECT_VERSION_MAJOR} )
 
 install( TARGETS Qoot
    EXPORT ${PROJECT_NAME}-export
