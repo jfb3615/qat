@@ -26,7 +26,7 @@ find_package(SoQt REQUIRED)
 
 
 add_library( QatInventorWidgets SHARED ${HEADERS} ${SOURCES} ${FORMS} )
-target_link_libraries( QatInventorWidgets PUBLIC Eigen3::Eigen QatDataAnalysis QatGenericFunctions Qt6::Widgets Qt6::PrintSupport Qt::Svg Coin::Coin SoQt::SoQt)
+target_link_libraries( QatInventorWidgets PUBLIC Eigen3::Eigen QatPlotWidgets QatPlotting QatDataAnalysis QatGenericFunctions Qt6::Widgets Qt6::PrintSupport Qt::Svg Coin::Coin SoQt::SoQt)
 target_include_directories( QatInventorWidgets PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
    $<INSTALL_INTERFACE:include> )
