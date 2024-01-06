@@ -19,6 +19,7 @@ add_subdirectory(QatPlotting)
 add_subdirectory(QatPlotWidgets)
 add_subdirectory(Qhfd)
 add_subdirectory(QatProject)
+add_subdirectory(QatInventorWidgets)
 
 
 

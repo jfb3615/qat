@@ -54,6 +54,7 @@
 #include <QGuiApplication>
 #include <QPrinter>
 #include <QPrintDialog>
+#include <QGenericMatrix>
 #include <iostream>
 using namespace Genfun;
 class PolarFunctionView::Clockwork {
@@ -203,7 +204,7 @@ void PolarFunctionView::print(){
     viewport.setTopLeft(QPoint(200,500));
     paint.setViewport(viewport);
     
-    QMatrix m;
+    QTransform m;
     m.scale(6,6);
     QPixmap ps = c->px.transformed(m);
 
