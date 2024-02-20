@@ -18,13 +18,13 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-find_package(Qt6 COMPONENTS Widgets REQUIRED)
+find_package(Qt${QT_VERSION} COMPONENTS Widgets REQUIRED)
 find_package(Eigen3 REQUIRED)
 
 
 
 add_library( QatPlotting SHARED ${HEADERS} ${SOURCES} )
-target_link_libraries( QatPlotting PUBLIC Eigen3::Eigen QatDataAnalysis QatGenericFunctions Qt6::Widgets )
+target_link_libraries( QatPlotting PUBLIC Eigen3::Eigen QatDataAnalysis QatGenericFunctions Qt${QT_VERSION}::Widgets )
 target_include_directories( QatPlotting PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
    $<INSTALL_INTERFACE:include> )

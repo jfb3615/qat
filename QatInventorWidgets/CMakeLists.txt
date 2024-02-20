@@ -19,14 +19,14 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-find_package(Qt6 COMPONENTS Widgets PrintSupport Svg REQUIRED)
+find_package(Qt${QT_VERSION} COMPONENTS Widgets PrintSupport Svg REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(Coin REQUIRED)
 find_package(SoQt REQUIRED)
 
 
 add_library( QatInventorWidgets SHARED ${HEADERS} ${SOURCES} ${FORMS} )
-target_link_libraries( QatInventorWidgets PUBLIC Eigen3::Eigen QatPlotWidgets QatPlotting QatDataAnalysis QatGenericFunctions Qt6::Widgets Qt6::PrintSupport Qt::Svg Coin::Coin SoQt::SoQt)
+target_link_libraries( QatInventorWidgets PUBLIC Eigen3::Eigen QatPlotWidgets QatPlotting QatDataAnalysis QatGenericFunctions Qt${QT_VERSION}::Widgets Qt${QT_VERSION}::PrintSupport Qt::Svg Coin::Coin SoQt::SoQt)
 target_include_directories( QatInventorWidgets PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
    $<INSTALL_INTERFACE:include> )

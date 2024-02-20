@@ -19,13 +19,13 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
-find_package(Qt6 COMPONENTS Widgets PrintSupport Svg REQUIRED)
+find_package(Qt${QT_VERSION} COMPONENTS Widgets PrintSupport Svg REQUIRED)
 find_package(Eigen3 REQUIRED)
 
 
 
 add_library( QatPlotWidgets SHARED ${HEADERS} ${SOURCES} ${FORMS} )
-target_link_libraries( QatPlotWidgets PUBLIC Eigen3::Eigen QatDataAnalysis QatGenericFunctions QatPlotting Qt6::Widgets Qt6::PrintSupport Qt::Svg)
+target_link_libraries( QatPlotWidgets PUBLIC Eigen3::Eigen QatDataAnalysis QatGenericFunctions QatPlotting Qt${QT_VERSION}::Widgets Qt${QT_VERSION}::PrintSupport Qt::Svg)
 target_include_directories( QatPlotWidgets PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
    $<INSTALL_INTERFACE:include> )

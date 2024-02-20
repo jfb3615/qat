@@ -8,6 +8,16 @@ message (STATUS "Building library version ${Qat_VERSION} " )
 # Make the 'cmake' module directory visible to CMake.
 list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
 
+option (QAT_USE_QT6 "Use QT6 for Qat components" ON )
+if (QAT_USE_QT6)
+  message (STATUS "Use QT6" )
+  set (QT_VERSION 6)
+else()
+  message (STATUS "Use QT5" )
+  set (QT_VERSION 5)
+endif()
+
+
 
 # Use the GNU install directory names.
 include( GNUInstallDirs )
