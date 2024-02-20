@@ -13,8 +13,8 @@ TARGET = QHDF5
 DEPENDPATH += .
 INCLUDEPATH += . .. ../../QatDataAnalysis ../../QatGenericFunctions
 
-QMAKE_CXX  = `pkgconf --variable=prefix ompi-cxx`/bin/mpicxx
-QMAKE_LINK = `pkgconf --variable=prefix ompi-cxx`/bin/mpicxx
+QMAKE_CXX  = `pkg-config --variable=prefix ompi-cxx`/bin/mpicxx
+QMAKE_LINK = `pkg-config --variable=prefix ompi-cxx`/bin/mpicxx
 
 DESTDIR=../../../lib
 CONFIG += build_all release c++11

@@ -62,4 +62,10 @@ mac{
 
 }
 
-LIBS += -L$(DESTDIR) -L$$QATLIBDIR -lSoQt -lCoin -lQatPlotWidgets -lQatPlotting -lQatDataAnalysis -lQatGenericFunctions
+system("pkg-config --exists Coin4") {
+  message ("Detected Coin4, but it is a little out of date.  Alternatively you can install it from source. See https://github.com/coin3d")
+  CONFIG += link_pkgconfig
+  PKGCONFIG += Coin4
+}
+
+LIBS += -L$(DESTDIR) -L$$QATLIBDIR -lCoin -lQatPlotWidgets -lQatPlotting -lQatDataAnalysis -lQatGenericFunctions
