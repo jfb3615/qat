@@ -3,19 +3,19 @@
 ######################################################################
 
 isEmpty(PREFIX) {
-  PREFIX=/usr/local
+  PREFIX=usr/local
 }
   
 isEmpty(QATBINDIR) {
-  QATBINDIR=$$PREFIX/bin
+  QATBINDIR=/$$PREFIX/bin
 }
 
 isEmpty(QATSHAREDIR) {
-  QATSHAREDIR=$$PREFIX/share
+  QATSHAREDIR=/$$PREFIX/share
 }
 
 isEmpty(QATMANDIR) {
-  QATMANDIR=$$PREFIX/man
+  QATMANDIR=$$QATSHAREDIR/man
 }
 
 

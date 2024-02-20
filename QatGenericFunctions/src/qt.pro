@@ -2,13 +2,18 @@ VERSION = 3.0.3
 
 
 isEmpty(PREFIX) {
-  PREFIX=/usr/local
+  PREFIX=usr/local
 }
   
 isEmpty(QATLIBDIR) {
-  QATLIBDIR=$$PREFIX/lib
+  QATLIBDIR=/$$PREFIX/lib
 }
 
+isEmpty(QATPCDIR) {
+  QATPCDIR=/$$PREFIX/share/pkgconfig
+}
+
+  
 TEMPLATE = lib dll
 TARGET = QatGenericFunctions
 DEPENDPATH += .
@@ -25,17 +30,15 @@ SOURCES +=            *.cpp
 target.path=$$QATLIBDIR
 INSTALLS += target
 
-headers.path=$$PREFIX/include/QatGenericFunctions
+headers.path=/$$PREFIX/include/QatGenericFunctions
 headers.files= ../QatGenericFunctions/*h ../QatGenericFunctions/*.icc
 INSTALLS += headers
 
-pc.path  = $$QATLIBDIR/pkgconfig
-mac {
-  pc.files = ../pkgconfig/mac/*.pc
-}
-linux {
-  pc.files = ../pkgconfig/linux/*.pc
-}
+
+QMAKE_SUBSTITUTES += ../qmakeconfig/QatGenericFunctions.pc.in
+pc.path  = $$QATPCDIR
+pc.files = ../qmakeconfig/*.pc
+
 INSTALLS += pc
 
 CONFIG += link_pkgconfig

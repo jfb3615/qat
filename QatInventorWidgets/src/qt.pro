@@ -5,17 +5,22 @@
 VERSION = 3.0.3
 
 isEmpty(PREFIX) {
-  PREFIX=/usr/local
+  PREFIX=usr/local
 }
   
 isEmpty(QATLIBDIR) {
-  QATLIBDIR=$$PREFIX/lib
+  QATLIBDIR=/$$PREFIX/lib
 }
+
+isEmpty(QATPCDIR) {
+  QATPCDIR=/$$PREFIX/share/pkgconfig
+}
+
   
 TEMPLATE = lib
 TARGET = QatInventorWidgets
 DEPENDPATH += .
-INCLUDEPATH += . .. $$PREFIX/include  ../../QatPlotWidgets ../../QatPlotting ../../QatDataAnalysis ../../QatGenericFunctions
+INCLUDEPATH += . .. /$$PREFIX/include  ../../QatPlotWidgets ../../QatPlotting ../../QatDataAnalysis ../../QatGenericFunctions
 DESTDIR=../../../lib
 FORMS=PolarFunctionView.ui
 CONFIG += qt debug c++17
@@ -27,17 +32,13 @@ SOURCES += PolarFunctionView.cpp
 target.path=$$QATLIBDIR
 INSTALLS += target
 
-headers.path=$$PREFIX/include/QatInventorWidgets
+headers.path=/$$PREFIX/include/QatInventorWidgets
 headers.files= ../QatInventorWidgets/*.h ../QatInventorWidgets/*.icc
 INSTALLS += headers 
 
-pc.path  = $$QATLIBDIR/pkgconfig
-mac {
-  pc.files = ../pkgconfig/mac/*.pc
-}
-linux {
-  pc.files = ../pkgconfig/linux/*.pc
-}
+QMAKE_SUBSTITUTES += ../qmakeconfig/QatInventorWidgets.pc.in
+pc.path  = $$QATPCDIR
+pc.files = ../qmakeconfig/*.pc
 INSTALLS += pc
 
 mac{

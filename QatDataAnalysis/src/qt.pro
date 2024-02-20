@@ -1,13 +1,18 @@
 VERSION=3.0.3
 
 isEmpty(PREFIX) {
-  PREFIX=/usr/local
+  PREFIX=usr/local
 }
   
 isEmpty(QATLIBDIR) {
-  QATLIBDIR=$$PREFIX/lib
+  QATLIBDIR=/$$PREFIX/lib
 }
 
+isEmpty(QATPCDIR) {
+  QATPCDIR=/$$PREFIX/share/pkgconfig
+}
+
+  
 TEMPLATE = lib dll
 TARGET = QatDataAnalysis
 DEPENDPATH += .
@@ -26,17 +31,13 @@ SOURCES +=            *.cpp
 target.path=$$QATLIBDIR
 INSTALLS += target
 
-headers.path=$$PREFIX/include/QatDataAnalysis
+headers.path=/$$PREFIX/include/QatDataAnalysis
 headers.files= ../QatDataAnalysis/*h ../QatDataAnalysis/*.icc
 INSTALLS += headers
+QMAKE_SUBSTITUTES += ../qmakeconfig/QatDataAnalysis.pc.in
+pc.path  = $$QATPCDIR
+pc.files = ../qmakeconfig/*.pc
 
-pc.path  = $$QATLIBDIR/pkgconfig
-mac {
- pc.files = ../pkgconfig/mac/*.pc
-}
-linux {
- pc.files = ../pkgconfig/linux/*.pc
-}
 INSTALLS += pc
 
 LIBS += -L$(DESTDIR) -lQatGenericFunctions -ldl

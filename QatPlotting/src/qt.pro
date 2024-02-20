@@ -8,6 +8,11 @@ isEmpty(QATLIBDIR) {
   QATLIBDIR=/$$PREFIX/lib
 }
 
+isEmpty(QATPCDIR) {
+  QATPCDIR=/$$PREFIX/share/pkgconfig
+}
+
+  
 TEMPLATE = lib dll
 TARGET = QatPlotting
 DEPENDPATH += .
@@ -83,13 +88,11 @@ headers.path=/$$PREFIX/include/QatPlotting
 headers.files= ../QatPlotting/*h ../QatPlotting/*.icc
 INSTALLS += headers
 
-pc.path  = $$QATLIBDIR/pkgconfig
-mac {
-  pc.files = ../pkgconfig/mac/*.pc
-}
-linux {
-pc.files = ../pkgconfig/linux/*.pc
-}
+
+QMAKE_SUBSTITUTES += ../qmakeconfig/QatPlotting.pc.in
+pc.path  = $$QATPCDIR
+pc.files = ../qmakeconfig/*.pc
+
 INSTALLS += pc
 
 CONFIG += link_pkgconfig

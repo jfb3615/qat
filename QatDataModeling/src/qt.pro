@@ -8,6 +8,10 @@ isEmpty(QATLIBDIR) {
   QATLIBDIR=/$$PREFIX/lib
 }
 
+  isEmpty(QATPCDIR) {
+  QATPCDIR=/$$PREFIX/share/pkgconfig
+}
+
   
 TEMPLATE = lib dll
 TARGET = QatDataModeling
@@ -31,13 +35,12 @@ headers.path=/$$PREFIX/include/QatDataModeling
 headers.files= ../QatDataModeling/*h ../QatDataModeling/*.icc
 INSTALLS += headers
 
-pc.path  = $$QATLIBDIR/pkgconfig
-mac {
-  pc.files = ../pkgconfig/mac/*.pc
-}
-linux {
-  pc.files = ../pkgconfig/linux/*.pc
-}
+
+
+QMAKE_SUBSTITUTES += ../qmakeconfig/QatDataModeling.pc.in
+pc.path  = $$QATPCDIR
+pc.files = ../qmakeconfig/*.pc
+
 INSTALLS += pc
 
 CONFIG += link_pkgconfig

@@ -11,18 +11,13 @@ isEmpty(QATLIBDIR) {
 TEMPLATE = lib dll
 TARGET = QHDF5
 DEPENDPATH += .
-INCLUDEPATH += . .. ../../QatDataAnalysis ../../QatGenericFunctions
+INCLUDEPATH += . .. ../../QatDataAnalysis ../../QatGenericFunctions 
 
-QMAKE_CXX  = `pkg-config --variable=prefix ompi-cxx`/bin/mpicxx
-QMAKE_LINK = `pkg-config --variable=prefix ompi-cxx`/bin/mpicxx
+QMAKE_CXX  = $$system(pkg-config --variable=prefix ompi-cxx)/bin/mpicxx
+QMAKE_LINK = $$system(pkg-config --variable=prefix ompi-cxx)/bin/mpicxx
 
 DESTDIR=../../../lib
 CONFIG += build_all release c++11
-
-
-linux {
-  CONFIG += link_pkgconfig
-}
 
 # Input
 SOURCES +=            *.cpp
@@ -30,6 +25,8 @@ SOURCES +=            *.cpp
 INSTALLS += target
 target.path=/$$QATLIBDIR
 
+LIBS +=  -L../../../lib -lQatDataAnalysis -lQatGenericFunctions -L/usr/local/lib -ldl
+            
 # The mac version of hdf5 does not use pkg-config
 # we locate it manually
 mac {
@@ -51,7 +48,11 @@ mac {
    }
 
 }
-  
-LIBS +=  -L../../../lib -lQatDataAnalysis -lQatGenericFunctions -L/usr/local/lib -lhdf5 -ldl
+else {
+  LIBS           += $$system(pkg-config -libs   hdf5-openmpi) 
+  QMAKE_CXXFLAGS += $$system(pkg-config -cflags hdf5-openmpi) 
+}
+
+
 
 

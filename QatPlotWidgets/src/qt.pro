@@ -1,13 +1,19 @@
 VERSION = 3.0.3
 
 isEmpty(PREFIX) {
-  PREFIX=/usr/local
+  PREFIX=usr/local
 }
   
 isEmpty(QATLIBDIR) {
-  QATLIBDIR=$$PREFIX/lib
+  QATLIBDIR=/$$PREFIX/lib
 }
 
+isEmpty(QATPCDIR) {
+  QATPCDIR=/$$PREFIX/share/pkgconfig
+}
+
+
+  
 TEMPLATE = lib dll
 TARGET = QatPlotWidgets
 DEPENDPATH += .
@@ -61,17 +67,15 @@ SOURCES += CustomRangeDivider.cpp \
 target.path=$$QATLIBDIR
 INSTALLS += target
                        
-headers.path=$$PREFIX/include/QatPlotWidgets
+headers.path=/$$PREFIX/include/QatPlotWidgets
 headers.files= ../QatPlotWidgets/*.h ../QatPlotWidgets/*.icc ui_PlotDirDialog.h ui_LabelEditorDialog.h ui_PVControl.h ui_ParameterDialog.h
 INSTALLS += headers 
 
-pc.path  = $$QATLIBDIR/pkgconfig
-mac {
-  pc.files = ../pkgconfig/mac/*.pc
-}
-linux {
-  pc.files = ../pkgconfig/linux/*.pc
-}
+
+QMAKE_SUBSTITUTES += ../qmakeconfig/QatPlotWidgets.pc.in
+pc.path  = $$QATPCDIR
+pc.files = ../qmakeconfig/*.pc
+
 INSTALLS += pc
 
 RESOURCES = PlotWidgets.qrc
