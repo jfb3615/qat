@@ -49,8 +49,8 @@ mac {
 
 }
 else {
-  LIBS           += $$system(pkg-config -libs   hdf5-openmpi) 
-  QMAKE_CXXFLAGS += $$system(pkg-config -cflags hdf5-openmpi) 
+  LIBS           += $$system(pkg-config --libs   hdf5-openmpi) 
+  QMAKE_CXXFLAGS += $$system(pkg-config --cflags hdf5-openmpi) 
 }
 
 
