@@ -12,7 +12,7 @@ find_package(Eigen3 REQUIRED)
 find_package( HDF5 REQUIRED COMPONENTS CXX )
 
 add_library( QHDF5 SHARED ${HEADERS} ${SOURCES} )
-target_link_libraries( QHDF5 PUBLIC Eigen3::Eigen QatDataAnalysis QatGenericFunctions )
+target_link_libraries( QHDF5 PUBLIC Eigen3::Eigen QatDataAnalysis QatGenericFunctions hdf5::hdf5_cpp HDF5::HDF5 )
 target_include_directories( QHDF5 PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
    $<INSTALL_INTERFACE:include> PUBLIC ${HDF5_CXX_INCLUDE_DIRS})
