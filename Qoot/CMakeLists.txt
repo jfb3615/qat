@@ -28,9 +28,9 @@ target_include_directories(Qoot PUBLIC ${ROOT_INCLUDE_DIR}
    $<INSTALL_INTERFACE:include> )
 
 
-set_target_properties( Qoot PROPERTIES
-   VERSION ${PROJECT_VERSION}
-   SOVERSION ${PROJECT_VERSION_MAJOR} )
+#set_target_properties( Qoot PROPERTIES
+#   VERSION ${PROJECT_VERSION}
+#   SOVERSION ${PROJECT_VERSION_MAJOR} )
 
 install( TARGETS Qoot
    EXPORT ${PROJECT_NAME}-export
