@@ -130,18 +130,18 @@ class PlotStream {
     return *this;
   }
   PlotStream & operator << (const EndP &){ 
-    textEdit->insertPlainText(stream.str().c_str());
+    if (!stream.str().empty()) textEdit->insertPlainText(stream.str().c_str());
     stream.str("");
     return *this;
   }
   PlotStream & operator << (const Family & family){
-    textEdit->insertPlainText(stream.str().c_str());
+    if (!stream.str().empty()) textEdit->insertPlainText(stream.str().c_str());
     stream.str("");
     textEdit->setFontFamily(QString(family.name.c_str()));
     return *this;
   }
   PlotStream & operator << (const Size & sz){
-    textEdit->insertPlainText(stream.str().c_str());
+    if (!stream.str().empty()) textEdit->insertPlainText(stream.str().c_str());
     stream.str("");
     textEdit->setFontPointSize(sz.pointsize);
     return *this;
@@ -155,7 +155,7 @@ class PlotStream {
     return *this;
   }
   PlotStream & operator << (const Super &){
-    textEdit->insertPlainText(stream.str().c_str());
+    if (!stream.str().empty()) textEdit->insertPlainText(stream.str().c_str());
     stream.str("");
     QTextCharFormat format=textEdit->currentCharFormat();
     format.setVerticalAlignment(QTextCharFormat::AlignSuperScript);
@@ -163,7 +163,7 @@ class PlotStream {
     return *this;
   }
   PlotStream & operator << (const Sub &){
-    textEdit->insertPlainText(stream.str().c_str());
+    if (!stream.str().empty()) textEdit->insertPlainText(stream.str().c_str());
     stream.str("");
     QTextCharFormat format=textEdit->currentCharFormat();
     format.setVerticalAlignment(QTextCharFormat::AlignSubScript);
@@ -172,7 +172,7 @@ class PlotStream {
   }
 
   PlotStream & operator << (const Normal &){
-    textEdit->insertPlainText(stream.str().c_str());
+    if (!stream.str().empty()) textEdit->insertPlainText(stream.str().c_str());
     stream.str("");
     QTextCharFormat format=textEdit->currentCharFormat();
     format.setVerticalAlignment(QTextCharFormat::AlignNormal);
@@ -181,56 +181,56 @@ class PlotStream {
   }
 
   PlotStream & operator << (const Left &){
-    textEdit->insertPlainText(stream.str().c_str());
+    if (!stream.str().empty()) textEdit->insertPlainText(stream.str().c_str());
     stream.str("");
     textEdit->setAlignment(Qt::AlignLeft);
     return *this;
   }
 
   PlotStream & operator << (const Right &){
-    textEdit->insertPlainText(stream.str().c_str());
+    if (!stream.str().empty()) textEdit->insertPlainText(stream.str().c_str());
     stream.str("");
     textEdit->setAlignment(Qt::AlignRight);
     return *this;
   }
 
   PlotStream & operator << (const Center &){
-    textEdit->insertPlainText(stream.str().c_str());
+    if (!stream.str().empty()) textEdit->insertPlainText(stream.str().c_str());
     stream.str("");
     textEdit->setAlignment(Qt::AlignCenter);
     return *this;
   }
 
   PlotStream & operator << (const Bold &){
-    textEdit->insertPlainText(stream.str().c_str());
+    if (!stream.str().empty()) textEdit->insertPlainText(stream.str().c_str());
     stream.str("");
     textEdit->setFontWeight(QFont::Bold);
     return *this;
   }
 
   PlotStream & operator << (const Regular &){
-    textEdit->insertPlainText(stream.str().c_str());
+    if (!stream.str().empty()) textEdit->insertPlainText(stream.str().c_str());
     stream.str("");
     textEdit->setFontWeight(QFont::Normal);
     return *this;
   }
 
   PlotStream & operator << (const Italic &){
-    textEdit->insertPlainText(stream.str().c_str());
+    if (!stream.str().empty()) textEdit->insertPlainText(stream.str().c_str());
     stream.str("");
     textEdit->setFontItalic(true);
     return *this;
   }
 
   PlotStream & operator << (const Oblique &){
-    textEdit->insertPlainText(stream.str().c_str());
+    if (!stream.str().empty()) textEdit->insertPlainText(stream.str().c_str());
     stream.str("");
     textEdit->setFontItalic(false);
     return *this;
   }
 
   PlotStream & operator << (const Color & color) {
-    textEdit->insertPlainText(stream.str().c_str());
+    if (!stream.str().empty()) textEdit->insertPlainText(stream.str().c_str());
     stream.str("");
     textEdit->setTextColor(color.color);
     return *this;

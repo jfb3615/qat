@@ -22,6 +22,7 @@
 
 #include "QatPlotWidgets/LabelEditorDialog.h"
 #include <QColorDialog>
+#include <QSignalBlocker>
 #include <iostream>
 #include "ui_LabelEditorDialog.h"
 
@@ -72,7 +73,7 @@ LabelEditorDialog::LabelEditorDialog(QWidget *parent): QDialog(parent) ,c(new Cl
   c->ui.textEdit->setText(QString(""));
 }
 
-const QTextEdit *LabelEditorDialog::textEdit() const {
+const QTextEdit *LabelEditorDialog::textEdit() const { 
   return c->ui.textEdit;
 }
 
@@ -192,29 +193,36 @@ void LabelEditorDialog::updateCharFormat(const QTextCharFormat &f) {
   if (F.verticalAlignment()==QTextCharFormat::AlignSubScript)  c->ui.scriptButton->setText(QString("_"));
   if (F.verticalAlignment()==QTextCharFormat::AlignSuperScript)  c->ui.scriptButton->setText(QString("^"));
   {
+    QSignalBlocker blocker(c->ui.italicButton);
     QFont font=c->ui.italicButton->font(); 
     font.setItalic (F.fontItalic()); 
     c->ui.italicButton->setFont(font); 
   }
   {
+    QSignalBlocker blocker(c->ui.boldButton);
     QFont font=c->ui.boldButton->font(); 
     font.setBold(F.fontWeight()==QFont::Bold);
     c->ui.boldButton->setFont(font); 
   }
 
-  c->ui.fontSizeSpinBox->setValue(int(F.fontPointSize()+0.5));
-
-  QVariant fam=F.fontFamilies();
-  c->ui.fontComboBox->setEditText(fam.toStringList().at(0));
-
-  
-  QColor color=F.foreground().color();
-  QPalette palette = c->ui.colorButton->palette();
-  palette.setColor(QPalette::Button,color);
-  c->ui.colorButton->setAutoFillBackground(true);
-  c->ui.colorButton->setPalette(palette);
+  {
+    QSignalBlocker blocker(c->ui.fontSizeSpinBox);
+    c->ui.fontSizeSpinBox->setValue(int(F.fontPointSize()+0.5));
+  }
+  {
+    QSignalBlocker blocker(c->ui.fontComboBox);
+    QVariant fam=F.fontFamilies();
+    c->ui.fontComboBox->setEditText(fam.toStringList().at(0));
+  }
+  {
+    QSignalBlocker blocker(c->ui.colorButton);
+    QColor color=F.foreground().color();
+    QPalette palette = c->ui.colorButton->palette();
+    palette.setColor(QPalette::Button,color);
+    c->ui.colorButton->setAutoFillBackground(true);
+    c->ui.colorButton->setPalette(palette);
+  }
 }
-
 
 
 void LabelEditorDialog::toggleChars() {
