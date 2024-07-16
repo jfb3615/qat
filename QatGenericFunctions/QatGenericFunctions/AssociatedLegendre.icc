@@ -38,7 +38,7 @@ AssociatedLegendre::AssociatedLegendre(unsigned int l,  int m, NormalizationType
   _m(m),
   _normType(type)
 {
-  if (abs(m)>l) throw std::range_error("M>L in Associated Legendre");
+  if (abs(m)> (int)  l) throw std::range_error("M>L in Associated Legendre");
 }
 
 inline
