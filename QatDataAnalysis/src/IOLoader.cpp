@@ -50,7 +50,6 @@ public:
   std::map<std::string, std::string>       _fullName    ={{"RootDriver", "libQoot.dylib"},
 						          {"HDF5Driver", "libQHDF5.dylib"},
 							  {"SQLiteDriver", "libQSQLite.dylib"}};
-  };
   
   std::map<std::string, std::string>       _shortName   ={{"libQoot.dylib", "RootDriver"},
 							  {"libQHDF5.dylib", "HDF5Driver"},
