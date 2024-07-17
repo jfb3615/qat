@@ -55,7 +55,7 @@ int main (int argc, char * * argv) {
   PlotStream titleStream(view.titleTextEdit());
   titleStream << PlotStream::Clear()
 	      << PlotStream::Center() 
-	      << PlotStream::Family("Sans Serif") 
+	      << PlotStream::Family("Arial") 
 	      << PlotStream::Size(16)
 	      << PlotStream::EndP();
   
@@ -63,14 +63,14 @@ int main (int argc, char * * argv) {
   PlotStream xLabelStream(view.xLabelTextEdit());
   xLabelStream << PlotStream::Clear()
 	       << PlotStream::Center()
-	       << PlotStream::Family("Sans Serif")
+	       << PlotStream::Family("Arial")
 	       << PlotStream::Size(16)
 	       << PlotStream::EndP();
   
   PlotStream yLabelStream(view.yLabelTextEdit());
   yLabelStream << PlotStream::Clear()
 	       << PlotStream::Center()
-	       << PlotStream::Family("Sans Serif")
+	       << PlotStream::Family("Arial")
 	       << PlotStream::Size(16)
 	       << PlotStream::EndP();
   
