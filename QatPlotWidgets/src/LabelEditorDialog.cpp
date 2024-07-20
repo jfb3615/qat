@@ -212,7 +212,8 @@ void LabelEditorDialog::updateCharFormat(const QTextCharFormat &f) {
   {
     QSignalBlocker blocker(c->ui.fontComboBox);
     QVariant fam=F.fontFamilies();
-    c->ui.fontComboBox->setEditText(fam.toStringList().at(0));
+    QStringList list=fam.toStringList();
+    if (!list.empty()) c->ui.fontComboBox->setEditText(fam.toStringList().at(0));
   }
   {
     QSignalBlocker blocker(c->ui.colorButton);
