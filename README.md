@@ -12,12 +12,12 @@ The QAT libraries contain software for function manipulation, data collection,  
 
 # prerequisites
 
-cmake
-Qt libraries.  Either Qt5 or Qt6 is possible.
-Coin (for 3D graphics)
-SoQt.  It may be built for Qt5 or Qt6.
-eigen (for vector and matrix operations)
-gsl   (the gnu scientific library)
+* cmake
+*Qt libraries.  Either Qt5 or Qt6 is possible.
+* Coin (for 3D graphics)
+* SoQt.  It may be built for Qt5 or Qt6.
+* eigen (for vector and matrix operations)
+* gsl   (the gnu scientific library)
 
 
 # configuration
