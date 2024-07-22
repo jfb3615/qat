@@ -3,12 +3,12 @@ The QAT libraries contain software for function manipulation, data collection,  
 
 # To build qat libraries
 
-cd qat
-mkdir build
-cd build
-cmake ..
-make
-sudo make install
+* cd qat
+* mkdir build
+* cd build
+* cmake ..
+* make
+* sudo make install
 
 # prerequisites
 
