@@ -17,6 +17,7 @@ else()
   set (QT_VERSION 5)
 endif()
 
+option (QAT_BUILD_QAT3D "Build the QAT 3D component" ON) 
 
 
 # Use the GNU install directory names.
@@ -31,7 +32,10 @@ add_subdirectory(QatPlotting)
 add_subdirectory(QatPlotWidgets)
 add_subdirectory(Qhfd)
 add_subdirectory(QatProject)
-add_subdirectory(QatInventorWidgets)
+if (QAT_BUILD_QAT3D)
+  message (STATUS "Building QatInventorWidgets" )
+  add_subdirectory(QatInventorWidgets)
+endif()
 
 
 
