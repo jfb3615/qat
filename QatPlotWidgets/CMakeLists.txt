@@ -5,11 +5,11 @@ project(QatPlotWidgets VERSION ${Qat_VERSION} LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-file( GLOB SOURCES src/*.cpp )
+file( GLOB SOURCES src/*.cpp src/*.qrc )
 file( GLOB FORMS   src/*.ui )
 file( GLOB HEADERS QatPlotWidgets/*.h QatPlotWidgets/*.icc )
 
-
+qt_add_resources (SOURCES *.qrc)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
