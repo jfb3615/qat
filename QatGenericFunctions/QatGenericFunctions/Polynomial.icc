@@ -99,7 +99,7 @@ namespace Genfun {
 
   std::vector<double> Polynomial::coefficientsOfDerivative() const {
     std::vector<double> d(_values.size()-1, 0.0);
-    for (size_t i=0;i<_values.size();i++) {
+    for (size_t i=0;i<_values.size()-1;i++) {
       d[i]=(_values.size()-i-1)*_values[i];
     }
     return d;
