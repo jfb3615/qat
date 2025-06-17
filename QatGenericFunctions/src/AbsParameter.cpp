@@ -40,24 +40,30 @@ AbsParameter *AbsParameter::clone() const {
 
   
 ParameterSum operator + (const AbsParameter & a, const AbsParameter & b) {
-  return ParameterSum(&a,&b);
+  std::shared_ptr<const AbsParameter> o1{a.clone()},o2{b.clone()};
+  return ParameterSum(o1,o2);
+
 }
 
 ParameterDifference operator - (const AbsParameter & a, const AbsParameter & b) {
-  return ParameterDifference(&a,&b);
+  std::shared_ptr<const AbsParameter> o1{a.clone()},o2{b.clone()};
+  return ParameterDifference(o1,o2);
 }
 
 ParameterProduct operator * (const AbsParameter & a, const AbsParameter & b) {
-  return ParameterProduct(&a,&b);
+  std::shared_ptr<const AbsParameter> o1{a.clone()},o2{b.clone()};
+  return ParameterProduct(o1,o2);
 }
 
 ParameterQuotient operator / (const AbsParameter & a, const AbsParameter & b) {
-  return ParameterQuotient(&a,&b);
+  std::shared_ptr<const AbsParameter> o1{a.clone()},o2{b.clone()};
+  return ParameterQuotient(o1,o2);
 }
 
 
 ParameterNegation operator - (const AbsParameter & a) {
-  return ParameterNegation(&a);
+  std::shared_ptr<const AbsParameter> o{a.clone()};
+  return ParameterNegation(o);
 }
 
 

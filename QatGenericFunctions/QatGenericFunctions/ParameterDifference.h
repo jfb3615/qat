@@ -39,7 +39,7 @@ namespace Genfun {
       public:
   
     // Constructor
-    ParameterDifference(const AbsParameter *arg1, const AbsParameter *arg2);
+    ParameterDifference(std::shared_ptr<const AbsParameter> arg1, std::shared_ptr<const AbsParameter> arg2);
   
     // Copy constructor
     ParameterDifference(const ParameterDifference &right);
@@ -55,8 +55,8 @@ namespace Genfun {
     // It is illegal to assign a ParameterDifference
     const ParameterDifference & operator=(const ParameterDifference &right);
 
-    AbsParameter *_arg1;
-    AbsParameter *_arg2;
+    std::shared_ptr<const AbsParameter> _arg1;
+    std::shared_ptr<const AbsParameter>_arg2;
   };
 } // namespace Genfun
 #endif

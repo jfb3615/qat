@@ -26,21 +26,19 @@
 namespace Genfun {
 PARAMETER_OBJECT_IMP(ParameterNegation)
 
-ParameterNegation::ParameterNegation(const AbsParameter *arg1):
-  _arg1(arg1->clone())
+ParameterNegation::ParameterNegation(std::shared_ptr<const AbsParameter> arg1):
+  _arg1(arg1)
 {
-  if (arg1->parameter() && _arg1->parameter()) _arg1->parameter()->connectFrom(arg1->parameter());
 }
 
 ParameterNegation::ParameterNegation(const ParameterNegation & right) :
 AbsParameter(),
-_arg1(right._arg1->clone())
+_arg1(right._arg1)
 {}
 
 
 ParameterNegation::~ParameterNegation()
 {
-  delete _arg1;
 }
 
 
