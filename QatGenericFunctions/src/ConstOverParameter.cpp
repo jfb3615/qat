@@ -26,23 +26,21 @@
 namespace Genfun {
 PARAMETER_OBJECT_IMP(ConstOverParameter)
 
-ConstOverParameter::ConstOverParameter(double xconstant, const AbsParameter *aparm):
+ConstOverParameter::ConstOverParameter(double xconstant, const std::shared_ptr<const AbsParameter> & aparm):
   _constant(xconstant),
-  _parameter(aparm->clone())
+  _parameter(aparm)
 {
-  if (aparm->parameter() && _parameter->parameter()) _parameter->parameter()->connectFrom(aparm->parameter());
 }
 
 ConstOverParameter::ConstOverParameter(const ConstOverParameter & right) :
 AbsParameter(right),
 _constant(right._constant),
-_parameter(right._parameter->clone())
+_parameter(right._parameter)
 {}
 
 
 ConstOverParameter::~ConstOverParameter()
 {
-  delete _parameter;
 }
 
 

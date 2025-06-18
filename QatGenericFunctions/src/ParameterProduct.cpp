@@ -26,7 +26,7 @@
 namespace Genfun {
 PARAMETER_OBJECT_IMP(ParameterProduct)
 
-ParameterProduct::ParameterProduct(std::shared_ptr<const AbsParameter> arg1, std::shared_ptr<const AbsParameter> arg2):
+ParameterProduct::ParameterProduct(const std::shared_ptr<const AbsParameter> & arg1, const std::shared_ptr<const AbsParameter> & arg2):
   _arg1(arg1),
   _arg2(arg2)
 {

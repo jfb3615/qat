@@ -38,7 +38,7 @@ namespace Genfun {
       public:
   
     // Constructor
-    ParameterQuotient(std::shared_ptr<const AbsParameter> arg1, std::shared_ptr<const AbsParameter> arg2);
+    ParameterQuotient(const std::shared_ptr<const AbsParameter> & arg1, const std::shared_ptr<const AbsParameter> & arg2);
   
     // Copy constructor
     ParameterQuotient(const ParameterQuotient &right);

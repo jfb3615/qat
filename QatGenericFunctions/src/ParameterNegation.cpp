@@ -26,7 +26,7 @@
 namespace Genfun {
 PARAMETER_OBJECT_IMP(ParameterNegation)
 
-ParameterNegation::ParameterNegation(std::shared_ptr<const AbsParameter> arg1):
+ParameterNegation::ParameterNegation(const std::shared_ptr<const AbsParameter> & arg1):
   _arg1(arg1)
 {
 }

@@ -39,7 +39,7 @@ namespace Genfun {
       public:
   
     // Constructor
-    ParameterNegation(std::shared_ptr<const AbsParameter> arg1);
+    ParameterNegation(const std::shared_ptr<const AbsParameter> & arg1);
   
     // Copy constructor
     ParameterNegation(const ParameterNegation &right);

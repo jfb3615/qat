@@ -26,23 +26,21 @@
 namespace Genfun {
 PARAMETER_OBJECT_IMP(ConstTimesParameter)
 
-ConstTimesParameter::ConstTimesParameter(double xconstant, const AbsParameter *aparm):
+ConstTimesParameter::ConstTimesParameter(double xconstant, const std::shared_ptr<const AbsParameter> & aparm):
   _constant(xconstant),
-  _parameter(aparm->clone())
+  _parameter(aparm)
 {
-  if (aparm->parameter() && _parameter->parameter()) _parameter->parameter()->connectFrom(aparm->parameter());
 }
 
 ConstTimesParameter::ConstTimesParameter(const ConstTimesParameter & right) :
 AbsParameter(),
 _constant(right._constant),
-_parameter(right._parameter->clone())
+_parameter(right._parameter)
 {}
 
 
 ConstTimesParameter::~ConstTimesParameter()
 {
-  delete _parameter;
 }
 
 

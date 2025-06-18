@@ -39,7 +39,7 @@ namespace Genfun {
       public:
   
     // Constructor
-    ParameterSum(std::shared_ptr<const AbsParameter> arg1, std::shared_ptr<const AbsParameter> arg2);
+    ParameterSum(const std::shared_ptr<const AbsParameter> & arg1, const std::shared_ptr<const AbsParameter> & arg2);
   
     // Copy constructor
     ParameterSum(const ParameterSum &right);

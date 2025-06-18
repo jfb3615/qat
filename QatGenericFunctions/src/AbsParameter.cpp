@@ -68,35 +68,43 @@ ParameterNegation operator - (const AbsParameter & a) {
 
 
 ConstTimesParameter           operator * (double c, const AbsParameter &op2){
-  return ConstTimesParameter (c, &op2);
+  std::shared_ptr<const AbsParameter> o{op2.clone()};
+  return ConstTimesParameter (c, o);
 }
 
 ConstPlusParameter               operator + (double c, const AbsParameter &op2){
-  return ConstPlusParameter (c, &op2);
+ std::shared_ptr<const AbsParameter> o{op2.clone()};
+ return ConstPlusParameter (c, o);
 }
 
 ConstMinusParameter        operator - (double c, const AbsParameter &op2){
-  return ConstMinusParameter(c, &op2);
+  std::shared_ptr<const AbsParameter> o{op2.clone()};
+  return ConstMinusParameter(c, o);
 }
 
 ConstOverParameter          operator / (double c, const AbsParameter &op2){
-  return ConstOverParameter(c, &op2);
+ std::shared_ptr<const AbsParameter> o{op2.clone()};
+ return ConstOverParameter(c, o);
 }
 
 ConstTimesParameter           operator * (const AbsParameter &op2, double c){
-  return ConstTimesParameter (c, &op2);
+ std::shared_ptr<const AbsParameter> o{op2.clone()};
+ return ConstTimesParameter (c, o);
 }
 
 ConstPlusParameter               operator + (const AbsParameter &op2, double c){
-  return ConstPlusParameter (c, &op2);
+ std::shared_ptr<const AbsParameter> o{op2.clone()};
+ return ConstPlusParameter (c, o);
 }
 
 ConstPlusParameter        operator - (const AbsParameter &op2, double c){
-  return ConstPlusParameter(-c, &op2);
+  std::shared_ptr<const AbsParameter> o{op2.clone()};
+  return ConstPlusParameter(-c, o);
 }
 
 ConstTimesParameter          operator / (const AbsParameter &op2, double c){
-  return ConstTimesParameter(1/c, &op2);
+  std::shared_ptr<const AbsParameter> o{op2.clone()};
+  return ConstTimesParameter(1/c, o);
 }
 
 

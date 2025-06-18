@@ -26,7 +26,7 @@
 namespace Genfun {
 PARAMETER_OBJECT_IMP(ParameterSum)
 
-ParameterSum::ParameterSum(std::shared_ptr<const AbsParameter> arg1, std::shared_ptr<const AbsParameter> arg2):
+ParameterSum::ParameterSum(const std::shared_ptr<const AbsParameter> & arg1, const std::shared_ptr<const AbsParameter> & arg2):
   _arg1(arg1),
   _arg2(arg2)
 {
