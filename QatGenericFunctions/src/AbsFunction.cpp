@@ -134,39 +134,46 @@ ConstOverFunction          operator / (double c, const AbsFunction &op2) {
 
 
 FunctionTimesParameter operator * (const AbsFunction &f, const AbsParameter & p) {
-  return FunctionTimesParameter(&p, &f);
+  std::shared_ptr<const AbsParameter> o{p.clone()};
+  return FunctionTimesParameter(o, &f);
 }
 
 FunctionPlusParameter operator + (const AbsFunction &f, const AbsParameter & p) {
-  return FunctionPlusParameter(&p, &f);
+  std::shared_ptr<const AbsParameter> o{p.clone()}; 
+  return FunctionPlusParameter(o, &f);
 }
 
 FunctionPlusParameter operator - (const AbsFunction &f, const AbsParameter & p) {
-  GENPARAMETER MinusP = -p;
-  return FunctionPlusParameter(&MinusP, &f);
+  std::shared_ptr<const AbsParameter> o{(-p).clone()}; 
+  return FunctionPlusParameter(o, &f);
   
 }
 
 FunctionTimesParameter operator / (const AbsFunction &f, const AbsParameter & p) {
-  GENPARAMETER oneOverP = 1.0/p;
-  return FunctionTimesParameter(&oneOverP, &f);
+  //  GENPARAMETER oneOverP = 1.0/p;
+  std::shared_ptr<const AbsParameter> o{(1.0/p).clone()};
+  return FunctionTimesParameter(o, &f);
 }
 
 FunctionTimesParameter operator * (const AbsParameter & p, const AbsFunction &f) {
-  return FunctionTimesParameter(&p, &f);
+  std::shared_ptr<const AbsParameter> o{p.clone()};
+  return FunctionTimesParameter(o, &f);
 }
 
 FunctionPlusParameter operator + (const AbsParameter & p, const AbsFunction &f) {
-  return FunctionPlusParameter(&p, &f);
+  std::shared_ptr<const AbsParameter> o{p.clone()};
+  return FunctionPlusParameter(o, &f);
 }
 
 FunctionPlusParameter operator - (const AbsParameter & p, const AbsFunction &f) {
   GENFUNCTION MinusF = -f;
-  return FunctionPlusParameter(&p, &MinusF);
+  std::shared_ptr<const AbsParameter> o{p.clone()};
+  return FunctionPlusParameter(o, &MinusF);
 }
 
 FunctionTimesParameter operator / (const AbsParameter & p, const AbsFunction &f) {
   GENFUNCTION oneOverF = 1.0/f;
-  return FunctionTimesParameter(&p, &oneOverF);
+  std::shared_ptr<const AbsParameter> o{p.clone()};
+  return FunctionTimesParameter(o, &oneOverF);
 }
 } // namespace Genfun

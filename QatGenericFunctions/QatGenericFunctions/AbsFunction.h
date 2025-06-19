@@ -28,7 +28,7 @@
 #ifndef AbsFunction_h
 #define AbsFunction_h 1
 #include "QatGenericFunctions/Argument.h"
-
+#include <memory>
 namespace Genfun {
 
   class AbsParameter;

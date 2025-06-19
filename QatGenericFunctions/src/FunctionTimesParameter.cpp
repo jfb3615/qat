@@ -26,19 +26,16 @@
 namespace Genfun {
 FUNCTION_OBJECT_IMP(FunctionTimesParameter)
 
-FunctionTimesParameter::FunctionTimesParameter(const AbsParameter *parameter, const AbsFunction *function):
+FunctionTimesParameter::FunctionTimesParameter(const std::shared_ptr<const AbsParameter> &parameter, const AbsFunction *function):
   _function(function->clone()),
-  _parameter(parameter->clone())
+  _parameter(parameter)
 {
-  if (parameter->parameter() && _parameter->parameter()) {
-    _parameter->parameter()->connectFrom(parameter->parameter());
-  }
 }
 
 FunctionTimesParameter::FunctionTimesParameter(const FunctionTimesParameter & right) :
   AbsFunction(right),
   _function(right._function->clone()),
-  _parameter(right._parameter->clone())
+  _parameter(right._parameter)
 {}
 
 unsigned int FunctionTimesParameter::dimensionality() const {
@@ -48,7 +45,6 @@ unsigned int FunctionTimesParameter::dimensionality() const {
 FunctionTimesParameter::~FunctionTimesParameter()
 {
   delete _function;
-  delete _parameter;
 }
 
 

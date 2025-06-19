@@ -100,7 +100,7 @@ namespace Genfun {
     double                _value;                // value
     double                _lowerLimit;           // lower limit
     double                _upperLimit;           // upper limit
-    const AbsParameter   *_sourceParameter;      // connection
+    std::shared_ptr<const AbsParameter   *> _sourceParameter;      // connection
   
   };
 std::ostream & operator << ( std::ostream & o, const Parameter &p);

@@ -40,7 +40,7 @@ namespace Genfun {
       public:
   
     // Constructor
-    FunctionTimesParameter(const AbsParameter *parameter, const AbsFunction *function);
+    FunctionTimesParameter(const std::shared_ptr<const AbsParameter> & parameter, const AbsFunction *function);
   
     // Copy constructor
     FunctionTimesParameter(const FunctionTimesParameter &right);
@@ -67,7 +67,7 @@ namespace Genfun {
     const FunctionTimesParameter & operator=(const FunctionTimesParameter &right);
 
     const AbsFunction  *_function;
-    AbsParameter       *_parameter;
+    std::shared_ptr<const AbsParameter> _parameter;
 
   };
 } // namespace Genfun
