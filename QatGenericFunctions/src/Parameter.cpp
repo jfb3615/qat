@@ -81,7 +81,12 @@ void Parameter::setValue(double value)
 {
   if (*_sourceParameter) {
     std::cerr
-      << "Warning:  Parameter is connected.  Function has no effect."
+      << "Warning:  Parameter is connected.  setValue has no effect."
+      << std::endl;
+  }
+  else if (_origin) {
+    std::cerr
+      << "Warning:  Parameter is a copy.  setValue has no effect."
       << std::endl;
   }
   else {
@@ -95,7 +100,12 @@ void Parameter::setLowerLimit(double lowerLimit)
 
   if (*_sourceParameter) {
     std::cerr
-      << "Warning:  Parameter is connected.  Function has no effect."
+      << "Warning:  Parameter is connected.  setLowerLimit has no effect."
+      << std::endl;
+  }
+  else if (_origin) {
+    std::cerr
+      << "Warning:  Parameter is a copy.  setLowerLimit has no effect."
       << std::endl;
   }
   else {
@@ -107,7 +117,12 @@ void Parameter::setUpperLimit(double upperLimit)
 {
   if (*_sourceParameter) {
     std::cerr
-      << "Warning:  Parameter is connected.  Function has no effect."
+      << "Warning:  Parameter is connected.  setUpperLimit has no effect."
+      << std::endl;
+  }
+  else if (_origin) {
+    std::cerr
+      << "Warning:  Parameter is a copy. setUpperLimit has no effect."
       << std::endl;
   }
   else {

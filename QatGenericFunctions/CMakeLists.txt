@@ -4,6 +4,7 @@ project(QatGenericFunctions VERSION ${Qat_VERSION} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_BUILD_TYPE Release)
 
 file( GLOB SOURCES src/*.cpp )
 file( GLOB HEADERS QatGenericFunctions/*.h QatGenericFunctions/*.icc )
