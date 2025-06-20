@@ -46,6 +46,7 @@ const std::string & Parameter::getName() const {
 
 double Parameter::getValue() const
 {
+  if (_origin) return _origin->getValue();
   if (*_sourceParameter) {
     return (*_sourceParameter)->getValue();
   }
@@ -56,6 +57,7 @@ double Parameter::getValue() const
 
 double Parameter::getLowerLimit() const
 {
+  if (_origin) return _origin->getLowerLimit();
   if (*_sourceParameter) {
     return -1E-100;
   }
@@ -66,6 +68,7 @@ double Parameter::getLowerLimit() const
 
 double Parameter::getUpperLimit() const
 {
+  if (_origin) return _origin->getUpperLimit();
   if (*_sourceParameter) {
     return 1E100;
   }
@@ -88,6 +91,8 @@ void Parameter::setValue(double value)
 
 void Parameter::setLowerLimit(double lowerLimit)
 {
+
+
   if (*_sourceParameter) {
     std::cerr
       << "Warning:  Parameter is connected.  Function has no effect."
@@ -128,6 +133,7 @@ Parameter::Parameter(const Parameter & right):
   _value(right._value),
   _lowerLimit(right._lowerLimit),
   _upperLimit(right._upperLimit),
+  _origin(&right),
   _sourceParameter(right._sourceParameter)
 {
 }
@@ -138,6 +144,7 @@ const Parameter & Parameter::operator=(const Parameter &right) {
     _value=right._value;
     _lowerLimit=right._lowerLimit;
     _upperLimit=right._upperLimit;
+    _origin=&right;
     _sourceParameter=right._sourceParameter;
   }
   return *this;
