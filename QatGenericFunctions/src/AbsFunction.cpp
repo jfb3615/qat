@@ -100,42 +100,51 @@ FunctionDirectProduct operator % (const AbsFunction & a, const AbsFunction & b) 
 }
 
 ConstTimesFunction operator * (const AbsFunction &op2, double c) {
-  return ConstTimesFunction(c, &op2);
+  std::shared_ptr<const AbsFunction> o{op2.clone()};
+  return ConstTimesFunction(c, o);
 }
 
 ConstPlusFunction  operator + (const AbsFunction &op2, double c) {
-  return ConstPlusFunction(c,&op2);
+  std::shared_ptr<const AbsFunction> o{op2.clone()};
+  return ConstPlusFunction(c,o);
 }
 
 ConstPlusFunction  operator - (const AbsFunction &op2, double c) {
-  return ConstPlusFunction(-c, &op2);
+  std::shared_ptr<const AbsFunction> o{op2.clone()};
+  return ConstPlusFunction(-c, o);
 }
 
 ConstTimesFunction operator / (const AbsFunction &op2, double c) {
-  return ConstTimesFunction(1/c,&op2);
+  std::shared_ptr<const AbsFunction> o{op2.clone()};
+  return ConstTimesFunction(1/c, o);
 }
 
 
 ConstTimesFunction           operator * (double c, const AbsFunction &op2) {
-  return ConstTimesFunction(c,&op2);
+  std::shared_ptr<const AbsFunction> o{op2.clone()};
+  return ConstTimesFunction(c,o);
 }
 
 ConstPlusFunction               operator + (double c, const AbsFunction &op2) {
-  return ConstPlusFunction(c,&op2);
+  std::shared_ptr<const AbsFunction> o{op2.clone()};
+  return ConstPlusFunction(c,o);
 }
 
 ConstMinusFunction        operator - (double c, const AbsFunction &op2) {
-  return ConstMinusFunction(c,&op2);
+  std::shared_ptr<const AbsFunction> o{op2.clone()};
+  return ConstMinusFunction(c,o);
 }
 
 ConstOverFunction          operator / (double c, const AbsFunction &op2) {
-  return ConstOverFunction(c,&op2);
+  std::shared_ptr<const AbsFunction> o{op2.clone()};
+  return ConstOverFunction(c,o);
 }
 
 
 FunctionTimesParameter operator * (const AbsFunction &f, const AbsParameter & p) {
-  std::shared_ptr<const AbsParameter> o{p.clone()};
-  return FunctionTimesParameter(o, &f);
+  std::shared_ptr<const AbsParameter> op{p.clone()};
+  std::shared_ptr<const AbsFunction>  of{f.clone()};
+  return FunctionTimesParameter(op, of);
 }
 
 FunctionPlusParameter operator + (const AbsFunction &f, const AbsParameter & p) {
@@ -151,13 +160,15 @@ FunctionPlusParameter operator - (const AbsFunction &f, const AbsParameter & p) 
 
 FunctionTimesParameter operator / (const AbsFunction &f, const AbsParameter & p) {
   //  GENPARAMETER oneOverP = 1.0/p;
-  std::shared_ptr<const AbsParameter> o{(1.0/p).clone()};
-  return FunctionTimesParameter(o, &f);
+  std::shared_ptr<const AbsParameter> op{(1.0/p).clone()};
+  std::shared_ptr<const AbsFunction>  of{f.clone()};
+  return FunctionTimesParameter(op, of);
 }
 
 FunctionTimesParameter operator * (const AbsParameter & p, const AbsFunction &f) {
-  std::shared_ptr<const AbsParameter> o{p.clone()};
-  return FunctionTimesParameter(o, &f);
+  std::shared_ptr<const AbsParameter> op{p.clone()};
+  std::shared_ptr<const AbsFunction>  of{f.clone()};
+  return FunctionTimesParameter(op, of);
 }
 
 FunctionPlusParameter operator + (const AbsParameter & p, const AbsFunction &f) {
@@ -173,7 +184,8 @@ FunctionPlusParameter operator - (const AbsParameter & p, const AbsFunction &f) 
 
 FunctionTimesParameter operator / (const AbsParameter & p, const AbsFunction &f) {
   GENFUNCTION oneOverF = 1.0/f;
-  std::shared_ptr<const AbsParameter> o{p.clone()};
-  return FunctionTimesParameter(o, &oneOverF);
+  std::shared_ptr<const AbsParameter> op{p.clone()};
+  std::shared_ptr<const AbsFunction>  of{oneOverF.clone()};
+  return FunctionTimesParameter(op,of);
 }
 } // namespace Genfun

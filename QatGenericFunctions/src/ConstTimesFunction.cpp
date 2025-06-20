@@ -25,16 +25,16 @@
 namespace Genfun {
 FUNCTION_OBJECT_IMP(ConstTimesFunction)
 
-ConstTimesFunction::ConstTimesFunction(double constant, const AbsFunction *arg):
+ConstTimesFunction::ConstTimesFunction(double constant, const std::shared_ptr<const AbsFunction> &arg):
   _constant(constant),
-  _arg(arg->clone())
+  _arg(arg)
 {
 }
 
 ConstTimesFunction::ConstTimesFunction(const ConstTimesFunction & right) :
 AbsFunction(right),
 _constant(right._constant),
-_arg(right._arg->clone())
+_arg(right._arg)
 {}
 
 unsigned int ConstTimesFunction::dimensionality() const {
@@ -43,7 +43,6 @@ unsigned int ConstTimesFunction::dimensionality() const {
 
 ConstTimesFunction::~ConstTimesFunction()
 {
-  delete _arg;
 }
 
 

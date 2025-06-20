@@ -39,7 +39,7 @@ namespace Genfun {
       public:
   
     // Constructor
-    ConstMinusFunction(double constant, const AbsFunction *arg);
+    ConstMinusFunction(double constant, const std::shared_ptr<const AbsFunction> & arg);
   
     // Copy constructor
     ConstMinusFunction(const ConstMinusFunction &right);
@@ -66,7 +66,7 @@ namespace Genfun {
     const ConstMinusFunction & operator=(const ConstMinusFunction &right);
 
     double             _constant;
-    const AbsFunction *_arg;
+    std::shared_ptr<const AbsFunction> _arg;
   };
 } // namespace Genfun
 #endif

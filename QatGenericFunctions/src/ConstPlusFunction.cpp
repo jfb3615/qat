@@ -25,16 +25,16 @@
 namespace Genfun {
 FUNCTION_OBJECT_IMP(ConstPlusFunction)
 
-ConstPlusFunction::ConstPlusFunction(double constant, const AbsFunction *arg):
+ConstPlusFunction::ConstPlusFunction(double constant, const std::shared_ptr<const AbsFunction>  &arg):
   _constant(constant),
-  _arg(arg->clone())
+  _arg(arg)
 {
 }
 
 ConstPlusFunction::ConstPlusFunction(const ConstPlusFunction & right) :
 AbsFunction(right),
 _constant(right._constant),
-_arg(right._arg->clone())
+_arg(right._arg)
 {}
 
 unsigned int ConstPlusFunction::dimensionality() const {
@@ -43,7 +43,6 @@ unsigned int ConstPlusFunction::dimensionality() const {
 
 ConstPlusFunction::~ConstPlusFunction()
 {
-  delete _arg;
 }
 
 
