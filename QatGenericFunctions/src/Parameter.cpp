@@ -151,6 +151,9 @@ Parameter::Parameter(const Parameter & right):
   _origin(&right),
   _sourceParameter(right._sourceParameter)
 {
+  //while (_origin) {
+  //  if (_origin->_origin) _origin=_origin->_origin; else break;
+  //}
 }
   
 const Parameter & Parameter::operator=(const Parameter &right) {
@@ -162,6 +165,10 @@ const Parameter & Parameter::operator=(const Parameter &right) {
     _origin=&right;
     _sourceParameter=right._sourceParameter;
   }
+  //  while (_origin) {
+  //  if (_origin->_origin) _origin=_origin->_origin; else break;
+  // }
+
   return *this;
 }
 
