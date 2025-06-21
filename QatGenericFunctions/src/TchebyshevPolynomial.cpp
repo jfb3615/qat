@@ -22,6 +22,7 @@
 
 #include "QatGenericFunctions/TchebyshevPolynomial.h"
 #include "QatGenericFunctions/Variable.h"
+#include "QatGenericFunctions/FixedConstant.h"
 #include "QatGenericFunctions/Power.h"
 #include <stdexcept>
 #include <cmath>
@@ -77,7 +78,11 @@ namespace Genfun {
 
   Derivative TchebyshevPolynomial::partial(unsigned int index) const {
     if (index!=0) throw std::range_error("TchebyshevPolynomial: partial derivative index out of range");
-    if (_n==0) return 0;
+    if (_n==0) {
+      FixedConstant fPrime(0.0);
+      std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+      return Derivative(deriv);
+    };
     
     const double norm=_normType==STD ? 1.0:sqrt(M_PI);
     
@@ -87,7 +92,9 @@ namespace Genfun {
       norm*_n*TchebyshevPolynomial(_n-1, SecondKind, STD)
       :
       norm*(((_n+1)*TchebyshevPolynomial(_n+1,FirstKind, STD)-X*TchebyshevPolynomial(_n,SecondKind, STD))/(X+1)/(X-1));
-    return Derivative(& fPrime);
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
+
   }
 
 

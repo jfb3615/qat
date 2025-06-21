@@ -38,7 +38,7 @@ namespace Genfun {
       public:
 
     // Constructor
-    FunctionQuotient(const AbsFunction *arg1, const AbsFunction *arg2);
+    FunctionQuotient(const std::shared_ptr<const AbsFunction> & arg1, const std::shared_ptr<const AbsFunction> & arg2);
 
     // Copy constructor
     FunctionQuotient(const FunctionQuotient &right);
@@ -64,8 +64,8 @@ namespace Genfun {
     // It is illegal to assign a FunctionQuotient
     const FunctionQuotient & operator=(const FunctionQuotient &right);
   
-    const AbsFunction *_arg1;
-    const AbsFunction *_arg2;
+    std::shared_ptr<const AbsFunction>  _arg1;
+    std::shared_ptr<const AbsFunction>  _arg2;
   };
 } // namespace Genfun
 #endif

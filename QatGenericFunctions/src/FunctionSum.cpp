@@ -28,9 +28,9 @@
 namespace Genfun {
 FUNCTION_OBJECT_IMP(FunctionSum)
 
-FunctionSum::FunctionSum(const AbsFunction *arg1, const AbsFunction *arg2):
-  _arg1(arg1->clone()),
-  _arg2(arg2->clone())
+FunctionSum::FunctionSum(const std::shared_ptr<const AbsFunction> & arg1, const std::shared_ptr<const AbsFunction> & arg2):
+  _arg1(arg1),
+  _arg2(arg2)
 {
   if (arg1->dimensionality()!=arg2->dimensionality()) {
     throw std::runtime_error ("FunctionSum:  dimension mismatch");
@@ -39,8 +39,8 @@ FunctionSum::FunctionSum(const AbsFunction *arg1, const AbsFunction *arg2):
 
 FunctionSum::FunctionSum(const FunctionSum & right) :
 AbsFunction(right),
-_arg1(right._arg1->clone()),
-_arg2(right._arg2->clone())
+_arg1(right._arg1),
+_arg2(right._arg2)
 {}
 
 unsigned int FunctionSum::dimensionality() const {
@@ -49,8 +49,6 @@ unsigned int FunctionSum::dimensionality() const {
 
 FunctionSum::~FunctionSum()
 {
-  delete _arg1;
-  delete _arg2;
 }
 
 
@@ -72,7 +70,11 @@ Derivative FunctionSum::partial(unsigned int index) const {
   const Derivative & d1=_arg1->partial(index);
   const Derivative & d2=_arg2->partial(index);
   const AbsFunction & fPrime  = d1+d2;
-  return Derivative(&fPrime);
+
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
 }
 
 

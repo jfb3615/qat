@@ -103,37 +103,44 @@ namespace Genfun {
       if (_n==0) {
 	if (_type==FirstKind || _type==SecondKind || _type==ModifiedSecondKind) {
 	  const AbsFunction & fPrime =  -Bessel(_n+1,_type);
-	  return Derivative(& fPrime);
+	  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+	  return Derivative(deriv);
 	}
 	else if (_type==ModifiedFirstKind) {
 	  const AbsFunction & fPrime =  Bessel(_n+1,_type);
-	  return Derivative(& fPrime);
+	  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+	  return Derivative(deriv);
 	}
 	else {
           // Should never happen. 
           throw std::logic_error("Bessel::Unknown type");	
 	  const AbsFunction & fPrime=FixedConstant(0.0);
-	  return Derivative(& fPrime);	
+	  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+	  return Derivative(deriv);	
         }
       }
       else {
 	if (_type==FirstKind || _type==SecondKind) {
 	  const AbsFunction & fPrime =  0.5*(Bessel(_n-1, _type)-Bessel(_n+1,_type));
-	  return Derivative(& fPrime);
+	  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+	  return Derivative(deriv);
 	}
 	else if (_type==ModifiedFirstKind) {
 	  const AbsFunction & fPrime =  0.5*(Bessel(_n-1, _type)+Bessel(_n+1,_type));
-	  return Derivative(& fPrime);
+	  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+	  return Derivative(deriv);
 	}
 	else if (_type==ModifiedSecondKind) { 
 	  const AbsFunction & fPrime =  -0.5*(Bessel(_n-1, _type)+Bessel(_n+1,_type));
-	  return Derivative(& fPrime);
+	  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+	  return Derivative(deriv);
 	}
 	else {
           // Should never happen. 
           throw std::logic_error("Bessel::Unknown type");	
 	  const AbsFunction & fPrime=FixedConstant(0.0);
-	  return Derivative(& fPrime);	
+	  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+	  return Derivative(deriv);	
 	}
       }
     }

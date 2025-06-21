@@ -64,8 +64,11 @@ Derivative ConstOverFunction::partial(unsigned int index) const {
   // d/dx (k/f) = -(k/f^2)(df/dx)
   Derivative d=_arg->partial(index);
   const AbsFunction & fPrime = -_constant/(*_arg)/(*_arg)*(d);
-  return Derivative(& fPrime);
-}
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
+  }
 
 
 } // namespace Genfun

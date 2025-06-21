@@ -93,11 +93,15 @@ Derivative LegendrePolynomial::partial(unsigned int index) const {
       (1/(X*X-1))*(X*LegendrePolynomial(_l,STD) - LegendrePolynomial(_l-1,STD)) * (_l*sqrt((2.0*_l+1)/2.0))
       :
       (1/(X*X-1))*(X*LegendrePolynomial(_l,STD) - LegendrePolynomial(_l-1,STD)) * (_l                     );
-    return Derivative(& fPrime);
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
   }
   else {
     const AbsFunction & fPrime   = FixedConstant(0.0);
-    return Derivative(& fPrime);
+    
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
+  
   }
 }
 

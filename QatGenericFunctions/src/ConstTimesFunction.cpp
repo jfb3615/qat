@@ -62,7 +62,10 @@ double ConstTimesFunction::operator ()(const Argument & x) const
     // d/dx (k*f) = k*(df/dx)
     const Derivative & d=_arg->partial(index);
     const AbsFunction & fPrime = _constant*d;
-    return Derivative(& fPrime);
+
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
+
   }
   
 } // namespace Genfun

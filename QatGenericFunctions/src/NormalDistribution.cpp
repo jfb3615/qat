@@ -74,7 +74,10 @@ Derivative NormalDistribution::partial(unsigned int index) const {
 
   Variable x;
   const AbsFunction & fPrime  = (*this)*(_mean-x)/_sigma/_sigma;
-  return Derivative(&fPrime);
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
 }
 
 } // namespace Genfun

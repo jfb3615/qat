@@ -48,16 +48,22 @@ AbsFunction::AbsFunction(const AbsFunction &) {
 }
 
 FunctionComposition AbsFunction::operator () (const AbsFunction &function) const {
-  return FunctionComposition(this, &function);
+  const std::shared_ptr<const AbsFunction> o1{this->clone()};
+  const std::shared_ptr<const AbsFunction> o2{function.clone()};
+  return FunctionComposition(o1, o2);
 }
 
 ParameterComposition AbsFunction::operator() (const AbsParameter &p) const {
-  return ParameterComposition(this, &p);
+  const std::shared_ptr<const AbsFunction> o1{this->clone()};
+  const std::shared_ptr<const AbsParameter> o2{p.clone()};
+  return ParameterComposition(o1, o2);
 }
 
 Derivative AbsFunction::partial(unsigned int index) const {
-  FunctionNumDeriv fPrime(this,index);
-  return Derivative(&fPrime);
+  std::shared_ptr<const AbsFunction> o{this->clone()};
+  FunctionNumDeriv fPrime(o,index);
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
 }
 
 
@@ -71,24 +77,29 @@ Derivative AbsFunction::prime() const {
 }
 
 FunctionSum operator + (const AbsFunction & a, const AbsFunction & b) {
-  return FunctionSum(&a,&b);
+  const std::shared_ptr<const AbsFunction> o1{a.clone()},o2{b.clone()};
+  return FunctionSum(o1,o2);
 }
 
 FunctionDifference operator - (const AbsFunction & a, const AbsFunction & b) {
-  return FunctionDifference(&a,&b);
+  const std::shared_ptr<const AbsFunction> o1{a.clone()},o2{b.clone()};
+  return FunctionDifference(o1,o2);
 }
 
 FunctionProduct operator * (const AbsFunction & a, const AbsFunction & b) {
-  return FunctionProduct(&a,&b);
+  const std::shared_ptr<const AbsFunction> o1{a.clone()},o2{b.clone()};
+  return FunctionProduct(o1,o2);
 }
 
 FunctionQuotient operator / (const AbsFunction & a, const AbsFunction & b) {
-  return FunctionQuotient(&a,&b);
+  const std::shared_ptr<const AbsFunction> o1{a.clone()},o2{b.clone()};
+  return FunctionQuotient(o1,o2);
 }
 
 
 FunctionNegation operator - (const AbsFunction & a) {
-  return FunctionNegation(&a);
+  std::shared_ptr<const AbsFunction> o{a.clone()};
+  return FunctionNegation(o);
 }
 
 unsigned int AbsFunction::dimensionality() const {
@@ -149,17 +160,18 @@ FunctionTimesParameter operator * (const AbsFunction &f, const AbsParameter & p)
 
 FunctionPlusParameter operator + (const AbsFunction &f, const AbsParameter & p) {
   std::shared_ptr<const AbsParameter> o{p.clone()}; 
-  return FunctionPlusParameter(o, &f);
+  std::shared_ptr<const AbsFunction>  of{f.clone()};
+  return FunctionPlusParameter(o, of);
 }
 
 FunctionPlusParameter operator - (const AbsFunction &f, const AbsParameter & p) {
   std::shared_ptr<const AbsParameter> o{(-p).clone()}; 
-  return FunctionPlusParameter(o, &f);
+  std::shared_ptr<const AbsFunction>  of{f.clone()};
+  return FunctionPlusParameter(o, of);
   
 }
 
 FunctionTimesParameter operator / (const AbsFunction &f, const AbsParameter & p) {
-  //  GENPARAMETER oneOverP = 1.0/p;
   std::shared_ptr<const AbsParameter> op{(1.0/p).clone()};
   std::shared_ptr<const AbsFunction>  of{f.clone()};
   return FunctionTimesParameter(op, of);
@@ -173,13 +185,15 @@ FunctionTimesParameter operator * (const AbsParameter & p, const AbsFunction &f)
 
 FunctionPlusParameter operator + (const AbsParameter & p, const AbsFunction &f) {
   std::shared_ptr<const AbsParameter> o{p.clone()};
-  return FunctionPlusParameter(o, &f);
+  std::shared_ptr<const AbsFunction>  of{f.clone()};
+  return FunctionPlusParameter(o, of);
 }
 
 FunctionPlusParameter operator - (const AbsParameter & p, const AbsFunction &f) {
   GENFUNCTION MinusF = -f;
   std::shared_ptr<const AbsParameter> o{p.clone()};
-  return FunctionPlusParameter(o, &MinusF);
+  std::shared_ptr<const AbsFunction>  of{MinusF.clone()};
+  return FunctionPlusParameter(o, of);
 }
 
 FunctionTimesParameter operator / (const AbsParameter & p, const AbsFunction &f) {

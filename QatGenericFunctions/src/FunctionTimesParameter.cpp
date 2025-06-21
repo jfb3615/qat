@@ -64,7 +64,11 @@ double FunctionTimesParameter::operator ()(const Argument & x) const
 Derivative FunctionTimesParameter::partial(unsigned int index) const {
   const Derivative & d=_function->partial(index);
   const AbsFunction & fPrime  = (*_parameter)*d;
-  return Derivative(&fPrime);
+
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
 }
 
 } // namespace Genfun

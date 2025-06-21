@@ -39,7 +39,7 @@ namespace Genfun {
       public:
   
     // Constructor
-    FunctionSum(const AbsFunction *arg1, const AbsFunction *arg2);
+    FunctionSum(const std::shared_ptr<const AbsFunction> & arg1, const std::shared_ptr<const AbsFunction> & arg2);
   
     // Copy constructor
     FunctionSum(const FunctionSum &right);
@@ -65,8 +65,8 @@ namespace Genfun {
     // It is illegal to assign a FunctionSum
     const FunctionSum & operator=(const FunctionSum &right);
 
-    const AbsFunction *_arg1;
-    const AbsFunction *_arg2;
+    std::shared_ptr<const AbsFunction>  _arg1;
+    std::shared_ptr<const AbsFunction>  _arg2;
   };
 } // namespace Genfun
 #endif

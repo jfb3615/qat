@@ -63,7 +63,9 @@ double ConstMinusFunction::operator ()(const Argument & x) const
 Derivative ConstMinusFunction::partial(unsigned int index) const {
   const Derivative & d=_arg->partial(index);
   const AbsFunction & fPrime = -d;
-  return Derivative(& fPrime);
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
 }
 
 

@@ -38,7 +38,7 @@ namespace Genfun {
       public:
 
     // Constructor
-    FunctionNumDeriv(const AbsFunction *arg1, unsigned int index=0);
+    FunctionNumDeriv(const std::shared_ptr<const AbsFunction> & arg1, unsigned int index=0);
   
     // Copy constructor.
     FunctionNumDeriv(const FunctionNumDeriv &right);
@@ -59,7 +59,7 @@ namespace Genfun {
     const FunctionNumDeriv & operator=(const FunctionNumDeriv &right);
 
     // The function we're differntiating.
-    const AbsFunction        *_arg1;
+    std::shared_ptr<const AbsFunction>       _arg1;
     const unsigned int       _wrtIndex;
 
     // helper data and methods to let us code Argument and double similarly

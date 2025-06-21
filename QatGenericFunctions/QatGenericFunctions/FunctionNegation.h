@@ -38,7 +38,7 @@ namespace Genfun {
       public:
 
     // Constructor
-    FunctionNegation(const AbsFunction *arg1);
+    FunctionNegation(const std::shared_ptr<const AbsFunction> &arg1);
   
     // Copy constructor.
     FunctionNegation(const FunctionNegation &right);
@@ -65,7 +65,7 @@ namespace Genfun {
     const FunctionNegation & operator=(const FunctionNegation &right);
 
     // The function we're negating.  
-    const AbsFunction *_arg1;
+    std::shared_ptr<const AbsFunction> _arg1;
   };
 } // namespace Genfun
 #endif

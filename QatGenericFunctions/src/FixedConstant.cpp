@@ -47,7 +47,9 @@ double FixedConstant::operator ()(double) const
 Derivative FixedConstant::partial(unsigned int index) const {
   if (index!=0) throw std::range_error("FixedConstant: partial derivative index out of range");
   FixedConstant fPrime(0.0);
-  return Derivative(&fPrime);
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
 }
 
 } // namespace Genfun

@@ -26,21 +26,21 @@
 namespace Genfun {
 FUNCTION_OBJECT_IMP(FunctionNegation)
 
-FunctionNegation::FunctionNegation(const AbsFunction *arg1):
-  _arg1(arg1->clone())
+FunctionNegation::FunctionNegation(const std::shared_ptr<const AbsFunction> &arg1):
+  _arg1(arg1)
 {
 }
 
 FunctionNegation::FunctionNegation(const FunctionNegation & right):
   AbsFunction(right),
-  _arg1(right._arg1->clone())
+  _arg1(right._arg1)
 {
 }
 
 
 FunctionNegation::~FunctionNegation()
 {
-  delete _arg1;
+  
 }
 
 unsigned int FunctionNegation::dimensionality() const {
@@ -62,7 +62,10 @@ double FunctionNegation::operator ()(const Argument & x) const
 Derivative FunctionNegation::partial(unsigned int index) const {
   const Derivative & d = _arg1->partial(index);
   const AbsFunction & fPrime  = -d;
-  return Derivative(&fPrime);
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
 }
 
   

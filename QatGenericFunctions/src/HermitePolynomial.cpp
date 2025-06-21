@@ -66,11 +66,13 @@ Derivative HermitePolynomial::partial(unsigned int index) const {
       2.0*_n*HermitePolynomial(_n-1,STD)/pow(M_PI, 0.25)/(pow(2.0,_n/2.0)*exp(lgamma(_n+1)/2.0))
       :
       2.0*_n*HermitePolynomial(_n-1,STD);
-    return Derivative(& fPrime);
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
   }
   else {
     const AbsFunction & fPrime   = FixedConstant(0.0);
-    return Derivative(& fPrime);
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
   }
 }
 

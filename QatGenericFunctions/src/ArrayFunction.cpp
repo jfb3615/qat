@@ -53,7 +53,9 @@ double ArrayFunction::operator ()(double argument) const {
 Derivative ArrayFunction::partial(unsigned int index) const {
   if (index!=0) throw std::range_error("ArrayFunction: partial derivative index out of range");
   FixedConstant fPrime(0.0);
-  return Derivative(&fPrime);
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
 }
 
 }

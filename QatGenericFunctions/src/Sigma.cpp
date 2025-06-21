@@ -75,7 +75,9 @@ Derivative Sigma::partial(unsigned int index) const {
   for (size_t i=0;i<_fcn.size();i++) {
     fPrime.accumulate(_fcn[i]->partial(index));
   }
-  return Derivative(&fPrime);
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
 }
 
 

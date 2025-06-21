@@ -27,9 +27,9 @@
 namespace Genfun {
 FUNCTION_OBJECT_IMP(FunctionQuotient)
 
-FunctionQuotient::FunctionQuotient(const AbsFunction *arg1, const AbsFunction *arg2):
-  _arg1(arg1->clone()),
-  _arg2(arg2->clone())
+FunctionQuotient::FunctionQuotient(const std::shared_ptr<const AbsFunction> & arg1, const std::shared_ptr<const AbsFunction> & arg2):
+  _arg1(arg1),
+  _arg2(arg2)
 {
   if (arg1->dimensionality()!=arg2->dimensionality()) {
     throw std::runtime_error ("FunctionQuotient:  dimension mismatch");
@@ -38,13 +38,11 @@ FunctionQuotient::FunctionQuotient(const AbsFunction *arg1, const AbsFunction *a
 
 FunctionQuotient::FunctionQuotient( const FunctionQuotient & right) :
 AbsFunction(right),
-_arg1(right._arg1->clone()),
-_arg2(right._arg2->clone())
+_arg1(right._arg1),
+_arg2(right._arg2)
 {}
 FunctionQuotient::~FunctionQuotient()
 {
-  delete _arg1;
-  delete _arg2;
 }
 
 unsigned int FunctionQuotient::dimensionality() const {
@@ -70,7 +68,12 @@ Derivative FunctionQuotient::partial(unsigned int index) const {
   const AbsFunction & fPrime  = 
     ((d1)*(*_arg2)-(*_arg1)*d2) / 
     (*_arg2)/ (*_arg2);
-  return Derivative(&fPrime);
+
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
+
 }
 
 } // namespace Genfun

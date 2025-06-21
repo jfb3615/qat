@@ -47,7 +47,10 @@ double Log::operator() (double x) const {
 Derivative Log::partial(unsigned int index) const {
   if (index!=0) throw std::range_error("Log: partial derivative index out of range");
   GENFUNCTION fPrime=1/Variable();
-  return Derivative(&fPrime);
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
 }
 
 } // namespace Genfun

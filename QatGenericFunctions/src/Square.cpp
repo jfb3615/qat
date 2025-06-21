@@ -47,7 +47,8 @@ Derivative Square::partial(unsigned int index) const {
   if (index!=0) throw std::range_error("Square: partial derivative index out of range"); 
   Variable x;
   const AbsFunction & fPrime = 2*x;
-  return Derivative(&fPrime);
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
 }
 
 

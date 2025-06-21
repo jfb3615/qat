@@ -27,7 +27,7 @@
 namespace Genfun {
 FUNCTION_OBJECT_IMP(FunctionComposition)
 
-FunctionComposition::FunctionComposition(const AbsFunction *arg1, const AbsFunction *arg2):_arg1(arg1->clone()),_arg2(arg2->clone())
+FunctionComposition::FunctionComposition(const std::shared_ptr<const AbsFunction> & arg1, const std::shared_ptr<const AbsFunction> & arg2):_arg1(arg1),_arg2(arg2)
 {
   if (arg1->dimensionality()!=1) {
     throw std::runtime_error("Dimension mismatch in function composition");
@@ -36,14 +36,12 @@ FunctionComposition::FunctionComposition(const AbsFunction *arg1, const AbsFunct
 
 FunctionComposition::FunctionComposition(const FunctionComposition & right):
 AbsFunction(right),
-_arg1(right._arg1->clone()),
-_arg2(right._arg2->clone())
+_arg1(right._arg1),
+_arg2(right._arg2)
 {}
 
 FunctionComposition::~FunctionComposition()
 {
-  delete _arg1;
-  delete _arg2;
 }
 
 unsigned int FunctionComposition::dimensionality() const {
@@ -75,7 +73,10 @@ Derivative FunctionComposition::partial(unsigned int index) const {
   const Derivative & d1=_arg1->partial(0);
   const Derivative & d2=_arg2->partial(index);
   const AbsFunction & fPrime = d1(*_arg2)*d2;
-  return Derivative(&fPrime);
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
+  
 }
 
 

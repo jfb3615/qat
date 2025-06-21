@@ -59,7 +59,10 @@ double KVector::operator () (const Argument & a) const {
 Derivative KVector::partial(unsigned int ) const {
 
   KVector vec(_dimensionality,0.0);
-  return Derivative(&vec);
+
+  std::shared_ptr<const AbsFunction> deriv{vec.clone()};
+  return Derivative(deriv);
+
 }
 
 unsigned int KVector::dimensionality() const {

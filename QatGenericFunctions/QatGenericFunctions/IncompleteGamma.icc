@@ -104,26 +104,31 @@ Derivative IncompleteGamma::partial(unsigned int index) const {
   if (_type==UPPER) {
     Variable X;
     const AbsFunction & fPrime = -Power(_a.getValue()-1)(X) * Exp()(-X);
-    return Derivative(& fPrime);
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
   }
   else if (_type==LOWER) {
     Variable X;
     const AbsFunction & fPrime =  Power(_a.getValue()-1)(X) * Exp()(-X);
-    return Derivative(& fPrime);
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
   }
   else if (_type==Q) {
     Variable X;
     const AbsFunction & fPrime = -Power(_a.getValue()-1)(X) * Exp()(-X)/tgamma(_a.getValue());
-    return Derivative(& fPrime);
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
   }
   else if (_type==P) {
     Variable X;
     const AbsFunction & fPrime =  Power(_a.getValue()-1)(X) * Exp()(-X)/tgamma(_a.getValue());
-    return Derivative(& fPrime);
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
   }
   else {
     const AbsFunction & fPrime =  FixedConstant(0.0);
-    return Derivative(&fPrime);
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
   } 
 }
 

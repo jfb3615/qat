@@ -47,7 +47,8 @@ double Sinh::operator() (double x) const {
 Derivative Sinh::partial(unsigned int index) const {
   if (index!=0) throw std::range_error("Sinh: partial derivative index out of range");
   const AbsFunction & fPrime = Cosh();
-  return Derivative(& fPrime);
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
 }
 
 } // namespace Genfun

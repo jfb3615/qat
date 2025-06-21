@@ -49,7 +49,10 @@ Derivative Tanh::partial(unsigned int index) const {
   if (index!=0) throw std::range_error("Tanh: partial derivative index out of range");
 
   const AbsFunction & fPrime = 1.0/Cosh()/Cosh();
-  return Derivative(& fPrime);
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
 }
 
 } // namespace Genfun

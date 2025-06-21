@@ -84,7 +84,10 @@ Derivative Pi::partial(unsigned int index) const {
     }
     fPrime.accumulate(_fcn[i]->partial(index)*subproductI);
   }
-  return Derivative(&fPrime);
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
 }
 
 

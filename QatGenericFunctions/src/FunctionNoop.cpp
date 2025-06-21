@@ -26,20 +26,19 @@
 namespace Genfun {
 FUNCTION_OBJECT_IMP(FunctionNoop)
 
-FunctionNoop::FunctionNoop(const AbsFunction *arg1):
-_arg1(arg1->clone())
+FunctionNoop::FunctionNoop(const std::shared_ptr<const AbsFunction> & arg1):
+_arg1(arg1)
 {
 }
 
 FunctionNoop::FunctionNoop(const FunctionNoop & right):
-  AbsFunction(right), _arg1(right._arg1->clone())
+  AbsFunction(right), _arg1(right._arg1)
 {
 }
 
 
 FunctionNoop::~FunctionNoop()
 {
-  delete _arg1;
 }
 
 unsigned int FunctionNoop::dimensionality() const {

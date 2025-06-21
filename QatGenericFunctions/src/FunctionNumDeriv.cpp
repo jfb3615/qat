@@ -27,15 +27,15 @@
 namespace Genfun {
 FUNCTION_OBJECT_IMP(FunctionNumDeriv)
 
-FunctionNumDeriv::FunctionNumDeriv(const AbsFunction *arg1, unsigned int index):
-  _arg1(arg1->clone()),
+FunctionNumDeriv::FunctionNumDeriv(const std::shared_ptr<const AbsFunction> & arg1, unsigned int index):
+  _arg1(arg1),
   _wrtIndex(index)
 {
 }
 
 FunctionNumDeriv::FunctionNumDeriv(const FunctionNumDeriv & right):
   AbsFunction(right),
-  _arg1(right._arg1->clone()),
+  _arg1(right._arg1),
   _wrtIndex(right._wrtIndex)
 {
 }
@@ -43,7 +43,6 @@ FunctionNumDeriv::FunctionNumDeriv(const FunctionNumDeriv & right):
 
 FunctionNumDeriv::~FunctionNumDeriv()
 {
-  delete _arg1;
 }
 
 unsigned int FunctionNumDeriv::dimensionality() const {
