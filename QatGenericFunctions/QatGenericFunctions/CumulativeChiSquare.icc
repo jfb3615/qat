@@ -41,13 +41,13 @@ AbsFunction(),
 
 inline
 CumulativeChiSquare::~CumulativeChiSquare() {
-  delete _function;
 }
 
 inline
 CumulativeChiSquare::CumulativeChiSquare(const CumulativeChiSquare & right):
 AbsFunction(right),
-_nDof(right._nDof)
+_nDof(right._nDof),
+_function(right._function)
 {
   create();
 }
@@ -67,6 +67,6 @@ void CumulativeChiSquare::create() {
   Variable x;
   IncompleteGamma incompleteGamma(IncompleteGamma::P);
   incompleteGamma.a().setValue(_nDof/2.0);
-  _function = (incompleteGamma(x/2.0)).clone();
+  _function = std::shared_ptr<const AbsFunction>(incompleteGamma(x/2.0).clone());
 } 
 } // namespace Genfun

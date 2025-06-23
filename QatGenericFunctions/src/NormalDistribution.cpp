@@ -29,8 +29,8 @@ namespace Genfun {
 FUNCTION_OBJECT_IMP(NormalDistribution)
 
 NormalDistribution::NormalDistribution():
-  _mean("Mean", 0.0,-10,10),
-  _sigma("Sigma",1.0,0, 10)
+_mean(new Parameter("Mean", 0.0,-10,10)),
+  _sigma(new Parameter("Sigma",1.0,0, 10))
 {}
 
 NormalDistribution::~NormalDistribution() {
@@ -44,26 +44,26 @@ _sigma(right._sigma)
 }
 
 double NormalDistribution::operator() (double x) const {
-  double s   = _sigma.getValue();
-  double x0  = _mean.getValue();
+  double s   = _sigma->getValue();
+  double x0  = _mean->getValue();
   return (1.0/(sqrt(2*M_PI)*s))*
 	  exp(-(x-x0)*(x-x0)/(2.0*s*s));
 }
 
 Parameter & NormalDistribution::mean() {
-  return _mean;
+  return *_mean;
 }
 
 Parameter & NormalDistribution::sigma() {
-  return _sigma;
+  return *_sigma;
 }
 
 const Parameter & NormalDistribution::mean() const {
-  return _mean;
+  return *_mean;
 }
 
 const Parameter & NormalDistribution::sigma() const {
-  return _sigma;
+  return *_sigma;
 }
 
 
@@ -73,7 +73,7 @@ Derivative NormalDistribution::partial(unsigned int index) const {
   if (index!=0) throw std::range_error("NormalDistribution: partial derivative index out of range");
 
   Variable x;
-  const AbsFunction & fPrime  = (*this)*(_mean-x)/_sigma/_sigma;
+  const AbsFunction & fPrime  = (*this)*(*_mean-x)/(*_sigma)/(*_sigma);
 
   std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
   return Derivative(deriv);

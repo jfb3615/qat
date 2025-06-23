@@ -65,8 +65,8 @@ namespace Genfun {
     
     // Here are the two parameters delta and sigma:
 
-    Parameter       _delta;
-    Parameter       _sigma;
+    std::shared_ptr<Parameter>       _delta;
+    std::shared_ptr<Parameter>       _sigma;
 
 
   };

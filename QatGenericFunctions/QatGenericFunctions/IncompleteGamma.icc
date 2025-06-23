@@ -39,7 +39,7 @@ inline
 IncompleteGamma::IncompleteGamma(Type type):
   AbsFunction(),
   _type(type),
-  _a("a-parameter", 5 ,0, HUGE_VAL) 
+  _a(new Parameter("a-parameter", 5 ,0, HUGE_VAL)) 
 {
 }
 
@@ -57,13 +57,13 @@ _a(right._a)
 
 inline
 Parameter & IncompleteGamma::a() {
-  return _a;
+  return *_a;
 }
 
 
 inline
 const Parameter & IncompleteGamma::a() const {
-  return _a;
+  return *_a;
 }
 
 
@@ -75,16 +75,16 @@ double IncompleteGamma::operator() (double x) const {
   gsl_sf_result result;
   int status = -1;
   if (_type==P) {
-    status=gsl_sf_gamma_inc_P_e (_a.getValue(), x, &result);
+    status=gsl_sf_gamma_inc_P_e (a().getValue(), x, &result);
   }
   else if (_type==Q) {
-    status=gsl_sf_gamma_inc_Q_e (_a.getValue(), x, &result);
+    status=gsl_sf_gamma_inc_Q_e (a().getValue(), x, &result);
   }
   else if (_type==UPPER) {
-    status=gsl_sf_gamma_inc_e    (_a.getValue(), x, &result);
+    status=gsl_sf_gamma_inc_e    (a().getValue(), x, &result);
   }
   else if (_type==LOWER) {
-    status=tgamma(x)-gsl_sf_gamma_inc_e    (_a.getValue(), x, &result);
+    status=tgamma(x)-gsl_sf_gamma_inc_e    (a().getValue(), x, &result);
   }
   else {
     throw std::logic_error("Impossible condition in IncompleteGamma");
@@ -103,25 +103,25 @@ Derivative IncompleteGamma::partial(unsigned int index) const {
   if (index!=0) throw std::range_error("IncompleteGamma: partial derivative index out of range");
   if (_type==UPPER) {
     Variable X;
-    const AbsFunction & fPrime = -Power(_a.getValue()-1)(X) * Exp()(-X);
+    const AbsFunction & fPrime = -Power(a().getValue()-1.0)(X) * Exp()(-X);
     std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
     return Derivative(deriv);
   }
   else if (_type==LOWER) {
     Variable X;
-    const AbsFunction & fPrime =  Power(_a.getValue()-1)(X) * Exp()(-X);
+    const AbsFunction & fPrime =  Power(a().getValue()-1.0)(X) * Exp()(-X);
     std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
     return Derivative(deriv);
   }
   else if (_type==Q) {
     Variable X;
-    const AbsFunction & fPrime = -Power(_a.getValue()-1)(X) * Exp()(-X)/tgamma(_a.getValue());
+    const AbsFunction & fPrime = -Power(a().getValue()-1.0)(X) * Exp()(-X)/tgamma(a().getValue());
     std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
     return Derivative(deriv);
   }
   else if (_type==P) {
     Variable X;
-    const AbsFunction & fPrime =  Power(_a.getValue()-1)(X) * Exp()(-X)/tgamma(_a.getValue());
+    const AbsFunction & fPrime =  Power(a().getValue()-1.0)(X) * Exp()(-X)/tgamma(a().getValue());
     std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
     return Derivative(deriv);
   }

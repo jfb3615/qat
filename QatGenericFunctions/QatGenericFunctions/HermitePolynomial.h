@@ -31,7 +31,6 @@
 #ifndef HermitePolynomial_h_
 #define HermitePolynomial_h_ 1
 #include "QatGenericFunctions/AbsFunction.h"
-#include "QatGenericFunctions/Parameter.h"
 #include "QatGenericFunctions/Defs.h"
 
 namespace Genfun {

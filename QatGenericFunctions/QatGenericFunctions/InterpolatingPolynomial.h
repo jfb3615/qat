@@ -30,7 +30,6 @@
 #ifndef _InterpolatingPolynomial_h_
 #define _InterpolatingPolynomial_h_ 
 #include "QatGenericFunctions/AbsFunction.h"
-#include "QatGenericFunctions/Parameter.h"
 #include <vector>
 namespace Genfun {
 
