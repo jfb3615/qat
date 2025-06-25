@@ -72,10 +72,10 @@ namespace Genfun {
     const NormalDistribution & operator=(const NormalDistribution &right);
 
     // Here is the decay constant
-    Parameter _mean;
+    std::shared_ptr<Parameter> _mean;
 
     // Here is the sigma
-    Parameter _sigma;
+    std::shared_ptr<Parameter> _sigma;
   };
 } // namespace Genfun
 

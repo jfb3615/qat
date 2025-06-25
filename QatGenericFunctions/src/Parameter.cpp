@@ -26,7 +26,7 @@ namespace Genfun {
 PARAMETER_OBJECT_IMP(Parameter)
 
 Parameter::Parameter(std::string name, double value, double lowerLimit, double upperLimit):
-  _name(name),_value(value),_lowerLimit(lowerLimit),_upperLimit(upperLimit),_sourceParameter(NULL)
+_name(name),_value(value),_lowerLimit(lowerLimit),_upperLimit(upperLimit),_sourceParameter(std::make_shared<const AbsParameter *>(nullptr))
 {
 } 
 
@@ -46,8 +46,9 @@ const std::string & Parameter::getName() const {
 
 double Parameter::getValue() const
 {
-  if (_sourceParameter) {
-    return _sourceParameter->getValue();
+  if (_origin) return _origin->getValue();
+  if (*_sourceParameter) {
+    return (*_sourceParameter)->getValue();
   }
   else {
     return _value;
@@ -56,7 +57,8 @@ double Parameter::getValue() const
 
 double Parameter::getLowerLimit() const
 {
-  if (_sourceParameter) {
+  if (_origin) return _origin->getLowerLimit();
+  if (*_sourceParameter) {
     return -1E-100;
   }
   else {
@@ -66,7 +68,8 @@ double Parameter::getLowerLimit() const
 
 double Parameter::getUpperLimit() const
 {
-  if (_sourceParameter) {
+  if (_origin) return _origin->getUpperLimit();
+  if (*_sourceParameter) {
     return 1E100;
   }
   else {
@@ -76,9 +79,14 @@ double Parameter::getUpperLimit() const
 
 void Parameter::setValue(double value)
 {
-  if (_sourceParameter) {
+  if (*_sourceParameter) {
     std::cerr
-      << "Warning:  Parameter is connected.  Function has no effect."
+      << "Warning:  Parameter is connected.  setValue has no effect."
+      << std::endl;
+  }
+  else if (_origin) {
+    std::cerr
+      << "Warning:  Parameter is a copy.  setValue has no effect."
       << std::endl;
   }
   else {
@@ -88,9 +96,16 @@ void Parameter::setValue(double value)
 
 void Parameter::setLowerLimit(double lowerLimit)
 {
-  if (_sourceParameter) {
+
+
+  if (*_sourceParameter) {
     std::cerr
-      << "Warning:  Parameter is connected.  Function has no effect."
+      << "Warning:  Parameter is connected.  setLowerLimit has no effect."
+      << std::endl;
+  }
+  else if (_origin) {
+    std::cerr
+      << "Warning:  Parameter is a copy.  setLowerLimit has no effect."
       << std::endl;
   }
   else {
@@ -100,9 +115,14 @@ void Parameter::setLowerLimit(double lowerLimit)
 
 void Parameter::setUpperLimit(double upperLimit)
 {
-  if (_sourceParameter) {
+  if (*_sourceParameter) {
     std::cerr
-      << "Warning:  Parameter is connected.  Function has no effect."
+      << "Warning:  Parameter is connected.  setUpperLimit has no effect."
+      << std::endl;
+  }
+  else if (_origin) {
+    std::cerr
+      << "Warning:  Parameter is a copy. setUpperLimit has no effect."
       << std::endl;
   }
   else {
@@ -113,11 +133,11 @@ void Parameter::setUpperLimit(double upperLimit)
 void Parameter::connectFrom(const AbsParameter *  source)
 {
   const Parameter *sp = source->parameter();
-  if (sp && sp->_sourceParameter) {
-    connectFrom(sp->_sourceParameter);
+  if (sp && *sp->_sourceParameter) {
+    *_sourceParameter=sp;
   }
   else {
-    _sourceParameter = source;
+    *_sourceParameter = source;
   }
 }
 
@@ -128,8 +148,12 @@ Parameter::Parameter(const Parameter & right):
   _value(right._value),
   _lowerLimit(right._lowerLimit),
   _upperLimit(right._upperLimit),
+  _origin(&right),
   _sourceParameter(right._sourceParameter)
 {
+  //while (_origin) {
+  //  if (_origin->_origin) _origin=_origin->_origin; else break;
+  //}
 }
   
 const Parameter & Parameter::operator=(const Parameter &right) {
@@ -138,8 +162,13 @@ const Parameter & Parameter::operator=(const Parameter &right) {
     _value=right._value;
     _lowerLimit=right._lowerLimit;
     _upperLimit=right._upperLimit;
+    _origin=&right;
     _sourceParameter=right._sourceParameter;
   }
+  //  while (_origin) {
+  //  if (_origin->_origin) _origin=_origin->_origin; else break;
+  // }
+
   return *this;
 }
 

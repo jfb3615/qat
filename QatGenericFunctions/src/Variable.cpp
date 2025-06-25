@@ -59,7 +59,8 @@ unsigned int Variable::index() const {
 Derivative Variable::partial(unsigned int mindex) const {
   double kroneckerDelta = mindex==_selectionIndex ? 1.0 : 0.0;
   KVector vec(_dimensionality,kroneckerDelta);
-  return Derivative(&vec);
+  std::shared_ptr<const AbsFunction> deriv{vec.clone()};
+  return Derivative(deriv);
 }
 
 unsigned int Variable::dimensionality() const {

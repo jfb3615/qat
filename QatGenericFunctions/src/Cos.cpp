@@ -46,7 +46,11 @@ double Cos::operator() (double x) const {
 Derivative Cos::partial(unsigned int index) const {
   if (index!=0) throw std::range_error("Cos:  partial derivative index ot of range");
   const AbsFunction & fPrime = -Sin();
-  return Derivative(& fPrime);
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
+
 }
 
 

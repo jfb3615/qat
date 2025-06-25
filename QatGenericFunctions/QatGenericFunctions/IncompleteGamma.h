@@ -72,7 +72,7 @@ namespace Genfun {
     Type _type;
 
     // Here is the parameter of the Incomplete Gamma Function
-    Parameter _a;
+    std::shared_ptr<Parameter> _a;
   };
 } // namespace Genfun
 #include "QatGenericFunctions/IncompleteGamma.icc"

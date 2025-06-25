@@ -45,7 +45,9 @@ double Theta::operator() (double x) const {
 Derivative Theta::partial(unsigned int index) const {
   if (index!=0) throw std::runtime_error("Theta::Partial: index out of range");
   const AbsFunction & fPrime = FixedConstant(0.0);
-  return Derivative(& fPrime);
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+  
 }
 
 } // namespace Genfun

@@ -29,7 +29,6 @@
 #ifndef LegendrePolynomial_h
 #define LegendrePolynomial_h 1
 #include "QatGenericFunctions/AbsFunction.h"
-#include "QatGenericFunctions/Parameter.h"
 #include "QatGenericFunctions/Defs.h"
 namespace Genfun {
 

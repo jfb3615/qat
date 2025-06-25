@@ -92,8 +92,8 @@ FUNCTION_OBJECT_IMP(VoigtDistribution)
 
 
 VoigtDistribution::VoigtDistribution():
-  _delta ("delta", 5, 0,   100),
-  _sigma("sigma",  5, 0,   100)
+_delta (new Parameter("delta", 5, 0,   100)),
+  _sigma(new Parameter("sigma",  5, 0,   100))
 {}
 
   VoigtDistribution::VoigtDistribution(const VoigtDistribution & right):
@@ -107,8 +107,8 @@ VoigtDistribution::~VoigtDistribution() {
 }
 
 double VoigtDistribution::operator() (double x) const {
-  double G=_delta.getValue();
-  double s=_sigma.getValue();
+  double G=_delta->getValue();
+  double s=_sigma->getValue();
   static const double sqrt2=sqrt(2.0);
   static const double sqrt2PI=sqrt(2.0*M_PI);
   static const std::complex<double> I(0,1);
@@ -123,11 +123,11 @@ double VoigtDistribution::operator() (double x) const {
 
 
 Parameter & VoigtDistribution::delta() {
-  return _delta;
+  return *_delta;
 }
 
 Parameter & VoigtDistribution::sigma() {
-  return _sigma;
+  return *_sigma;
 }
 
 

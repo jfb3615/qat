@@ -40,7 +40,7 @@ namespace Genfun {
       public:
 
     // Constructor
-    ParameterComposition(const AbsFunction *arg1, const AbsParameter *arg2);
+    ParameterComposition(const std::shared_ptr<const AbsFunction> & arg1, const std::shared_ptr<const AbsParameter> & arg2);
 
     // Copy constructor
     ParameterComposition(const ParameterComposition &right);
@@ -57,8 +57,8 @@ namespace Genfun {
     // It is illegal to assign a ParameterComposition
     const ParameterComposition & operator=(const ParameterComposition &right);
 
-    const AbsFunction  *_arg1;
-    AbsParameter *_arg2;  
+    std::shared_ptr<const AbsFunction>  _arg1;
+    std::shared_ptr<const AbsParameter> _arg2;  
   };
 } // namespace Genfun
 #endif

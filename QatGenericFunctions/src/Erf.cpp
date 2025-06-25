@@ -50,7 +50,10 @@ double Erf::operator() (double x) const {
     Genfun::NormalDistribution gauss;
     gauss.sigma().setValue(1/sqrt(2));
     GENFUNCTION fPrime=2.0*gauss;
-    return Derivative(&fPrime);
+
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
+
   }
 
 } // namespace Genfun

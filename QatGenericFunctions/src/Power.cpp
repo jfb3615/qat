@@ -83,11 +83,13 @@ Derivative Power::partial(unsigned int index) const {
   if (index!=0) throw std::range_error("Power:  partial derivative index out of range");
   if (_asInteger) {
     const AbsFunction & fPrime = _intPower*Power(_intPower-1);
-    return Derivative(&fPrime);
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
   }
   else {
     const AbsFunction & fPrime = _doublePower*Power(_doublePower-1);
-    return Derivative(&fPrime);
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
   }
 
 }

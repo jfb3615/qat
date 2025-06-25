@@ -28,6 +28,7 @@
 #ifndef ParameterSum_h
 #define ParameterSum_h 1
 #include "QatGenericFunctions/AbsParameter.h"
+#include <memory>
 
 namespace Genfun {
 
@@ -38,7 +39,7 @@ namespace Genfun {
       public:
   
     // Constructor
-    ParameterSum(const AbsParameter *arg1, const AbsParameter *arg2);
+    ParameterSum(const std::shared_ptr<const AbsParameter> & arg1, const std::shared_ptr<const AbsParameter> & arg2);
   
     // Copy constructor
     ParameterSum(const ParameterSum &right);
@@ -54,8 +55,8 @@ namespace Genfun {
     // It is illegal to assign a ParameterSum
     const ParameterSum & operator=(const ParameterSum &right);
 
-    AbsParameter *_arg1;
-    AbsParameter *_arg2;
+    std::shared_ptr<const AbsParameter>_arg1;
+    std::shared_ptr<const AbsParameter>_arg2;
   };
 } // namespace Genfun
 #endif

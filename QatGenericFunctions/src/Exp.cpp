@@ -45,7 +45,9 @@ double Exp::operator() (double x) const {
 
 Derivative Exp::partial(unsigned int index) const {
   if (index!=0) throw std::range_error("Exp: partial derivative index out of range");
-  return Derivative(this);
+  std::shared_ptr<const AbsFunction> deriv{clone()};
+  return Derivative(deriv);
+
 }
 
 } // namespace Genfun

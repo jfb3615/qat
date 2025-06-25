@@ -25,6 +25,7 @@ namespace Genfun {
   // Partial Derivative
   Derivative <Function>::partial(unsigned int index) const {
     const AbsFunction & fPrime=FixedConstant(0);
-    return Derivative(&fPrime);
+    std::shared_ptr<const AbsFunction> deriv(fPrime.clone());
+    return Derivative(deriv);
   }
 }

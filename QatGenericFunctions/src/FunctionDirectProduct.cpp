@@ -86,12 +86,16 @@ Derivative FunctionDirectProduct::partial(unsigned int index) const {
   if (index<_m) {
     const Derivative & d1=_arg1->partial(index);
     const AbsFunction & fPrime = d1%(*_arg2);
-    return Derivative(&fPrime);
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
   }
   else {
     const Derivative &d2=_arg2->partial(index-_m);
     const AbsFunction & fPrime = (*_arg1)%d2;
-    return Derivative(&fPrime);
+
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
+
   }
 }
 

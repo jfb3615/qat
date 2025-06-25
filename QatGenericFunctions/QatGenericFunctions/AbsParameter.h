@@ -28,7 +28,7 @@
 //--------------------------------------------------------------------//
 #ifndef _AbsParameter_h_
 #define _AbsParameter_h_
-
+#include <memory>
 namespace Genfun {
   class Parameter;
   class ParameterSum;

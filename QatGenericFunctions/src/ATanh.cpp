@@ -49,8 +49,11 @@ Derivative ATanh::partial(unsigned int index) const {
 
   Square square;
   
-  const AbsFunction & fPrime=1.0/(1.0-square);;
-  return Derivative(& fPrime);
+  const AbsFunction & fPrime=1.0/(1.0-square);
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
 }
 
 } // end namespace Genfun 

@@ -38,7 +38,7 @@ namespace Genfun {
       public:
   
     // Constructor
-    ConstTimesFunction(double constant, const AbsFunction *arg);
+    ConstTimesFunction(double constant, const std::shared_ptr<const AbsFunction>  & arg);
   
     // Copy constructor
     ConstTimesFunction(const ConstTimesFunction &right);
@@ -65,7 +65,7 @@ namespace Genfun {
     const ConstTimesFunction & operator=(const ConstTimesFunction &right);
 
     double             _constant;
-    const AbsFunction *_arg;
+    std::shared_ptr<const AbsFunction> _arg;
   };
 } // namespace Genfun
 #endif

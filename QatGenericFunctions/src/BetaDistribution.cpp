@@ -29,8 +29,8 @@ FUNCTION_OBJECT_IMP(BetaDistribution)
 
 
 BetaDistribution::BetaDistribution():
-_alpha("a", 1.0, 0.0, 100),
-  _beta ("beta", 1.0, 0.0, 100)
+_alpha(new Parameter("a", 1.0, 0.0, 100)),
+  _beta (new Parameter("beta", 1.0, 0.0, 100))
 {}
   
   BetaDistribution::BetaDistribution(const BetaDistribution & right):
@@ -44,19 +44,19 @@ _alpha("a", 1.0, 0.0, 100),
   }
   
   double BetaDistribution::operator() (double x) const {
-    double a = _alpha.getValue(),b=_beta.getValue();
+    double a = _alpha->getValue(),b=_beta->getValue();
     return pow(x,a-1)*pow((1-x),b-1)*
       exp(lgamma(a+b)-lgamma(a)-lgamma(b));
     
   }
   
   Parameter & BetaDistribution::alpha() {
-    return _alpha;
+    return *_alpha;
   }
   
   
   Parameter & BetaDistribution::beta() {
-    return _beta;
+    return *_beta;
   }
   
   

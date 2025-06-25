@@ -38,7 +38,7 @@ namespace Genfun {
       public:
   
     // Constructor
-    ParameterQuotient(const AbsParameter *arg1, const AbsParameter *arg2);
+    ParameterQuotient(const std::shared_ptr<const AbsParameter> & arg1, const std::shared_ptr<const AbsParameter> & arg2);
   
     // Copy constructor
     ParameterQuotient(const ParameterQuotient &right);
@@ -54,8 +54,8 @@ namespace Genfun {
     // It is illegal to assign a ParameterQuotient
     const ParameterQuotient & operator=(const ParameterQuotient &right);
 
-    AbsParameter *_arg1;
-    AbsParameter *_arg2;
+    std::shared_ptr<const AbsParameter> _arg1;
+    std::shared_ptr<const AbsParameter> _arg2;
   };
 } // namespace Genfun
 #endif

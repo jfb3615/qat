@@ -87,11 +87,13 @@ namespace Genfun {
 	-AssociatedLaguerrePolynomial(_n-1,_a+1,STD)
 	:
 	-(AssociatedLaguerrePolynomial(_n-1,_a+1,STD)/exp(0.5*(lgamma(_n+_a+1)-lgamma(_n+1))));
-      return Derivative(& fPrime);
+      std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+      return Derivative(deriv);
     }
     else {
       const AbsFunction & fPrime   = FixedConstant(0.0);
-      return Derivative(& fPrime);
+      std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+      return Derivative(deriv);
     }
   }
 } // end namespace Genfun

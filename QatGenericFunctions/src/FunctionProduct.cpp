@@ -27,9 +27,9 @@
 namespace Genfun {
 FUNCTION_OBJECT_IMP(FunctionProduct)
 
-FunctionProduct::FunctionProduct(const AbsFunction *arg1, const AbsFunction *arg2):
-_arg1(arg1->clone()),
-_arg2(arg2->clone())
+FunctionProduct::FunctionProduct(const std::shared_ptr<const AbsFunction> & arg1, const std::shared_ptr<const AbsFunction> & arg2):
+_arg1(arg1),
+_arg2(arg2)
 {
   if (arg1->dimensionality()!=arg2->dimensionality()) {
     throw std::runtime_error ("FunctionProduct:  dimension mismatch");
@@ -38,15 +38,13 @@ _arg2(arg2->clone())
 
 FunctionProduct::FunctionProduct(const FunctionProduct & right) :
   AbsFunction(right),
-  _arg1(right._arg1->clone()),
-  _arg2(right._arg2->clone())
+  _arg1(right._arg1),
+  _arg2(right._arg2)
 {
 }
 
 FunctionProduct::~FunctionProduct()
 {
-  delete _arg1;
-  delete _arg2;
 }
 
 
@@ -68,7 +66,10 @@ Derivative FunctionProduct::partial(unsigned int index) const {
   const Derivative & d1=_arg1->partial(index);
   const Derivative & d2=_arg2->partial(index);
   const AbsFunction & fPrime =  (*_arg1)*d2 + d1*(*_arg2);
-  return Derivative(&fPrime);
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+    
 }
 
 } // namespace Genfun

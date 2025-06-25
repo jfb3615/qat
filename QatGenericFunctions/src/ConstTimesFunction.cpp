@@ -25,16 +25,16 @@
 namespace Genfun {
 FUNCTION_OBJECT_IMP(ConstTimesFunction)
 
-ConstTimesFunction::ConstTimesFunction(double constant, const AbsFunction *arg):
+ConstTimesFunction::ConstTimesFunction(double constant, const std::shared_ptr<const AbsFunction> &arg):
   _constant(constant),
-  _arg(arg->clone())
+  _arg(arg)
 {
 }
 
 ConstTimesFunction::ConstTimesFunction(const ConstTimesFunction & right) :
 AbsFunction(right),
 _constant(right._constant),
-_arg(right._arg->clone())
+_arg(right._arg)
 {}
 
 unsigned int ConstTimesFunction::dimensionality() const {
@@ -43,7 +43,6 @@ unsigned int ConstTimesFunction::dimensionality() const {
 
 ConstTimesFunction::~ConstTimesFunction()
 {
-  delete _arg;
 }
 
 
@@ -63,7 +62,10 @@ double ConstTimesFunction::operator ()(const Argument & x) const
     // d/dx (k*f) = k*(df/dx)
     const Derivative & d=_arg->partial(index);
     const AbsFunction & fPrime = _constant*d;
-    return Derivative(& fPrime);
+
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
+
   }
   
 } // namespace Genfun

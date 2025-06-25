@@ -83,7 +83,7 @@ namespace FractionalOrder {
 
     // The type and order of the Bessel function
     Type      _type;
-    Parameter _n; // the fractional order:
+    const std::shared_ptr<Parameter> _n; // the fractional order:
   
   };
 } // namespace FractionalOrder

@@ -45,7 +45,11 @@ double Cosh::operator() (double x) const {
 Derivative Cosh::partial(unsigned int index) const {
   if (index!=0) throw std::range_error("Cosh:  partial derivative index ot of range");
   const AbsFunction & fPrime = Sinh();
-  return Derivative(& fPrime);
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
+ 
 }
 
 

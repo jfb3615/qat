@@ -70,7 +70,9 @@ namespace Genfun {
     if (index!=0) throw std::range_error("Polynomial: partial derivative index out of range");
     std::vector<double> d=coefficientsOfDerivative();
     Polynomial fPrime(d.begin(),d.end());
-    return Derivative(&fPrime);
+
+    std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+    return Derivative(deriv);
   }
   
   // Get the roots of this polynomial:

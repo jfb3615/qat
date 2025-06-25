@@ -63,7 +63,7 @@ namespace Genfun {
     unsigned int _nDof;
   
     // Here is the "work function"
-    const AbsFunction *_function;
+    std::shared_ptr<const AbsFunction> _function;
 
     // This function is needed in all constructors:
     void create(); 

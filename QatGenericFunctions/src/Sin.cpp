@@ -47,7 +47,9 @@ double Sin::operator() (double x) const {
 Derivative Sin::partial(unsigned int index) const {
   if (index!=0) throw std::range_error("Sin: partial derivative index out of range");
   const AbsFunction & fPrime = Cos();
-  return Derivative(& fPrime);
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
 }
 
 } // namespace Genfun

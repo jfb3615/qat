@@ -27,9 +27,9 @@
 namespace Genfun {
 FUNCTION_OBJECT_IMP(FunctionDifference)
 
-FunctionDifference::FunctionDifference(const AbsFunction *arg1, const AbsFunction *arg2):
-  _arg1(arg1->clone()),
-  _arg2(arg2->clone())
+FunctionDifference::FunctionDifference(const std::shared_ptr<const AbsFunction> &arg1, const std::shared_ptr<const AbsFunction> &arg2):
+  _arg1(arg1),
+  _arg2(arg2)
 {
   if (arg1->dimensionality()!=arg2->dimensionality()) {
     throw std::runtime_error("FunctionDifference: dimension mismatch");
@@ -39,8 +39,8 @@ FunctionDifference::FunctionDifference(const AbsFunction *arg1, const AbsFunctio
 
 FunctionDifference::FunctionDifference(const FunctionDifference & right):
   AbsFunction(right),
-  _arg1(right._arg1->clone()),
-  _arg2(right._arg2->clone())
+  _arg1(right._arg1),
+  _arg2(right._arg2)
 {
 }
 
@@ -51,8 +51,6 @@ unsigned int FunctionDifference::dimensionality() const {
 
 FunctionDifference::~FunctionDifference()
 {
-  delete _arg1;
-  delete _arg2;
 }
 
 
@@ -72,7 +70,10 @@ Derivative FunctionDifference::partial(unsigned int index) const {
   const Derivative & d1=_arg1->partial(index);
   const Derivative & d2=_arg2->partial(index);
   const AbsFunction & fPrime = d1-d2;
-  return Derivative(&fPrime);
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
 }
 
 

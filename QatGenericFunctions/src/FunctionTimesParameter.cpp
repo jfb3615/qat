@@ -26,19 +26,16 @@
 namespace Genfun {
 FUNCTION_OBJECT_IMP(FunctionTimesParameter)
 
-FunctionTimesParameter::FunctionTimesParameter(const AbsParameter *parameter, const AbsFunction *function):
-  _function(function->clone()),
-  _parameter(parameter->clone())
+FunctionTimesParameter::FunctionTimesParameter(const std::shared_ptr<const AbsParameter> &parameter, const std::shared_ptr<const AbsFunction> & function):
+  _function(function),
+  _parameter(parameter)
 {
-  if (parameter->parameter() && _parameter->parameter()) {
-    _parameter->parameter()->connectFrom(parameter->parameter());
-  }
 }
 
 FunctionTimesParameter::FunctionTimesParameter(const FunctionTimesParameter & right) :
   AbsFunction(right),
-  _function(right._function->clone()),
-  _parameter(right._parameter->clone())
+  _function(right._function),
+  _parameter(right._parameter)
 {}
 
 unsigned int FunctionTimesParameter::dimensionality() const {
@@ -47,8 +44,6 @@ unsigned int FunctionTimesParameter::dimensionality() const {
 
 FunctionTimesParameter::~FunctionTimesParameter()
 {
-  delete _function;
-  delete _parameter;
 }
 
 
@@ -69,7 +64,11 @@ double FunctionTimesParameter::operator ()(const Argument & x) const
 Derivative FunctionTimesParameter::partial(unsigned int index) const {
   const Derivative & d=_function->partial(index);
   const AbsFunction & fPrime  = (*_parameter)*d;
-  return Derivative(&fPrime);
+
+
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
 }
 
 } // namespace Genfun

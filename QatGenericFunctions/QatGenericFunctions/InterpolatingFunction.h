@@ -37,7 +37,6 @@
 #ifndef _InterpolatingFunction_h_
 #define _InterpolatingFunction_h_ 
 #include "QatGenericFunctions/AbsFunction.h"
-#include "QatGenericFunctions/Parameter.h"
 #include <vector>
 namespace Genfun {
 

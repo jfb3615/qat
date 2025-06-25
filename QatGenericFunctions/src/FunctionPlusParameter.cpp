@@ -26,19 +26,16 @@
 namespace Genfun {
 FUNCTION_OBJECT_IMP(FunctionPlusParameter)
 
-FunctionPlusParameter::FunctionPlusParameter(const AbsParameter *parameter, const AbsFunction *function):
-  _function(function->clone()),
-  _parameter(parameter->clone())
+FunctionPlusParameter::FunctionPlusParameter(const std::shared_ptr<const AbsParameter> & parameter, const std::shared_ptr<const AbsFunction> & function):
+  _function(function),
+  _parameter(parameter)
 {
-  if (parameter->parameter() && _parameter->parameter()) {
-    _parameter->parameter()->connectFrom(parameter->parameter());
-  }
 }
 
 FunctionPlusParameter::FunctionPlusParameter(const FunctionPlusParameter & right) :
   AbsFunction(right),
-  _function(right._function->clone()),
-  _parameter(right._parameter->clone())
+  _function(right._function),
+  _parameter(right._parameter)
 {}
 
 unsigned int FunctionPlusParameter::dimensionality() const {
@@ -47,8 +44,6 @@ unsigned int FunctionPlusParameter::dimensionality() const {
 
 FunctionPlusParameter::~FunctionPlusParameter()
 {
-  delete _function;
-  delete _parameter;
 }
 
 

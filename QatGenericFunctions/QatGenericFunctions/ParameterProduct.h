@@ -39,7 +39,7 @@ namespace Genfun {
       public:
   
     // Constructor
-    ParameterProduct(const AbsParameter *arg1, const AbsParameter *arg2);
+    ParameterProduct(const std::shared_ptr<const AbsParameter> & arg1, const std::shared_ptr<const AbsParameter> & arg2);
   
     // Copy constructor
     ParameterProduct(const ParameterProduct &right);
@@ -55,8 +55,8 @@ namespace Genfun {
     // It is illegal to assign a ParameterProduct
     const ParameterProduct & operator=(const ParameterProduct &right);
 
-    AbsParameter *_arg1;
-    AbsParameter *_arg2;
+    std::shared_ptr<const AbsParameter> _arg1;
+    std::shared_ptr<const AbsParameter> _arg2;
   };
 } // namespace Genfun
 #endif

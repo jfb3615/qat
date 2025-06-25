@@ -49,7 +49,9 @@ Derivative Tan::partial(unsigned int index) const {
   if (index!=0) throw std::range_error("Tan: partial derivative index out of range");
 
   const AbsFunction & fPrime = 1.0/Cos()/Cos();
-  return Derivative(& fPrime);
+  std::shared_ptr<const AbsFunction> deriv{fPrime.clone()};
+  return Derivative(deriv);
+
 }
 
 } // namespace Genfun
