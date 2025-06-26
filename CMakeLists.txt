@@ -1,5 +1,5 @@
 # === Preamble ===
-cmake_minimum_required(VERSION 3.16...3.26)
+cmake_minimum_required(VERSION 3.10)
 
 # === Project's settings ===
 include( ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Qat-version.cmake )
