@@ -40,7 +40,7 @@ int main (int argc, char * * argv) {
   
   quitAction->setShortcut(QKeySequence("q"));
   
-  QObject::connect(quitAction, SIGNAL(triggered()), &app, SLOT(quit()));
+  QObject::connect(quitAction, &QAction::triggered, &app, &QApplication::quit);
   
   PRectF rect;
   rect.setXmin(0.0);
