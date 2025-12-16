@@ -63,12 +63,11 @@ namespace Genfun {
       for (unsigned int ii=_A.size();ii<newSize;ii++) {
 	_A.push_back(std::vector<double>(newSize,0));
       }
-      
-      if (j>=_A[i].size()) {
-	unsigned int newSize=j+1;  // (shadow)
-	for (unsigned int ii=0;ii<_A.size();ii++) {
-	  _A[ii].resize(newSize,0.0);
-	}
+    }
+    if (j>=_A[i].size()) {
+      unsigned int newSize=j+1;  // (shadow)
+      for (unsigned int ii=0;ii<_A.size();ii++) {
+	_A[ii].resize(newSize,0.0);
       }
     }
     return _A[i][j];
@@ -163,9 +162,9 @@ namespace Genfun {
   RK31Tableau::RK31Tableau():
     ButcherTableau("RK31 Method", 3)
   {
-    A(0,0)      ;    A(0,1)      ;   A(0,2);
-    A(1,0)=2/3.0;    A(1,1)      ;   A(1,2);
-    A(2,0)=1/3.0;    A(2,1)=1/3.0;   A(2,2);
+    A(0,0)=0    ;    A(0,1)=0    ;   A(0,2)=0;
+    A(1,0)=2/3.0;    A(1,1)=0    ;   A(1,2)=0;
+    A(2,0)=1/3.0;    A(2,1)=1/3.0;   A(2,2)=0;
 
     c(0)=0;
     c(1)=2/3.0;
@@ -179,9 +178,9 @@ namespace Genfun {
   RK32Tableau::RK32Tableau():
     ButcherTableau("RK32 Method", 3)
   {
-    A(0,0)      ;    A(0,1)      ;   A(0,2);
-    A(1,0)=1/2.0;    A(1,1)      ;   A(1,2);
-    A(2,0)=-1   ;    A(2,1)= 2   ;   A(2,2);
+    A(0,0)=0    ;    A(0,1)=0    ;   A(0,2)=0;
+    A(1,0)=1/2.0;    A(1,1)=0    ;   A(1,2)=0;
+    A(2,0)=-1   ;    A(2,1)= 2   ;   A(2,2)=0;
 
     c(0)=0;
     c(1)=1/2.0;
@@ -195,10 +194,10 @@ namespace Genfun {
   ClassicalRungeKuttaTableau::ClassicalRungeKuttaTableau():
     ButcherTableau("Classical Runge Kutta Method", 4)
   {
-    A(0,0)      ;    A(0,1)       ;   A(0,2)    ; A(0,3);
-    A(1,0)=1/2.0;    A(1,1)       ;   A(1,2)    ; A(1,3);
-    A(2,0)=0    ;    A(2,1)=1/2.0 ;   A(2,2)    ; A(2,3);
-    A(3,0)=0    ;    A(3,1)=0     ;   A(3,2)=1  ; A(3,3);
+    A(0,0)=0    ;    A(0,1)=0     ;   A(0,2)=0  ; A(0,3)=0;
+    A(1,0)=1/2.0;    A(1,1)=0     ;   A(1,2)=0  ; A(1,3)=0;
+    A(2,0)=0    ;    A(2,1)=1/2.0 ;   A(2,2)=0  ; A(2,3)=0;
+    A(3,0)=0    ;    A(3,1)=0     ;   A(3,2)=1  ; A(3,3)=0;
 
     c(0)=0;
     c(1)=1/2.0;
@@ -213,10 +212,10 @@ namespace Genfun {
   ThreeEighthsRuleTableau::ThreeEighthsRuleTableau():
     ButcherTableau("Three-Eighths Rule Method", 4)
   {
-    A(0,0)        ;    A(0,1)       ;   A(0,2)    ; A(0,3);
-    A(1,0)=1/3.0  ;    A(1,1)       ;   A(1,2)    ; A(1,3);
-    A(2,0)=-1/3.0 ;    A(2,1)=1     ;   A(2,2)    ; A(2,3);
-    A(3,0)=1      ;    A(3,1)=-1    ;   A(3,2)=1  ; A(3,3);
+    A(0,0)=0      ;    A(0,1)=0     ;   A(0,2)=0  ; A(0,3)=0;
+    A(1,0)=1/3.0  ;    A(1,1)=0     ;   A(1,2)=0  ; A(1,3)=0;
+    A(2,0)=-1/3.0 ;    A(2,1)=1     ;   A(2,2)=0  ; A(2,3)=0;
+    A(3,0)=1      ;    A(3,1)=-1    ;   A(3,2)=1  ; A(3,3)=0;
 
     c(0)=0;
     c(1)=1/3.0;

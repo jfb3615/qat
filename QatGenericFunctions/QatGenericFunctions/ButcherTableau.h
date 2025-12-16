@@ -59,14 +59,14 @@ namespace Genfun {
     inline unsigned int nSteps() const;
     
     // Write access to elements:
-    inline double & A(unsigned int i, unsigned int j);
-    inline double & b(unsigned int i);
-    inline double & c(unsigned int i);
+    [[nodiscard]] inline double & A(unsigned int i, unsigned int j);
+    [[nodiscard]] inline double & b(unsigned int i);
+    [[nodiscard]] inline double & c(unsigned int i);
     
     // Read access to elements (inline for speed)
-    inline const double & A(unsigned int i, unsigned int j) const;
-    inline const double & b(unsigned int i) const;
-    inline const double & c(unsigned int i) const;
+    [[nodiscard]] inline const double & A(unsigned int i, unsigned int j) const;
+    [[nodiscard]] inline const double & b(unsigned int i) const;
+    [[nodiscard]] inline const double & c(unsigned int i) const;
     
     
   private:
