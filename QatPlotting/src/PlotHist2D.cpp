@@ -117,56 +117,41 @@ void PlotHist2D::describeYourselfTo(AbsPlotter *plotter) const {
   if (plotter->isLogX()) return;
   if (plotter->isLogY()) return;
 
-
+  double hMinX=c->histogram->minX();
+  double hMinY=c->histogram->minY();
+  double hMaxX=c->histogram->maxX();
+  double hMaxY=c->histogram->maxY();
   double max = c->histogram->maxContents(); 
+  double binWidthX=c->histogram->binWidthX();
+  double binWidthY=c->histogram->binWidthY();
+  QPainterPath path;
+
+  QRectF rect1=m.mapRect(*plotter->qrect());
   for (unsigned int i=0;i<c->histogram->nBinsX();i++) {
     for (unsigned int j=0;j<c->histogram->nBinsY();j++) {
       
       double bin = c->histogram->bin(i,j);
       if (bin==0) continue;
       
-      double x = c->histogram->binCenterX(i,j);
-      double y = c->histogram->binCenterY(i,j);
-      double wx = c->histogram->binWidthX();
-      double wy = c->histogram->binWidthY();
-      
       double frac = bin/(max);
       double sqfrac = sqrt(frac);
-      
-      double minX =  x - wx*sqfrac/2.0;
-      double maxX =  x + wx*sqfrac/2.0;
-      double minY =  y - wy*sqfrac/2.0;
-      double maxY =  y + wy*sqfrac/2.0;
-      
-      if (plotter->qrect()->contains(QPointF(minX, minY)) ||
-	  plotter->qrect()->contains(QPointF(minX, maxY)) ||
-	  plotter->qrect()->contains(QPointF(maxX, maxY)) ||
-	  plotter->qrect()->contains(QPointF(maxX, minY)) ) {
-	
-	minX = std::max(c->histogram->minX(), minX);
-	minY = std::max(c->histogram->minY(), minY);
-	maxX = std::min(c->histogram->maxX(), maxX);
-	maxY = std::min(c->histogram->maxY(), maxY);
 
-	QPainterPath path;
-	path.moveTo(m.map(QPointF(minX,minY)));
-	path.lineTo(m.map(QPointF(minX,maxY)));
-	path.lineTo(m.map(QPointF(maxX,maxY)));
-	path.lineTo(m.map(QPointF(maxX,minY)));
-	path.lineTo(m.map(QPointF(minX,minY)));
-	
-	
-	QAbstractGraphicsShapeItem *shape = new QGraphicsPathItem(path);
-	
-	shape->setPen(pen);
-	shape->setBrush(brush);
-	shape->setTransform(mInverse);
-	plotter->scene()->addItem(shape);
-	plotter->group()->addToGroup(shape);
-	
-      }
+      double x = c->histogram->binLowerEdgeX(i,j) + (1-sqfrac)*binWidthX/2.0;
+      double y = c->histogram->binLowerEdgeY(i,j) + (1-sqfrac)*binWidthY/2.0 ;
+
+      QRectF rect0(m.map(QPointF(x,y)),sqfrac*QSize(m.m11()*binWidthX,m.m22()*binWidthY));
+      path.addRect(rect0&rect1);
     }
   }
+
+  QAbstractGraphicsShapeItem *shape = new QGraphicsPathItem(path);
+  shape->setPen(pen);
+  shape->setBrush(brush);
+  shape->setTransform(mInverse);
+
+  plotter->scene()->addItem(shape);
+  plotter->group()->addToGroup(shape);
+
 }
 
 
