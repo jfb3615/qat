@@ -1,0 +1,1850 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="generator" content="http://www.nongnu.org/elyxer/"/>
+<meta name="create-date" content="2017-11-10"/>
+<link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
+<title>The Spacetime Class Library</title>
+</head>
+<body>
+<div id="globalWrapper">
+<h1 class="title">
+The Spacetime Class Library
+</h1>
+<h2 class="Date">
+Joe Boudreau 2017
+</h2>
+<div class="fulltoc">
+<div class="tocheader">
+Table of Contents
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Section-1">Section 1: Introduction</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Section-2">Section 2: Rotations and Lorentz Tranformations</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsection-2.1">Subsection 2.1: class Rotation</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-2.2">Subsection 2.2: class LorentzTransformation</a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Section-3">Section 3: Vectors, Four-Vectors, and Tensors</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsection-3.1">Subsection 3.1: template &lt;class T&gt; BasicThreeVector</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-3.2">Subsection 3.2: template class&lt;T&gt; BasicFourVector</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-3.3">Subsection 3.3: class AntisymmetricFourTensor</a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Section-4">Section 4: Spinors</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsection-4.1">Subsection 4.1: template &lt;unsigned int D=2&gt; Spinor </a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-4.2">Subsection 4.2: Weyl spinor classes</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.2.1">Subsubsection 4.2.1: template &lt;int T&gt; class BasicSpinor</a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-4.3">Subsection 4.3: Dirac spinor classes</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.3.1">Subsubsection 4.3.1: template&lt;int T&gt; BasicSpinor</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.3.2">Subsubsection 4.3.2: class Bar</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-4.3.3">Subsubsection 4.3.3: class Any</a>
+</div>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Section-5">Section 5: Operators</a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsection-5.1">Subsection 5.1: class AbsOperator4</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-5.2">Subsection 5.2: class Operator4</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-5.3">Subsection 5.3: class AbsOperator4x4</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-5.4">Subsection 5.4: class SU2Generator</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-5.5">Subsection 5.5: Special Operators </a>
+</div>
+<div class="tocindent">
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-5.5.1">Subsubsection 5.5.1: class Gamma</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsubsection-5.5.2">Subsubsection 5.5.2: class Sigma4x4</a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Subsection-5.6">Subsection 5.6: class Current4</a>
+</div>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Section-6">Section 6: A typical expression</a>
+</div>
+</div>
+
+</div>
+<div class="Standard">
+<p><br/>
+</p>
+
+</div>
+<h1 class="Section">
+<a class="toc" name="toc-Section-1">1</a> Introduction
+</h1>
+<div class="Standard">
+The <tt>Spacetime</tt> Class Library is a small collection of classes intended to facilitate numerical computations in nonrelativistic and relativistic quantum mechanics. The library contains rotations and Lorentz transformation classes, instances of which can provide matrix representations of the corresponding group element. Objects such as vectors, spinors, and Dirac spinors (among others) which belong to some representation of the rotation group (or the Lorentz group) are transformed accordingly. The design allows other types of covariant objects to be introduced into the library at a later time. Presently, the library contains vectors (<span class="formula"><i>v⃗⃗</i></span>), four-vectors (<span class="formula"><i>p</i><sup><i>μ</i></sup></span>), spinors (<span class="formula">|↑⟩</span>, <span class="formula">|↓⟩</span>), Dirac spinors (<span class="formula"><i>u</i></span>,<span class="formula"><i>v</i></span>,<span class="formula"><span class="bar"><i>u</i></span></span>, <span class="formula"><span class="bar"><i>v</i></span></span>) and Weyl spinors, and special operators such as Pauli matrices (<span class="formula"><i>σ⃗</i> = <i>σ</i><sub><i>x</i></sub>, <i>σ</i><sub><i>y</i></sub><i>σ</i><sub><i>z</i></sub></span>), gamma matrices, <span class="formula"><i>γ</i><sup>0</sup>, <i>γ</i><sup>1</sup>, <i>γ</i><sup>2</sup>, <i>γ</i><sup>3</sup></span>, and the matrices <span class="formula"><i>S</i><sup><i>μ</i><i>ν</i></sup> = <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>i</i></span><span class="ignored">)/(</span><span class="denominator">4</span><span class="ignored">)</span></span>[<i>γ</i><sup><i>μ</i></sup>, <i>γ</i><sup><i>ν</i></sup>]</span>. The usual operations are defined on these classes. The library depends upon the <tt>Eigen</tt> library for matrix manipulation<span class="FootOuter"><span class="SupFootMarker"> [A] </span><span class="HoverFoot"><span class="SupFootMarker"> [A] </span>http://eigen.tuxfamily.org</span></span>. This documentation is the reference manual for the <tt>Spacetime</tt> library. 
+</div>
+<h1 class="Section">
+<a class="toc" name="toc-Section-2">2</a> Rotations and Lorentz Tranformations
+</h1>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-2.1">2.1</a> class Rotation<a class="Label" name="subsec:Class-Rotation"> </a>
+</h2>
+<div class="Standard">
+<tt>#include &ldquo;Spacetime/Rotation.h&rdquo;</tt>
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--1"></a>Description<br/>
+
+</div>
+<div class="Standard">
+A rotation is specfied by an axis and an angle, interpreted as an active right-handed rotation. For example, a rotation about the +<span class="formula"><i>z</i></span> axis carries the <span class="formula"><i>x</i></span> axis into the <span class="formula"><i>y</i></span>-axis and the <span class="formula"><i>y</i></span> axis into the <span class="formula"> − <i>x</i></span>-axis. A rule of composition applies to rotations and is expressed with the multiplication symbol (operator *). The rotation also provides a matrix in any desired <span class="formula"><i>D</i> = 2<i>j</i> + 1</span> dimensional irreducible representation of SU(2), expressed in the basis<span class="formula">{<i>e⃗</i><sub>0</sub> = |<i>j</i>, <i>j</i>⟩</span>, <span class="formula"><i>e⃗</i><sub>1</sub> = |<i>j</i>, <i>j</i> − 1⟩</span>.. <span class="formula"><i>e⃗</i><sub>2<i>j</i></sub> = |<i>j</i>,  − <i>j</i>⟩}</span>. Here, <span class="formula"><i>j</i></span> is the angular momentum quantum number, integer or half-integer. Rotations can also act on other objects like vectors and spinors, but this action is defined in free subroutines, which are discussed in conjunction with vectors, spinors, and other mathematical objects upon which the action of the rotation is defined. These are described later.
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--2"></a>Methods<br/>
+
+</div>
+<div class="Standard">
+Constructor. Constructs an identity rotation:
+</div>
+<ul>
+<li>
+<tt>Rotation()</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Constructor. Constructs a rotation from a vector. The length of the vector represents the angle of rotation, in radians. the direction represents the axis of rotation. 
+</div>
+<ul>
+<li>
+<tt>Rotation(const ThreeVector &amp; axisAngle)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Composition
+</div>
+<ul>
+<li>
+<tt>operator * (const Rotation &amp; right)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Retrieve the rotation matrix in the <span class="formula"><i>D</i></span>-dimensional representation of SU(2). Here <span class="formula"><i>D</i> = 2<i>j</i> + 1</span> where <span class="formula"><i>j</i></span> is the angular momentum quantum number, integer or half-integer. 
+</div>
+<ul>
+<li>
+<tt>Eigen::MatrixXcd &amp; rep(unsigned int d) const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Get the rotation vector, whose length is equal to the angle of rotation in radians and whose direction represents the axis of rotation (right-handed, active). 
+</div>
+<ul>
+<li>
+<tt>const ThreeVector &amp; getRotationVector() const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Return the inverse rotation:
+</div>
+<ul>
+<li>
+<tt>Rotation inverse() const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+<p><br/>
+</p>
+
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-2.2">2.2</a> class LorentzTransformation
+</h2>
+<div class="Standard">
+<tt>#include &ldquo;Spacetime/LorentzTransformation.h</tt>&rdquo;
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--3"></a>Description<br/>
+
+</div>
+<div class="Standard">
+The LorentzTransformation class represents a proper, orthochronous Lorentz transformation. It is specified by two vectors, the first representing the boost and the second representing the rotation vector. Both are to be considered as active, i.e. acting on the body rather than the coordinate system. The boost vector points along the direction of the boost and has a magnitude of <span class="formula"><i>η</i> = tanh<sup> − 1</sup><i>β</i></span> (Achtung!) where <span class="formula"><i>β</i> = <i>v</i> ⁄ <i>c</i></span>, <span class="formula"><i>v</i></span> is the velocity and <span class="formula"><i>c</i></span> is the speed of light. The rotation vector is described in section <a class="Reference" href="#subsec:Class-Rotation">2.1↑</a>. Irreducible representations of the proper orthochronous Lorentz group are equivalent to <span class="formula"><i>SU</i>(2) × <i>SU</i>(2), </span> and accordingly two matrices are given, one for each of the two <span class="formula"><i>SU</i>(2)</span> subgroups. Composition of LorentzTransformations can be carried out with the * operator. 
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--4"></a>Methods<br/>
+
+</div>
+<div class="Standard">
+Constructor. Constructs an identity element.
+</div>
+<ul>
+<li>
+<tt>LorentzTransformation(); </tt>
+</li>
+
+</ul>
+<div class="Standard">
+Constructor. Takes the rapidity vector and the rotation vector 
+</div>
+<ul>
+<li>
+<tt>LorentzTransformation(<br/>
+const ThreeVector &amp; rapVector, <br/>
+const ThreeVector &amp; rotVector=ThreeVector(0,0,0))</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Composition.
+</div>
+<ul>
+<li>
+<tt>LorentzTransformation operator * (<br/>
+const LorentzTransformation &amp; source);</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Get the <span class="formula"><i>D</i></span>-dimensional representation, matrix 1 and matrix 2 
+</div>
+<ul>
+<li>
+<tt>const Eigen::MatrixXcd &amp; rep1(unsigned int dim) const; </tt>
+</li>
+<li>
+<tt>const Eigen::MatrixXcd &amp; rep2(unsigned int dim) const;</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Get the rotation vector and the rapidity vector 
+</div>
+<ul>
+<li>
+<tt>ThreeVector getRotationVector() const </tt>
+</li>
+<li>
+<tt>ThreeVector getRapidityVector() const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Get the inverse.
+</div>
+<ul>
+<li>
+<tt>LorentzTransformation inverse() const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+<p><br/>
+</p>
+
+</div>
+<h1 class="Section">
+<a class="toc" name="toc-Section-3">3</a> Vectors, Four-Vectors, and Tensors
+</h1>
+<div class="Standard">
+This section describes vectors in Cartesian 3-space, 4-vectors in Minkokski space, and the assymetric four-tensor, which is an tensor having simple properties under Lorentz tranformations. These objects may be transformed by rotations and/or Lorentz transformations. The work is done in free subroutines, which are also described in this section. 
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-3.1">3.1</a> template &lt;class T&gt; BasicThreeVector
+</h2>
+<div class="Standard">
+<tt>#include &ldquo;Spacetime/ThreeVector.h&rdquo;</tt>
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--5"></a>Description<br/>
+
+</div>
+<div class="Standard">
+A <tt>BasicThreeVector</tt> is the classic vector in Cartesian 3-space. It is affected by rotations. It is implemented as a template class because in addition to real vectors, we sometimes need complex vectors, to describe certain polarization states, for example. Two parameterized classes are also defined in the header, <tt>ThreeVector</tt> and <tt>ComplexThreeVector</tt>. 
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--6"></a>Methods<br/>
+
+</div>
+<div class="Standard">
+Constructor. Constructs a zero vector 
+</div>
+<ul>
+<li>
+<tt>BasicThreeVector()</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Constructor. Constructs from components 
+</div>
+<ul>
+<li>
+<tt>BasicThreeVector(T x0, T x1, T x2)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Access to elements
+</div>
+<ul>
+<li>
+<tt>const T &amp; operator[] (unsigned int i) const</tt>
+</li>
+<li>
+<tt>T &amp; operator[] (unsigned int i)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Access to elements: 
+</div>
+<ul>
+<li>
+<tt>const T &amp; operator() (unsigned int i) const </tt>
+</li>
+<li>
+<tt>T &amp; operator() (unsigned int i)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Cross and dot:
+</div>
+<ul>
+<li>
+<tt>BasicThreeVector&lt;T&gt; cross(const BasicThreeVector&lt;T&gt; &amp; right) const</tt>
+</li>
+<li>
+<tt>T dot(const BasicThreeVector&lt;T&gt; &amp; source) const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Compound operations 
+</div>
+<ul>
+<li>
+<tt>BasicThreeVector&lt;T&gt; &amp; operator +=(<br/>
+const BasicThreeVector&lt;T&gt; &amp; right)</tt>
+</li>
+<li>
+<tt>BasicThreeVector&lt;T&gt; &amp; operator -=(<br/>
+const BasicThreeVector&lt;T&gt; &amp; right)</tt>
+</li>
+<li>
+<tt>BasicThreeVector&lt;T&gt; &amp; operator *=(T s); </tt>
+</li>
+<li>
+<tt>BasicThreeVector&lt;T&gt; &amp; operator /=(T s)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Unary minus 
+</div>
+<ul>
+<li>
+<tt>BasicThreeVector&lt;T&gt; operator- () const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Conjugate 
+</div>
+<ul>
+<li>
+<tt>BasicThreeVector&lt;T&gt; conjugate() const </tt>
+</li>
+
+</ul>
+<div class="Standard">
+Norm
+</div>
+<ul>
+<li>
+<tt>double norm() const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Squared norm: 
+</div>
+<ul>
+<li>
+<tt>double squaredNorm() const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Normalized version of four-vector. 
+</div>
+<ul>
+<li>
+<tt>BasicThreeVector&lt;T&gt; normalized() const</tt>
+</li>
+
+</ul>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--7"></a>Parameterized types
+</div>
+<ul>
+<li>
+<tt>typedef BasicThreeVector&lt;double&gt; ThreeVector </tt>
+</li>
+<li>
+<tt>typedef BasicThreeVector&lt;std::complex&lt;double&gt;&gt; ComplexThreeVector</tt>
+</li>
+
+</ul>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--8"></a>Other operations<br/>
+
+</div>
+<div class="Standard">
+Rotation 
+</div>
+<ul>
+<li>
+<tt>ThreeVector operator *(<br/>
+const Rotation &amp; rot, <br/>
+const ThreeVector &amp; v)</tt>
+</li>
+<li>
+<tt>ComplexThreeVector operator *(<br/>
+const Rotation &amp; rot, <br/>
+const ComplexThreeVector &amp; v )</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Formatted I/O
+</div>
+<ul>
+<li>
+<tt>template &lt;typename T&gt; std::ostream &amp; operator &lt;&lt; (<br/>
+std::ostream &amp; o, <br/>
+const BasicThreeVector&lt;T&gt; &amp;v)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Vector addition and subtraction
+</div>
+<ul>
+<li>
+<tt>template &lt;typename T&gt; BasicThreeVector&lt;T&gt; operator+(<br/>
+const BasicThreeVector&lt;T&gt; &amp; a, <br/>
+const BasicThreeVector&lt;T&gt; &amp; b)</tt>
+</li>
+<li>
+<tt>template &lt;typename T&gt; BasicThreeVector&lt;T&gt; operator-(<br/>
+const BasicThreeVector&lt;T&gt; &amp; a,<br/>
+const BasicThreeVector&lt;T&gt; &amp; b)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Scaling:
+</div>
+<ul>
+<li>
+<tt>template &lt;typename T&gt; BasicThreeVector&lt;T&gt; operator *(<br/>
+const T s, <br/>
+const BasicThree Vector&lt;T&gt; &amp; v) </tt>
+</li>
+<li>
+<tt>template &lt;typename T&gt; BasicThreeVector&lt;T&gt; operator *(<br/>
+const BasicThreeVector&lt;T&gt; &amp; v,<br/>
+T s)</tt>
+</li>
+<li>
+<tt>template &lt;typename T&gt; BasicThreeVector&lt;T&gt; operator /(<br/>
+const BasicThreeVector&lt;T&gt; &amp; v,<br/>
+T s)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+<p><br/>
+</p>
+
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-3.2">3.2</a> template class&lt;T&gt; BasicFourVector
+</h2>
+<div class="Standard">
+<tt>#include &ldquo;Spacetime/FourVector.h&rdquo;</tt>
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--9"></a>Description<br/>
+
+</div>
+<div class="Standard">
+A <tt>BasicFourVector</tt> is a four-component vector in Minkowski space. It is affected by Lorentz transformations. It is implemented as a template class because in addition to real four-vectors, we sometimes need complex four-vectors, to describe circular polarization states. Two parameterized classes are also defined in the header, <tt>FourVector</tt> and <tt>ComplexFourVector</tt>. 
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--10"></a>Methods<br/>
+
+</div>
+<div class="Standard">
+Construct a null four vector 
+</div>
+<ul>
+<li>
+<tt>BasicFourVector()</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Construct from four components 
+</div>
+<ul>
+<li>
+<tt>BasicFourVector(T x0, T x1, T x2, T x3)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Access to elements
+</div>
+<ul>
+<li>
+<tt>const T &amp; operator[] (unsigned int i) const </tt>
+</li>
+<li>
+<tt>T &amp; operator[] (unsigned int i)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Access to elements 
+</div>
+<ul>
+<li>
+<tt>const T &amp; operator() (unsigned int i) const </tt>
+</li>
+<li>
+<tt>T &amp; operator() (unsigned int i</tt>)
+</li>
+
+</ul>
+<div class="Standard">
+Return the space portion
+</div>
+<ul>
+<li>
+<tt>BasicThreeVector&lt;T&gt; space() const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Returns the invariant interval 
+</div>
+<ul>
+<li>
+<tt>T dot(const BasicFourVector&lt;T&gt; &amp; source) const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Compound operations
+</div>
+<ul>
+<li>
+<tt>BasicFourVector&lt;T&gt; &amp; operator +=(const BasicFourVector&lt;T&gt; &amp; right)</tt>
+</li>
+<li>
+<tt>BasicFourVector&lt;T&gt; &amp; operator -=(const BasicFourVector&lt;T&gt; &amp; right)</tt>
+</li>
+<li>
+<tt>BasicFourVector&lt;T&gt; &amp; operator *=(T s)</tt>
+</li>
+<li>
+<tt>BasicFourVector&lt;T&gt; &amp; operator /=(T s) </tt>
+</li>
+
+</ul>
+<div class="Standard">
+Unary minus 
+</div>
+<ul>
+<li>
+<tt>BasicFourVector&lt;T&gt; operator- () const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Conjugate 
+</div>
+<ul>
+<li>
+<tt>BasicFourVector&lt;T&gt; conjugate() const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Norm
+</div>
+<ul>
+<li>
+<tt>double norm() const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Squared norm: 
+</div>
+<ul>
+<li>
+<tt>double squaredNorm() const</tt>
+</li>
+
+</ul>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--11"></a>Parameterized types
+</div>
+<ul>
+<li>
+<tt>typedef BasicFourVector&lt;double&gt; FourVector </tt>
+</li>
+<li>
+<tt>typedef BasicFourVector&lt;std::complex&lt;double&gt;&gt; ComplexFourVector </tt>
+</li>
+
+</ul>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--12"></a>Other operations<br/>
+
+</div>
+<div class="Standard">
+Lorentz Transformations
+</div>
+<ul>
+<li>
+<tt>FourVector operator *(<br/>
+const LorentzTransformation &amp; transform,<br/>
+const FourVector &amp; v)</tt>
+</li>
+<li>
+<tt>ComplexFourVector operator *(<br/>
+const LorentzTransformation &amp; transform,<br/>
+const ComplexFourVector &amp; v)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Formatted I/O
+</div>
+<ul>
+<li>
+<tt>template &lt;typename T&gt; std::ostream &amp; operator &lt;&lt; (<br/>
+std::ostream &amp; o, <br/>
+const BasicFourVector&lt;T&gt; &amp;v)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Four-vector addition and subtraction
+</div>
+<ul>
+<li>
+<tt>template &lt;typename T&gt; BasicFourVector&lt;T&gt; operator+(<br/>
+const BasicFourVector&lt;T&gt; &amp; a,<br/>
+const BasicFourVector&lt;T&gt; &amp; b)</tt>
+</li>
+<li>
+<tt>template &lt;typename T&gt; BasicFourVector&lt;T&gt; operator-(<br/>
+const BasicFourVector&lt;T&gt; &amp; a,<br/>
+const BasicFourVector&lt;T&gt; &amp; b)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Scaling:
+</div>
+<ul>
+<li>
+<tt>template &lt;typename T&gt; BasicFourVector&lt;T&gt; operator *(<br/>
+const T s,<br/>
+const BasicFourVector&lt;T&gt; &amp; v)</tt>
+</li>
+<li>
+<tt>template &lt;typename T&gt; BasicFourVector&lt;T&gt; operator *(<br/>
+const BasicFourVector&lt;T&gt; &amp; v, <br/>
+T s)</tt>
+</li>
+<li>
+<tt>template &lt;typename T&gt; BasicFourVector&lt;T&gt; operator /(<br/>
+const BasicFourVector&lt;T&gt; &amp; v,<br/>
+T s)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+<p><br/>
+</p>
+
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-3.3">3.3</a> class AntisymmetricFourTensor
+</h2>
+<div class="Standard">
+<tt>#include &ldquo;Spacetime/AntisymmetricFourTensor.h&rdquo;</tt>
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--13"></a>Description
+</div>
+<div class="Standard">
+An antisymmetric four-tensor is a tensor in Minkowski space with simple transformation properties under Lorentz transformations. This class has the property that modifying any one of its elements <span class="formula"><i>T</i><sup><i>ij</i></sup></span> automatically changes <span class="formula"><i>T</i><sup><i>ji</i></sup></span> to <span class="formula"> − <i>T</i><sup><i>ij</i></sup></span>; this works thanks to the helper class <tt>ddouble</tt> which you can be used exactly as a <tt>double</tt>. This works because of a cast operator that permits automatic type conversion. The best known example of an antisymmetric four-tensor is the Maxwell field tensor. 
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-1"></a>Methods
+</div>
+<div class="Standard">
+Construct a null tensor:
+</div>
+<ul>
+<li>
+<tt>AntisymmetricFourTensor()</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Access to elements. Class ddouble is used just like a double. 
+</div>
+<ul>
+<li>
+<tt>const ddouble &amp; operator() (unsigned int i, unsigned int j) const</tt>
+</li>
+<li>
+<tt>ddouble &amp; operator() (unsigned int i, unsigned int j)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Compound operations 
+</div>
+<ul>
+<li>
+<tt>AntisymmetricFourTensor &amp; operator +=(<br/>
+const AntisymmetricFourTensor &amp; right) </tt>
+</li>
+<li>
+<tt>AntisymmetricFourTensor &amp; operator -=(<br/>
+const AntisymmetricFourTensor &amp; right)</tt>
+</li>
+<li>
+<tt>AntisymmetricFourTensor &amp; operator *=(double s)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Unary minus: 
+</div>
+<ul>
+<li>
+<tt>AntisymmetricFourTensor operator- () const</tt>
+</li>
+
+</ul>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--14"></a>Other operations<br/>
+
+</div>
+<div class="Standard">
+Formatted output:
+</div>
+<ul>
+<li>
+<div class="left">
+std::ostream &amp; operator &lt;&lt; ( <br/>
+std::ostream &amp; o, <br/>
+const AntisymmetricFourTensor &amp;v) 
+</div>
+
+</li>
+
+</ul>
+<div class="Standard">
+Arithmetic operations:
+</div>
+<ul>
+<li>
+<tt>AntisymmetricFourTensor operator+(<br/>
+const AntisymmetricFourTensor &amp; a,<br/>
+const AntisymmetricFourTensor &amp; b)</tt>
+</li>
+<li>
+<tt>AntisymmetricFourTensor operator-(<br/>
+const AntisymmetricFourTensor &amp; a, <br/>
+const AntisymmetricFourTensor &amp; b)</tt>
+</li>
+<li>
+<tt>AntisymmetricFourTensor operator *(<br/>
+const double s, <br/>
+const AntisymmetricFourTensor &amp; v)</tt>
+</li>
+<li>
+<tt>AntisymmetricFourTensor operator *(<br/>
+const AntisymmetricFourTensor &amp; v, <br/>
+double s)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Lorentz Transformation: 
+</div>
+<ul>
+<li>
+<tt>AntisymmetricFourTensor operator *(<br/>
+const LorentzTransformation &amp; transform, <br/>
+const AntisymmetricFourTensor &amp; v)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+<p><br/>
+</p>
+
+</div>
+<h1 class="Section">
+<a class="toc" name="toc-Section-4">4</a> Spinors
+</h1>
+<div class="Standard">
+This section describes three types of spinors (in a <span class="formula"><i>D</i></span>-dimensional Hilbert space), Dirac spinors, and Weyl spinors. 
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-4.1">4.1</a> template &lt;unsigned int D=2&gt; Spinor 
+</h2>
+<div class="Standard">
+<tt>#include &ldquo;Spacetime/Spinor.h&rdquo;</tt>
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--15"></a>Description<br/>
+
+</div>
+<div class="Standard">
+This class represents a spinor in a <span class="formula"><i>D</i> = 2<i>j</i> + 1</span> dimensional space. By default <span class="formula"><i>D</i> = 2</span> and the spinor describes spin <span class="formula"><i>j</i> = 1 ⁄ 2</span> particles. 
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--16"></a>Methods<br/>
+
+</div>
+<div class="Standard">
+Construct a null spinor:
+</div>
+<ul>
+<li>
+<tt>Spinor() </tt>
+</li>
+
+</ul>
+<div class="Standard">
+Construct a spinor from an initializer list of <tt>std::complex&lt;double&gt;</tt>:
+</div>
+<ul>
+<li>
+<tt>Spinor(const std::initializer_list&lt;std::complex&lt;double&gt;&gt; &amp; values)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Construct a spinor from other elgible datatypes from the <tt>Eigen</tt> library:
+</div>
+<ul>
+<li>
+<tt>template&lt;typename Derived&gt; Spinor(<br/>
+const Eigen::MatrixBase&lt;Derived&gt; &amp; other)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Assign Eigen expressions to the spinor:
+</div>
+<ul>
+<li>
+<tt>template&lt;typename Derived&gt; Spinor&lt;D&gt; &amp; operator = (<br/>
+const Eigen::MatrixBase&lt;Derived&gt; &amp; other)</tt>
+</li>
+
+</ul>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--17"></a>Other operations
+</div>
+<div class="Standard">
+Action of Rotation upon Spinor: 
+</div>
+<ul>
+<li>
+<tt>template &lt;unsigned int D&gt; Spinor&lt;D&gt; operator * (<br/>
+const Rotation &amp; R, <br/>
+const Spinor&lt;D&gt; &amp; v) </tt>
+</li>
+
+</ul>
+<div class="Standard">
+Recover the spin from the Spinor:
+</div>
+<ul>
+<li>
+<tt>template &lt;unsigned int D&gt; ThreeVector spin(const Spinor&lt;D&gt; &amp; s) </tt>
+</li>
+
+</ul>
+<div class="Standard">
+<p><br/>
+</p>
+
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-4.2">4.2</a> Weyl spinor classes
+</h2>
+<div class="Standard">
+<tt>#include &ldquo;Spacetime/WeylSpinor.h&rdquo;</tt>
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--18"></a>Description
+</div>
+<div class="Standard">
+Weyl spinors are two-component spinors representing massless particles, transforming under rotations and Lorentz transformations. The following datatypes are defined within the namespace <tt>WeylSpinor</tt>:
+</div>
+<ul>
+<li>
+<tt>template &lt;int T&gt; BasicSpinor </tt>is a complex two-component column vector. It is essentially <tt>Eigen::Vector2cd</tt> plus some additional constructors. The template parameter determines whether the spinor is of type<i> right</i> or<i> left</i>.
+</li>
+<li>
+<tt>enum Type {RightHandedType, LeftHandedType}</tt> is for selecting right- or left-handed spinors (at compile time). 
+</li>
+<li>
+<tt>typedef BasicSpinor&lt;RightHandedType&gt; Right</tt>
+</li>
+<li>
+<tt>typedef BasicSpinor&lt;LeftHandedType&gt; Left</tt>
+</li>
+
+</ul>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--19"></a>Operations
+</div>
+<div class="Standard">
+Action of Rotation upon the two types of spinor:
+</div>
+<ul>
+<li>
+<tt>WeylSpinor::Left operator * (<br/>
+const LorentzTransformation &amp; L, <br/>
+const WeylSpinor::Left &amp; s)</tt>
+</li>
+<li>
+<tt>WeylSpinor::Right operator * (<br/>
+const LorentzTransformation &amp; L, <br/>
+const WeylSpinor::Right &amp; s)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Return the Four-momentum of this Weyl Spinor 
+</div>
+<ul>
+<li>
+<tt>FourVector fourMomentum(const WeylSpinor::Left &amp;s) </tt>
+</li>
+<li>
+<tt>FourVector fourMomentum(const WeylSpinor::Right &amp;s)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Return the Spin (magnitude and direction) 
+</div>
+<ul>
+<li>
+<tt>ThreeVector spin(const WeylSpinor::Left &amp;s) </tt>
+</li>
+<li>
+<tt>ThreeVector spin(const WeylSpinor::Right &amp;s)</tt>
+</li>
+
+</ul>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.2.1">4.2.1</a> template &lt;int T&gt; class BasicSpinor
+</h3>
+<div class="Standard">
+The basic 2-component Weyl spinor
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-2"></a>Inherits
+</div>
+<div class="Standard">
+<tt>Eigen::Vector2cd</tt>
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-3"></a>Methods
+</div>
+<div class="Standard">
+Constructs a null spinor:
+</div>
+<ul>
+<li>
+<tt>BasicSpinor() </tt>
+</li>
+
+</ul>
+<div class="Standard">
+Constructor from momentum vector:
+</div>
+<ul>
+<li>
+<tt>BasicSpinor(const ThreeVector &amp; p)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Construct a spinor from other elgible datatypes from the <tt>Eigen</tt> library:
+</div>
+<ul>
+<li>
+<tt>template&lt;typename Derived&gt; BasicSpinor(<br/>
+const Eigen::MatrixBase&lt;Derived&gt;&amp; other) </tt>
+</li>
+
+</ul>
+<div class="Standard">
+Assign a spinor from other elgible datatypes from the <tt>Eigen</tt> library:
+</div>
+<ul>
+<li>
+<tt>template&lt;typename Derived&gt; BasicSpinor &amp; operator= (<br/>
+const Eigen::MatrixBase &lt;Derived&gt;&amp; other)</tt>
+</li>
+
+</ul>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--20"></a><p><br/>
+</p>
+
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-4.3">4.3</a> Dirac spinor classes
+</h2>
+<div class="Standard">
+<tt>#include &ldquo;Spacetime/DiracSpinor.h&rdquo;</tt>
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--21"></a>Description 
+</div>
+<div class="Standard">
+Dirac spinors describe four-component complex column vectors with specific transformation properties under rotations and Lorentz transformations. In this library the internal representation is the Weyl, or chiral, representation. The following datatypes are defined in the <tt>namespace Dirac</tt>:
+</div>
+<ul>
+<li>
+<tt>template &lt;int T&gt; BasicSpinor </tt>is a complex four-component column vector. It is essentially <tt>Eigen::Vector4cd</tt> plus some additional constructors. The template parameter determines whether the spinor is of <span class="formula"><i>u</i></span>-type (representing fermions) or of <span class="formula"><i>v</i></span>-type (antifermions).
+</li>
+<li>
+<tt>class Any</tt> will hold either a <span class="formula"><i>u</i></span>-type or a <span class="formula"><i>v</i></span>-type Dirac spinor. It too is a complex four-component column vector an essentially an <tt>Eigen::Vector4cd, </tt>with a few extra constructors, but minus special constructors for building the specific <span class="formula"><i>u</i></span>- or <span class="formula"><i>v</i></span>-types. 
+</li>
+<li>
+<tt>class Bar.</tt> This is a complex four component<i> row </i>vector. It is essentially an <tt>Eigen::RowVector4cd</tt>, plus some additional constructors. 
+</li>
+<li>
+<tt>enum Type {UType, VType}</tt> is for selecting <span class="formula"><i>u</i></span>-type or <span class="formula"><i>v</i></span>-type spinors. 
+</li>
+<li>
+<tt>typedef BasicSpinor&lt;UType&gt; U</tt>
+</li>
+<li>
+<tt>typedef BasicSpinor&lt;VType&gt; V</tt>
+</li>
+
+</ul>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--22"></a>Operations
+</div>
+<div class="Standard">
+Take the spinor adjoint (spinor-bar): 
+</div>
+<ul>
+<li>
+<tt>DiracSpinor::Bar bar(const DiracSpinor::U &amp; u) </tt>
+</li>
+<li>
+<tt>DiracSpinor::Bar bar(const DiracSpinor::V &amp; v)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Action of Lorentz transformation upon the spinor 
+</div>
+<ul>
+<li>
+<tt>DiracSpinor::U operator * (<br/>
+const LorentzTransformation &amp; L, <br/>
+const DiracSpinor::U &amp; u) </tt>
+</li>
+<li>
+<tt>DiracSpinor::V operator * (<br/>
+const LorentzTransformation &amp; L, <br/>
+const DiracSpinor::V &amp; v) </tt>
+</li>
+
+</ul>
+<div class="Standard">
+Return the four-momentum of this Dirac spinor
+</div>
+<ul>
+<li>
+<tt>FourVector fourMomentum(const DiracSpinor::U &amp;u) </tt>
+</li>
+<li>
+<tt>FourVector fourMomentum(const DiracSpinor::V &amp;v)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Return the spin (magnitude and direction) 
+</div>
+<ul>
+<li>
+<tt>ThreeVector spin(const DiracSpinor::U &amp;u) </tt>
+</li>
+<li>
+<tt>ThreeVector spin(const DiracSpinor::V &amp;v)</tt> 
+</li>
+
+</ul>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.3.1">4.3.1</a> template&lt;int T&gt; BasicSpinor
+</h3>
+<div class="Standard">
+The basic 4-component column spinor. 
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-4"></a>Inherits
+</div>
+<div class="Standard">
+<tt>Eigen::Vector4cd</tt>
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-5"></a>Methods:
+</div>
+<div class="Standard">
+Construct a null Dirac spinor:
+</div>
+<ul>
+<li>
+<tt>BasicSpinor()</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Construct a Dirac spinor of a particle at rest with spin described by the <tt>Spinor s</tt> and mass <tt>m</tt> :
+</div>
+<ul>
+<li>
+<tt>BasicSpinor(const Spinor&lt;2&gt; &amp; s, double mass)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Construct a Dirac spinor of a particle with spin described by the <tt>Spinor s</tt> and with four-momentum <tt>p</tt>:
+</div>
+<ul>
+<li>
+<tt>BasicSpinor(const Spinor&lt;2&gt; &amp; s, const FourVector &amp; p)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Construct a Dirac spinor for a massless particle from the corresponding Weyl spinor:
+</div>
+<ul>
+<li>
+<tt>BasicSpinor(const WeylSpinor::Left &amp; s) </tt>
+</li>
+<li>
+<tt>BasicSpinor(const WeylSpinor::Right &amp; s) </tt>
+</li>
+
+</ul>
+<div class="Standard">
+Construct a Dirac spinor from other elgible datatypes from the <tt>Eigen</tt> library:
+</div>
+<ul>
+<li>
+<tt>template&lt;typename Derived&gt; BasicSpinor(<br/>
+const Eigen::MatrixBase&lt;Derived&gt;&amp; other) </tt>
+</li>
+
+</ul>
+<div class="Standard">
+Assign a Dirac spinor from other elgible datatypes from the <tt>Eigen</tt> library:
+</div>
+<ul>
+<li>
+<tt>template&lt;typename Derived&gt; BasicSpinor &amp; operator= (<br/>
+const Eigen::MatrixBase &lt;Derived&gt;&amp; other)</tt>
+</li>
+
+</ul>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.3.2">4.3.2</a> class Bar
+</h3>
+<div class="Standard">
+The basic 4-component row spinor. 
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-6"></a>Inherits
+</div>
+<div class="Standard">
+<tt>Eigen::RowVector4cd</tt>
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-7"></a>Methods:
+</div>
+<div class="Standard">
+Construct a null Dirac spinor-bar:
+</div>
+<ul>
+<li>
+<tt>Bar()</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Construct a Dirac spinor-bar from four numbers:
+</div>
+<ul>
+<li>
+<tt>Bar(<br/>
+const std::complex&lt;double&gt; &amp; s0, <br/>
+const std::complex&lt;double&gt; &amp; s1, <br/>
+const std::complex&lt;double&gt; &amp; s2, <br/>
+const std::complex&lt;double&gt; &amp; s3 ) </tt>
+</li>
+
+</ul>
+<div class="Standard">
+Construct a Dirac spinor-bar from other elgible datatypes from the <tt>Eigen</tt> library:
+</div>
+<ul>
+<li>
+<tt>template&lt;typename Derived&gt; Bar(<br/>
+const Eigen::MatrixBase&lt;Derived&gt;&amp; other) </tt>
+</li>
+
+</ul>
+<div class="Standard">
+Assign a Dirac spinor-bar from other elgible datatypes from the <tt>Eigen</tt> library:
+</div>
+<ul>
+<li>
+<tt>template&lt;typename Derived&gt; Bar &amp; operator= (<br/>
+const Eigen::MatrixBase &lt;Derived&gt;&amp; other)</tt>
+</li>
+
+</ul>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-4.3.3">4.3.3</a> class Any
+</h3>
+<div class="Standard">
+Represents a generic Dirac Spinor without a specific flavor (<span class="formula"><i>u</i></span>-type or <span class="formula"><i>v</i></span>-type):
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-8"></a>Inherits:
+</div>
+<div class="Standard">
+<tt>Eigen::Vector4cd</tt>
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-9"></a>Methods:
+</div>
+<div class="Standard">
+Construct a generic Dirac spinor from other elgible datatypes from the <tt>Eigen</tt> library:
+</div>
+<ul>
+<li>
+<tt>template&lt;typename Derived&gt; Any(<br/>
+const Eigen::MatrixBase&lt;Derived&gt;&amp; other) </tt>
+</li>
+
+</ul>
+<div class="Standard">
+Assign a generic Dirac spinor from other elgible datatypes from the <tt>Eigen</tt> library:
+</div>
+<ul>
+<li>
+<tt>template&lt;typename Derived&gt; Any &amp; operator= (<br/>
+const Eigen::MatrixBase &lt;Derived&gt;&amp; other)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+<p><br/>
+</p>
+
+</div>
+<h1 class="Section">
+<a class="toc" name="toc-Section-5">5</a> Operators
+</h1>
+<div class="Standard">
+Operators are defined in two header files, <tt>Operator4.h</tt> and <tt>SpecialOperators.h</tt>.<tt> Operator4.h</tt> defines some generic interfaces to four-vector operators like <span class="formula"><span class="symbol">(</span><i>γ</i><sup>0</sup>, <i>γ</i><sup>1, </sup><i>γ</i><sup>2</sup>, <i>γ</i><sup>3</sup><span class="symbol">)</span></span>, and four-tensor operators like <span class="formula"><i>σ</i><sup><i>μ</i><i>ν</i></sup> ≡ <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>i</i></span><span class="ignored">)/(</span><span class="denominator">2</span><span class="ignored">)</span></span>[<i>γ</i><sup><i>u</i></sup>, <i>γ</i><sup><i>ν</i></sup>]</span>. <tt>SpecialOperators.h </tt>defines objects like the Pauli matrices, the <span class="formula"><i>γ</i></span> matrices, the Feynman slash function, etc., and two classes (<tt>Gamma</tt> and <tt>Sigma4x4</tt>) providing implementations of the aforementioned &ldquo;generic interfaces&rdquo;. 
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-5.1">5.1</a> class AbsOperator4
+</h2>
+<div class="Standard">
+<tt>#include &ldquo;Spacetime/Operator4.h&rdquo;</tt>
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--23"></a>Description
+</div>
+<div class="Standard">
+An <tt>AbsOperator4</tt> in this library is a four-vector <i>operator</i>. Examples of this include
+</div>
+<ul>
+<li>
+<span class="formula"><span class="symbol">(</span><i>γ</i><sup>0</sup>, <i>γ</i><sup>1, </sup><i>γ</i><sup>2</sup>, <i>γ</i><sup>3</sup><span class="symbol">)</span></span> 
+</li>
+<li>
+<span class="formula"><span class="symbol">(</span><i>σ</i><sup>0</sup>, <i>σ</i><sup>1, </sup><i>σ</i><sup>2</sup>, <i>σ</i><sup>3</sup><span class="symbol">)</span></span>
+</li>
+
+</ul>
+<div class="Standard">
+<tt>AbsOperator4</tt> is an abstract base class for these operators. It specifies two operations, access to elements, and virtual copy constructor (clone).
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--24"></a>Methods
+</div>
+<div class="Standard">
+Readonly access to elements: 
+</div>
+<ul>
+<li>
+<tt>virtual const Eigen::Matrix4cd &amp; operator[](<br/>
+unsigned int i) const = 0</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Clone: 
+</div>
+<ul>
+<li>
+<tt>virtual const AbsOperator4 *clone() const=0</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Other operations:
+</div>
+<ul>
+<li>
+<tt>Operator4 operator*(<br/>
+const std::complex&lt;double&gt; &amp;, <br/>
+const AbsOperator4 &amp;) </tt>
+</li>
+<li>
+<tt>Operator4 operator*(<br/>
+const AbsOperator4 &amp;, <br/>
+const std::complex&lt;double&gt; &amp;)</tt>
+</li>
+<li>
+<tt>Operator4 operator*(<br/>
+const Eigen::Matrix4cd &amp;, <br/>
+const AbsOperator4 &amp;) </tt>
+</li>
+<li>
+<tt>Operator4 operator*(<br/>
+const AbsOperator4 &amp;, <br/>
+const Eigen::Matrix4cd &amp;)</tt>
+</li>
+<li>
+<tt>Operator4 operator+(<br/>
+const AbsOperator4 &amp;, <br/>
+const AbsOperator4 &amp;) </tt>
+</li>
+<li>
+<tt>Operator4 operator-(<br/>
+const AbsOperator4 &amp;, <br/>
+const AbsOperator4 &amp;)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+<tt><p><br/>
+</p>
+</tt>
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-5.2">5.2</a> class Operator4
+</h2>
+<div class="Standard">
+<tt>#include &ldquo;Spacetime/Operator4.h&rdquo;</tt>
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--25"></a>Description
+</div>
+<div class="Standard">
+<tt>Operator4</tt> is an implementation of <tt>AbsOperator4</tt>, which stores each of the four four-dimensional complex operators in an array of complex matrices. The Weyl representation is used. 
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--26"></a>Methods
+</div>
+<div class="Standard">
+Readonly access to elements: 
+</div>
+<ul>
+<li>
+<tt>virtual const Eigen::Matrix4cd &amp; operator[](unsigned int i) const </tt>
+</li>
+
+</ul>
+<div class="Standard">
+Read/write access to the elements: 
+</div>
+<ul>
+<li>
+<tt>Eigen::Matrix4cd &amp; operator[](unsigned int i)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Clone: 
+</div>
+<ul>
+<li>
+<tt>virtual const Operator4 *clone() const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+<p><br/>
+</p>
+
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-5.3">5.3</a> class AbsOperator4x4
+</h2>
+<div class="Standard">
+<tt>#include &ldquo;Spacetime/Operator4.h&rdquo;</tt>
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--27"></a>Description
+</div>
+<div class="Standard">
+<tt>AbsOperator4x4</tt> is an abstract base class for tensor operators, such as <span class="formula"><i>σ</i><sup><i>μ</i><i>ν</i></sup> ≡ <span class="fraction"><span class="ignored">(</span><span class="numerator"><i>i</i></span><span class="ignored">)/(</span><span class="denominator">2</span><span class="ignored">)</span></span>[<i>γ</i><sup><i>u</i></sup>, <i>γ</i><sup><i>ν</i></sup>]</span>, which currently is implemented by <tt>class Sigma4x4</tt> which lives in <tt>SpecialOperators.h</tt>, and is the only subclass of <tt>AbsOperator4x4</tt> implemented so far. 
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--28"></a>Methods
+</div>
+<div class="Standard">
+Readonly access to elements: 
+</div>
+<ul>
+<li>
+<tt>virtual const Eigen::Matrix4cd &amp; operator()(<br/>
+unsigned int i, <br/>
+unsigned int j) const = 0</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Clone: 
+</div>
+<ul>
+<li>
+<tt>virtual const AbsOperator4x4 *clone() const=0</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Take a dot product with a four vector to return an Operator 4, eg sigma.dot(q) 
+</div>
+<ul>
+<li>
+<tt>Operator4 dot(const FourVector &amp; p) </tt>
+</li>
+
+</ul>
+<div class="Standard">
+<p><br/>
+</p>
+
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-5.4">5.4</a> class SU2Generator
+</h2>
+<div class="Standard">
+<tt>#include &ldquo;Spacetime/SU2Generator.h&rdquo;</tt>
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--29"></a>Description<br/>
+
+</div>
+<div class="Standard">
+<tt>SU2Generator</tt> is a class with no instances, only static member functions. It provides the generators <span class="formula"><i>J</i><sub><i>x</i></sub></span>, <span class="formula"><i>J</i><sub><i>y</i></sub></span>, and <span class="formula"><i>J</i><sub><i>z</i></sub></span> in <span class="formula"><i>D</i> = 2<i>j</i> + 1</span> dimensions. It also includes facilities to obtain the rotation matrix, or Drehung-matrix, or D-matrix, for a rotation about any specified axis, and to go backwards from a D-matrix to its logarithm.
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--30"></a>static member functions
+</div>
+<div class="Standard">
+Access to the generators, held in cache: 
+</div>
+<ul>
+<li>
+<tt>static const Eigen::MatrixXcd &amp; JX(unsigned int dim) </tt>
+</li>
+<li>
+<tt>static const Eigen::MatrixXcd &amp; JY(unsigned int dim) </tt>
+</li>
+<li>
+<tt>static const Eigen::MatrixXcd &amp; JZ(unsigned int dim)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Exponentiates linear combinations of SU2 generators in an arbitrary dimensional space to form a rotation (Drehung) matrix, which is a rotation around the axis <tt>nHat</tt> by the angle <tt>phi</tt>.
+</div>
+<ul>
+<li>
+<tt>static Eigen::MatrixXcd exponentiate(<br/>
+int phi, <br/>
+const Eigen::Vector3cd &amp; nHat)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Takes the logarithm of a rotation (Drehung) matrix
+</div>
+<ul>
+<li>
+<tt>static Eigen::MatrixXcd logarithm(const Eigen::MatrixXcd &amp;source)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+<p><br/>
+</p>
+
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-5.5">5.5</a> Special Operators 
+</h2>
+<div class="Standard">
+<tt>#include &ldquo;Spacetime/SpecialOperators.h&rdquo;</tt>
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--31"></a>Description<br/>
+
+</div>
+<div class="Standard">
+The header file <tt>SpecialOperators.h</tt> defines several objects like Pauli spin matrices, gamma matrices, and also a few objects that give a friendlier interface to those; plus functions for the Feynman slash notation. These are scoped within the namespace <tt>SpecialOperators</tt>.
+</div>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--32"></a>const objects defined with the namespace SpecialOperators
+</div>
+<div class="Standard">
+Pauli spin matrices:
+</div>
+<ul>
+<li>
+<tt>const Eigen::Matrix2cd sigma0, sigma1, sigma2, sigma3</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Gamma matrices (Weyl representation is used):
+</div>
+<ul>
+<li>
+<tt>const Eigen::Matrix4cd gamma0, gamma1, gamma2, gamma3, gamma5</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Array of first four gamma matrices. See also <tt>class Gamma</tt>:
+</div>
+<ul>
+<li>
+<tt>const Eigen::Matrix4cd gamma[4]</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Projection operators to left-and right-handed chirality states:
+</div>
+<ul>
+<li>
+<tt>const Eigen::Matrix4cd PL, PR</tt>
+</li>
+
+</ul>
+<div class="Standard">
+4x4 array of sigma matrices and spin matricies (<span class="formula"><i>S</i> = <i>σ</i> ⁄ 2)</span>. See also class<tt> Sigma4x4</tt>.
+</div>
+<ul>
+<li>
+<tt>const Eigen::Matrix4cd sigma[4][4]</tt>
+</li>
+<li>
+<tt>const Eigen::Matrix4cd S[4][4]</tt>
+</li>
+
+</ul>
+<div class="Paragraph-">
+<a class="toc" name="toc-Paragraph--33"></a>Other operations
+</div>
+<div class="Standard">
+Feynman slash notation:
+</div>
+<ul>
+<li>
+<tt>inline Eigen::MatrixXcd slash(const FourVector &amp; p)</tt>
+</li>
+<li>
+<tt>inline Eigen::MatrixXcd slash(const ComplexFourVector &amp; p)</tt>
+</li>
+
+</ul>
+<div class="Standard">
+<tt><p><br/>
+</p>
+</tt>
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-5.5.1">5.5.1</a> class Gamma
+</h3>
+<div class="Standard">
+<tt>#include &ldquo;SpecialOperators.h&rdquo;</tt>
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-10"></a>description
+</div>
+<div class="Standard">
+Access to gamma matrices <span class="formula"><i>γ</i><sup>0</sup></span>, <span class="formula"><i>γ</i><sup>1</sup></span>, <span class="formula"><i>γ</i><sup>2</sup></span> and <span class="formula"><i>γ</i><sup>3</sup></span>. The <tt>clone</tt> method allows the construction of four-currents.
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-11"></a>inherits
+</div>
+<div class="Standard">
+<tt>AbsOperator4</tt>
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-12"></a>methods
+</div>
+<div class="Standard">
+Clone: 
+</div>
+<ul>
+<li>
+<tt>virtual const Gamma *clone() const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Return one of the gamma matrices 
+</div>
+<ul>
+<li>
+<tt>inline const Eigen::Matrix4cd &amp; operator[] (unsigned int i) const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+<p><br/>
+</p>
+
+</div>
+<h3 class="Subsubsection">
+<a class="toc" name="toc-Subsubsection-5.5.2">5.5.2</a> class Sigma4x4
+</h3>
+<div class="Standard">
+#include &ldquo;SpecialOperators.h&rdquo;
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-13"></a>description
+</div>
+<div class="Standard">
+Provides access to the matrices <span class="formula"><i>σ</i><sup><i>μ</i><i>ν</i></sup> ≡ <span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator">2</span><span class="ignored">)</span></span>[<i>γ</i><sup><i>μ</i></sup>, <i>γ</i><sup><i>ν</i></sup>]</span>. The clone method allows the construction of four-currents.
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-14"></a>inherits
+</div>
+<div class="Standard">
+<tt>Operator4x4</tt>
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-15"></a>methods
+</div>
+<div class="Standard">
+Clone: 
+</div>
+<ul>
+<li>
+<tt>virtual const Sigma4x4 *clone() const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Return one of the gamma matrices:
+</div>
+<ul>
+<li>
+<tt>const Eigen::Matrix4cd &amp; operator() (<br/>
+unsigned int i, <br/>
+unsigned int j) const</tt>
+</li>
+
+</ul>
+<div class="Standard">
+Contract with a four-vector to obtain a four-vector operator:
+</div>
+<ul>
+<li>
+<tt>Operator4 dot(const FourVector &amp; p) const </tt>
+</li>
+
+</ul>
+<div class="Standard">
+<p><br/>
+</p>
+
+</div>
+<h2 class="Subsection">
+<a class="toc" name="toc-Subsection-5.6">5.6</a> class Current4
+</h2>
+<div class="Standard">
+<tt>#include &ldquo;Spacetime/Current4.h&rdquo;</tt>
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-16"></a>description
+</div>
+<div class="Standard">
+The <tt>Current4</tt> class facilitates the construction of expressions like <span class="formula"><span class="bar"><i>u</i></span>(<i>k</i><sup>′</sup>)<i>γ</i><sup><i>μ</i></sup><i>u</i>(<i>k</i>)</span>, <span class="formula"><span class="bar"><i>u</i></span>(<i>k</i><sup>′</sup>)<i>σ</i><span class="scripts"><sup class="script"><i>μ</i></sup><sub class="script"><i>ν</i></sub></span><i>γ</i><sup><i>ν</i></sup><i>u</i>(<i>k</i>)</span>, etc. In many cases it is necessary to explicitly create any instances of <tt>Current4</tt> because temporary <tt>Current4</tt> objects will be created automatically when expresssions such as the above examples are written naturally. The header file must nonetheless be included. This class has no methods, and two friends:
+</div>
+<div class="Paragraph">
+<a class="toc" name="toc-Paragraph-17"></a>operations:
+</div>
+<ul>
+<li>
+<tt>Current4 operator * (<br/>
+const DiracSpinor::Bar &amp;, <br/>
+const AbsOperator4 &amp;) </tt>
+</li>
+<li>
+<tt>Current4 operator * (<br/>
+const Current4 &amp;, <br/>
+const DiracSpinor::Any &amp; ) </tt>
+</li>
+
+</ul>
+<div class="Standard">
+<p><br/>
+</p>
+
+</div>
+<h1 class="Section">
+<a class="toc" name="toc-Section-6">6</a> A typical expression
+</h1>
+<div class="Standard">
+With few classes, you can do a lot of fundamental physics. In this section, we give a brief example. In Compton scattering, one has to evaluate the following matrix elements:
+</div>
+<div class="Standard">
+<div class="formula">
+ − <i>i</i>ℳ<sub><i>s</i></sub> = <span class="bar"><i>u</i></span><sup>′</sup> <span class="array"><span class="arrayrow"><span class="bracket align-left">⎡</span></span><span class="arrayrow"><span class="bracket align-left">⎣</span></span></span><i>ϵ</i><span class="scripts"><sup class="script">′</sup><sub class="script"><i>ν</i></sub></span>(<i>ie</i><i>γ</i><sup><i>ν</i></sup>)<span class="fraction"><span class="ignored">(</span><span class="numerator"><i>i</i>(<i>p̸</i> + <i>k̸</i> + <i>m</i><sub><i>e</i></sub>)</span><span class="ignored">)/(</span><span class="denominator">(<i>p</i> + <i>k</i>)<sup>2</sup> − <i>m</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>e</i></sub></span></span><span class="ignored">)</span></span>(<i>ie</i><i>γ</i><sup><i>μ</i></sup>)<i>ϵ</i><sub><i>μ</i></sub><span class="array"><span class="arrayrow"><span class="bracket align-right">⎤</span></span><span class="arrayrow"><span class="bracket align-right">⎦</span></span></span><i>u</i>
+</div>
+
+</div>
+<div class="Standard">
+(<i>s</i>-channel matrix element), and <div class="formula">
+ − <i>i</i>ℳ<sub><i>t</i></sub> = <span class="bar"><i>u</i></span><sup>′</sup> <span class="array"><span class="arrayrow"><span class="bracket align-left">⎡</span></span><span class="arrayrow"><span class="bracket align-left">⎣</span></span></span><i>ϵ</i><sub><i>μ</i></sub>(<i>ie</i><i>γ</i><sup><i>μ</i></sup>)<span class="fraction"><span class="ignored">(</span><span class="numerator"><i>i</i> (<i>p̸</i> − <i>k̸</i><sup>′</sup> + <i>m</i><sub><i>e</i></sub>)</span><span class="ignored">)/(</span><span class="denominator">(<i>p</i> − <i>k</i><sup>′</sup>)<sup>2</sup> − <i>m</i><span class="scripts"><sup class="script">2</sup><sub class="script"><i>e</i></sub></span></span><span class="ignored">)</span></span>(<i>ie</i><i>γ</i><sup><i>ν</i></sup>)<i>ϵ</i><span class="scripts"><sup class="script">′</sup><sub class="script"><i>ν</i></sub></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎤</span></span><span class="arrayrow"><span class="bracket align-right">⎦</span></span></span><i>u</i>, 
+</div>
+
+</div>
+<div class="Standard">
+  (<i>t</i>-channel matrix element); these can be expressed in the Spacetime library as
+<p>
+  <tt><div class="listing">
+<pre class="listing">DiracSpinor uIn, uOut;
+FourVector p, k, kPrime;
+ComplexFourVector epsIn, epsOut;
+.
+.
+.
+std::complex&lt;double&gt; MS =                                        
+  e*e*
+  ((bar(uOut)*                                       
+  (slash(epsOut.conjugate())*                        
+  (slash(p+k)+M)/((p+k).squaredNorm()-m*m)*            
+  slash(epsIn))*                                      
+  uIn)                                                 
+  (0)); 
+​
+std::complex&lt;double&gt;  MT =                                          
+  e*e*
+  ((bar(uOut)*                                      
+  (slash(epsIn)*                                       
+  (slash(p-kPrime)+M)/((p-kPrime).squaredNorm()-m*m)*  
+  slash(epsOut.conjugate()))*                        
+  uIn)                                                
+(0));
+</pre>
+</div>
+  </tt>
+  </p>
+  after proper initialization of all <tt>DiracSpinors</tt>, <tt>FourVectors</tt>, and <tt>ComplexFourVector</tt>s entering into the expression. Notice that <tt>Current4</tt> class temporaries are created so the code will not compile unless the <tt>Current4</tt> header file is included.
+</div>
+
+</div>
+</body>
+</html>
