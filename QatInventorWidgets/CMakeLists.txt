@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10.0)
 
 project(QatInventorWidgets VERSION ${Qat_VERSION} LANGUAGES CXX)
 
+include(GNUInstallDirs)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -23,6 +25,9 @@ find_package(Qt${QT_VERSION} COMPONENTS Widgets PrintSupport Svg REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(Coin REQUIRED)
 find_package(SoQt REQUIRED)
+
+include(CMakePackageConfigHelpers)
+set(QAT_FIND_DEPENDENCIES "find_dependency(Eigen3)\nfind_dependency(Qt${QT_VERSION} COMPONENTS Widgets PrintSupport Svg)\nfind_dependency(Coin)\nfind_dependency(SoQt)\nfind_dependency(QatDataAnalysis)\nfind_dependency(QatGenericFunctions)\nfind_dependency(QatPlotting)\nfind_dependency(QatPlotWidgets)")
 
 
 add_library( QatInventorWidgets SHARED ${HEADERS} ${SOURCES} ${FORMS} )
@@ -47,7 +52,31 @@ install( FILES ${HEADERS}
    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/QatInventorWidgets
    COMPONENT Development )
 
+configure_package_config_file(
+    "${PROJECT_SOURCE_DIR}/../cmake/QatPackageConfig.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
+    NO_SET_AND_CHECK_MACRO
+    NO_CHECK_REQUIRED_COMPONENTS_MACRO
+)
 
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+install(EXPORT ${PROJECT_NAME}-export
+    FILE "${PROJECT_NAME}Targets.cmake"
+    NAMESPACE "Qat::"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
+)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
+)
 
 
 configure_file (pkgconfig/QatInventorWidgets.pc.in pkgconfig/QatInventorWidgets.pc ) 
