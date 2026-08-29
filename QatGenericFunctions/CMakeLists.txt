@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.4.0)
+cmake_minimum_required(VERSION 4.0.0)
 
 project(QatGenericFunctions VERSION ${Qat_VERSION} LANGUAGES CXX)
 
