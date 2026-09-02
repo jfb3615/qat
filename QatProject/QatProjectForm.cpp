@@ -98,16 +98,27 @@ void QatProjectForm::createProject() {
   {
     iret=system ((std::string("cp ")+shareDirName+std::string("/qat/templates/qt.pro ") + directoryName+"/src").c_str()); 
     if (iret!=0) throw std::runtime_error("Error installing qt.pro into local directory");
+
+    iret=system ((std::string("cp ")+shareDirName+std::string("/qat/templates/CMakeLists.txt ") + directoryName).c_str()); 
+    if (iret!=0) throw std::runtime_error("Error installing CMakeLists.txt into local directory");
+
   }
 #ifdef __APPLE__
   {
     iret=system (("sed -i .orig s/\"<app>\"/" + programName + "/g " + directoryName + "/src/qt.pro").c_str());
     if (iret!=0) throw std::runtime_error("Error patching qt.pro in local directory");
+
+    iret=system (("sed -i .orig s/\"<app>\"/" + programName + "/g " + directoryName + "/CMakeLists.txt").c_str());
+    if (iret!=0) throw std::runtime_error("Error patching CMakeLists.txt in local directory");
+
   }
 #else
   {
     iret=system (("sed -i  s/\\<app\\>/" + programName + "/g " + directoryName + "/src/qt.pro").c_str());
     if (iret!=0) throw std::runtime_error("Error patching qt.pro in local directory.");
+
+    iret=system (("sed -i  s/\\<app\\>/" + programName + "/g " + directoryName + "/CMakeLists.txt").c_str());
+    if (iret!=0) throw std::runtime_error("Error patching CMakeLists.txt in local directory.");
   }
 #endif
   // There are eight templates.  Choose one of them:
