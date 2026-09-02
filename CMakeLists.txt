@@ -1,8 +1,8 @@
 # === Preamble ===
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.28)
 
 set ( CMAKE_CXX_STANDARD 20 )
-
+set ( CMAKE_BUILD_TYPE Release)
 # === Project's settings ===
 include( ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Qat-version.cmake )
 project( "Qat" VERSION ${Qat_VERSION} LANGUAGES CXX )

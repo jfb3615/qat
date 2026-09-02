@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.28)
 set (target <app>)
 project(${target} LANGUAGES CXX)
 

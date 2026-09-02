@@ -1,8 +1,8 @@
 # Set up the project.
-cmake_minimum_required( VERSION 3.10 )
+cmake_minimum_required( VERSION 3.28 )
 set  (CMAKE_CXX_STANDARD 20)
 project( "QSQLite" VERSION 3.0.3 LANGUAGES CXX )
-set    ( CMAKE_BUILD_TYPE RelWithDebInfo )
+set    ( CMAKE_BUILD_TYPE Release )
 
 # Add the project's modules directory to CMAKE_MODULE_PATH:
 list( INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_SOURCE_DIR}/modules )
