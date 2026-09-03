@@ -10,7 +10,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 find_package(Qat                 REQUIRED)
 
 set(CMAKE_MACOSX_RPATH 1)
-set(CMAKE_RPATH "${Qat_DIR}/../..")
+set(CMAKE_BUILD_RPATH "${Qat_DIR}/../..")
 
 
 file(GLOB SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
