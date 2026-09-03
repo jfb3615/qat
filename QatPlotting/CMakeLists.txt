@@ -28,7 +28,8 @@ set(QAT_FIND_DEPENDENCIES "find_dependency(Eigen3)\nfind_dependency(Qt${QT_VERSI
 
 
 add_library( QatPlotting SHARED ${HEADERS} ${SOURCES} )
-target_link_libraries( QatPlotting PUBLIC Eigen3::Eigen QatDataAnalysis QatGenericFunctions Qt${QT_VERSION}::Widgets )
+add_library( Qat::QatPlotting ALIAS QatPlotting )
+target_link_libraries( QatPlotting PUBLIC Eigen3::Eigen Qat::QatDataAnalysis Qat::QatGenericFunctions Qt${QT_VERSION}::Widgets )
 target_include_directories( QatPlotting PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
    $<INSTALL_INTERFACE:include> )

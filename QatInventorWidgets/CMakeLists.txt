@@ -32,7 +32,8 @@ set(QAT_FIND_DEPENDENCIES "find_dependency(Eigen3)\nfind_dependency(Qt${QT_VERSI
 
 
 add_library( QatInventorWidgets SHARED ${HEADERS} ${SOURCES} ${FORMS} )
-target_link_libraries( QatInventorWidgets PUBLIC Eigen3::Eigen QatPlotWidgets QatPlotting QatDataAnalysis QatGenericFunctions Qt${QT_VERSION}::Widgets Qt${QT_VERSION}::PrintSupport Qt::Svg Coin::Coin SoQt::SoQt)
+add_library( Qat::QatInventorWidgets ALIAS QatInventorWidgets )
+target_link_libraries( QatInventorWidgets PUBLIC Eigen3::Eigen Qat::QatPlotWidgets Qat::QatPlotting Qat::QatDataAnalysis Qat::QatGenericFunctions Qt${QT_VERSION}::Widgets Qt${QT_VERSION}::PrintSupport Qt::Svg Coin::Coin SoQt::SoQt)
 target_include_directories( QatInventorWidgets PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
    $<INSTALL_INTERFACE:include> )

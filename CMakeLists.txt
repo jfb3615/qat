@@ -24,6 +24,7 @@ option (QAT_BUILD_QAT3D "Build the QAT 3D component" ON)
 
 # Use the GNU install directory names.
 include( GNUInstallDirs )
+set(CMAKE_INSTALL_RPATH "$ORIGIN")
 set(CMAKE_CXX_FLAGS "-DQATBINDIR=${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR} -DQATSHAREDIR=${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR} -DQATMANDIR=${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_MANDIR} -DQATLIBDIR=${CMAKE_INSTALL_FULL_LIBDIR}")
 
 
@@ -38,6 +39,33 @@ if (QAT_BUILD_QAT3D)
   message (STATUS "Building QatInventorWidgets" )
   add_subdirectory(QatInventorWidgets)
 endif()
+
+include(CMakePackageConfigHelpers)
+if (QAT_BUILD_QAT3D)
+  set(QAT_3D_FIND_DEPENDENCY "find_dependency(QatInventorWidgets)")
+else()
+  set(QAT_3D_FIND_DEPENDENCY "")
+endif()
+
+configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/QatConfig.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/QatConfig.cmake"
+    INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Qat"
+    NO_SET_AND_CHECK_MACRO
+    NO_CHECK_REQUIRED_COMPONENTS_MACRO
+)
+
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/QatConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/QatConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/QatConfigVersion.cmake"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Qat"
+)
 
 
 

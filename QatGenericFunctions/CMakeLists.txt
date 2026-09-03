@@ -17,6 +17,7 @@ include(CMakePackageConfigHelpers)
 set(QAT_FIND_DEPENDENCIES "find_dependency(Eigen3)")
 
 add_library( QatGenericFunctions SHARED ${HEADERS} ${SOURCES} )
+add_library( Qat::QatGenericFunctions ALIAS QatGenericFunctions )
 target_link_libraries( QatGenericFunctions PUBLIC Eigen3::Eigen )
 target_include_directories( QatGenericFunctions PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>

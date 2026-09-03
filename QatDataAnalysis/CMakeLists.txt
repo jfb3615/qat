@@ -17,7 +17,8 @@ include(CMakePackageConfigHelpers)
 set(QAT_FIND_DEPENDENCIES "find_dependency(Eigen3)\nfind_dependency(QatGenericFunctions)")
 
 add_library( QatDataAnalysis SHARED ${HEADERS} ${SOURCES} )
-target_link_libraries( QatDataAnalysis PUBLIC Eigen3::Eigen QatGenericFunctions )
+add_library( Qat::QatDataAnalysis ALIAS QatDataAnalysis )
+target_link_libraries( QatDataAnalysis PUBLIC Eigen3::Eigen Qat::QatGenericFunctions )
 target_include_directories( QatDataAnalysis PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
    $<INSTALL_INTERFACE:include> )

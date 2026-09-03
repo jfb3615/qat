@@ -30,7 +30,8 @@ set(QAT_FIND_DEPENDENCIES "find_dependency(Eigen3)\nfind_dependency(Qt${QT_VERSI
 
 
 add_library( QatPlotWidgets SHARED ${HEADERS} ${SOURCES} ${FORMS} )
-target_link_libraries( QatPlotWidgets PUBLIC Eigen3::Eigen QatDataAnalysis QatGenericFunctions QatPlotting Qt${QT_VERSION}::Widgets Qt${QT_VERSION}::PrintSupport Qt::Svg)
+add_library( Qat::QatPlotWidgets ALIAS QatPlotWidgets )
+target_link_libraries( QatPlotWidgets PUBLIC Eigen3::Eigen Qat::QatDataAnalysis Qat::QatGenericFunctions Qat::QatPlotting Qt${QT_VERSION}::Widgets Qt${QT_VERSION}::PrintSupport Qt::Svg)
 target_include_directories( QatPlotWidgets PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
    $<INSTALL_INTERFACE:include> )
