@@ -133,20 +133,28 @@ public:
     setBrush(defaultBrush);
   }
 
-  void mousePressEvent(QGraphicsSceneMouseEvent *) {
-    if (dialog) {
-      if (!dialog->isVisible()) {
-	dialog->move(dialog->parentWidget()->pos()+dialog->parentWidget()->rect().bottomRight());
-	dialog->show();
-      }
-      else 
-	{
-	  dialog->hide();
+  void mousePressEvent(QGraphicsSceneMouseEvent *e) {
+    GraphicsItemFlags myflags=flags();
+    bool isMovable=myflags & QGraphicsItem::ItemIsMovable;
+
+    QEvent::Type type=e->type();
+    bool isPressed = type == QEvent::GraphicsSceneMouseDoubleClick;
+ 
+    if ((isMovable && isPressed) || !isMovable) {
+      if (dialog) {
+	if (!dialog->isVisible()) {
+	  dialog->move(dialog->parentWidget()->pos()+dialog->parentWidget()->rect().bottomRight());
+	  dialog->show();
 	}
+	else 
+	  {
+	    dialog->hide();
+	  }
+      }
     }
   }
   bool isVisible() const {return visible;}
-
+    
   QPen     defaultPen, hoverPen;
   QBrush   defaultBrush, hoverBrush;
   
@@ -506,7 +514,7 @@ void PlotView::create() {
     QFont font;
     font.setPointSize(24);
     font.setFamily("Arial");
-    
+
     
     c->titleTextItem = new QGraphicsTextItem(c->titleBox);
     c->titleTextItem->setFont(font);
@@ -546,7 +554,8 @@ void PlotView::create() {
     connect(c->control, SIGNAL(labelYSizePercentageChanged(qreal)), this, SLOT(setLabelYSizePercentage(qreal)));
     c->popupMenu=new QMenu(this);
     
-  }
+     
+   }
 
 
   // Label the x axes:
