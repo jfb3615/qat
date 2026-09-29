@@ -53,7 +53,7 @@ FunctionDirectProduct::~FunctionDirectProduct()
 
 
 double FunctionDirectProduct::operator() (const Argument & a) const {
-  unsigned int P = a.dimension();
+  unsigned int P = dimension(a);
   Argument x1(_m);
   Argument x2(_n);
   if (_m+_n != P) {

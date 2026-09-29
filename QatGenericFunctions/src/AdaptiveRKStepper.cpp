@@ -24,6 +24,7 @@
 #include "QatGenericFunctions/EmbeddedRKStepper.h"
 #include <cmath>
 #include <stdexcept>
+#include <algorithm>
 namespace Genfun {
 
   AdaptiveRKStepper::AdaptiveRKStepper(const EEStepper *stepper):

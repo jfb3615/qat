@@ -47,7 +47,7 @@ double Variable::operator() (double x) const {
 }
 
 double Variable::operator () (const Argument & a) const {
-  if  (!(_selectionIndex<a.dimension())) throw std::runtime_error("Genfun::Varaible selection index out of bounds");
+  if  (!(_selectionIndex<dimension(a))) throw std::runtime_error("Genfun::Varaible selection index out of bounds");
   return a[_selectionIndex];
 }
 

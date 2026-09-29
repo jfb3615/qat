@@ -71,7 +71,7 @@ double FunctionNumDeriv::operator ()(double x) const
 
 double FunctionNumDeriv::operator ()(const Argument & x) const
 {
-  if (_wrtIndex >= x.dimension()) throw std::runtime_error("FunctionNumDeriv:  dimension mismatch");
+  if (_wrtIndex >= dimension(x)) throw std::runtime_error("FunctionNumDeriv:  dimension mismatch");
   _xArg = x;
   double xx = x[_wrtIndex];
   return numericalDerivative ( &FunctionNumDeriv::f_Arg, xx );

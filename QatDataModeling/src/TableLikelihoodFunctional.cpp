@@ -20,10 +20,10 @@
 //                                                                           //
 //---------------------------------------------------------------------------//
 
+#include "QatGenericFunctions/Argument.h"
 #include "QatDataModeling/TableLikelihoodFunctional.h"
 #include "QatDataAnalysis/Table.h"
 #include "QatDataAnalysis/Tuple.h"
-#include "QatGenericFunctions/Argument.h"
 #include "QatGenericFunctions/AbsFunction.h"
 #include <cmath>
 TableLikelihoodFunctional::TableLikelihoodFunctional(const Table & table):
@@ -41,13 +41,12 @@ double TableLikelihoodFunctional::operator () (const Genfun::AbsFunction & funct
    TupleConstLink tuple = _table [t];
    if (!tuple) break;
 	    
-   const Genfun::Argument & a  = tuple->asDoublePrec();
+   const Genfun::Argument & a  = tuple->asDoublePrec(),b=a;
 
     double f = function(a);
     if (f<0)
-      std::cerr
-	<< "Warning.. negative likelihood arg[" << t << "]=" << a 
-	<< std::endl;
+      std::cout  << b << std::endl;
+      //std::cerr << "Warning.. negative likelihood arg[" << t << "]=" << a << std::endl;
     logLikelihood -= log(f);
 
  }

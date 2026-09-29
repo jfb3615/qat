@@ -48,7 +48,7 @@ double KVector::operator() (double ) const {
 
 double KVector::operator () (const Argument & a) const {
  
-  if  (_dimensionality!=a.dimension()) {
+  if  (_dimensionality!=dimension(a)) {
     throw std::runtime_error("Genfun::KVector dimensionality mismatch");
   }
   return _value;

@@ -59,7 +59,7 @@ double FunctionComposition::operator ()(double argument) const {
 }
 
 double FunctionComposition::operator() (const Argument &  v) const {
-  if (v.dimension()!=_arg2->dimensionality()) {
+  if (dimension(v)!=_arg2->dimensionality()) {
     throw std::runtime_error("FunctionComposition: dimension mismatch");
     return 0;
   }
