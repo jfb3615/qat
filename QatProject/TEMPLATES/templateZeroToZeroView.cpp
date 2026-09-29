@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QToolBar>
 #include <QAction>
+#include <QStyleHints>
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -18,6 +19,7 @@ int main (int argc, char * * argv) {
 
 
   QApplication     app(argc,argv);
+  app.styleHints()->setColorScheme(Qt::ColorScheme::Light);
   
   QMainWindow window;
   QToolBar *toolBar=window.addToolBar("Tools");

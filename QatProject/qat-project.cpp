@@ -23,10 +23,12 @@
 // This is a program to write a program:
 #include "QatProjectForm.h"
 #include <QApplication>
-
+#include <QStyleHints>
 int main (int argc, char ** argv) {
 
   QApplication app(argc, argv);
+  app.styleHints()->setColorScheme(Qt::ColorScheme::Light);
+  
   QatProjectForm form (NULL);
   form.show();
   return app.exec();
