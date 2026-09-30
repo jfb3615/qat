@@ -23,11 +23,13 @@
 // This is a program to write a program:
 #include "QatProjectForm.h"
 #include <QApplication>
-#include <QStyleHints>
+#include <QStyleFactory>
+#include "QatPlotWidgets/setLightPalette.h"
+
 int main (int argc, char ** argv) {
 
   QApplication app(argc, argv);
-  app.styleHints()->setColorScheme(Qt::ColorScheme::Light);
+  setLightPalette();
   
   QatProjectForm form (NULL);
   form.show();
