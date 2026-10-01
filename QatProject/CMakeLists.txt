@@ -26,11 +26,11 @@ find_package(Eigen3 REQUIRED)
 
 
 include(CMakePackageConfigHelpers)
-set(QAT_FIND_DEPENDENCIES "find_dependency(Eigen3)\nfind_dependency(Qt${QT_VERSION} COMPONENTS Widgets)\nfind_dependency(QatPlotWidgets)\nfind_dependency(QatPlotting)\nfind_dependency(QatDataAnalysis)\nfind_dependency(QatGenericFunctions)")
+set(QAT_FIND_DEPENDENCIES "find_dependency(Eigen3)\nfind_dependency(Qt${QT_VERSION} COMPONENTS Widgets)")
 
 
 add_executable( qat-project  ${HEADERS} ${SOURCES} ${FORMS} )
-target_link_libraries( qat-project PUBLIC Qt${QT_VERSION}::Widgets Qat::QatPlotWidgets)
+target_link_libraries( qat-project PUBLIC Qt${QT_VERSION}::Widgets)
 target_include_directories( qat-project PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
    $<INSTALL_INTERFACE:include> )

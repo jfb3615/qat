@@ -24,7 +24,7 @@
 #include "QatProjectForm.h"
 #include <QApplication>
 #include <QStyleFactory>
-#include "QatPlotWidgets/setLightPalette.h"
+#include "setLightPalette.h"
 
 int main (int argc, char ** argv) {
 
