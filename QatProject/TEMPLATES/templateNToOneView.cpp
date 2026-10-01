@@ -1,11 +1,11 @@
 #include "QatDataAnalysis/OptParse.h"
 #include "QatPlotWidgets/PlotView.h"
 #include "QatPlotting/PlotStream.h"
+#include "QatPlotWidgets/setLightPalette.h"
 #include <QApplication>
 #include <QMainWindow>
 #include <QToolBar>
 #include <QAction>
-#include <QStyleHints>
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -34,7 +34,7 @@ int main (int argc, char * * argv) {
   }
 
   QApplication     app(argc,argv);
-  app.styleHints()->setColorScheme(Qt::ColorScheme::Light);
+  setLightPalette();
 
   QMainWindow window;
   QToolBar *toolBar=window.addToolBar("Tools");
