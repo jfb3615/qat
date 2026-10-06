@@ -1,12 +1,23 @@
 #pragma once
 #include <QPalette>
 #include <QApplication> 
-
+#include <iostream>
+#include <QStyleHints>
 inline void setLightPalette() {
   
- QPalette lightPalette;
+  
+  
+#if QT_VERSION >= QT_VERSION_CHECK (6, 8, 0)
+  
+  qApp->styleHints()->setColorScheme(Qt::ColorScheme::Light);
+  
+#else
 
- // Base background colors
+ std::cerr << "setLightPalette: Warning, older qt version: " << qVersion() << " detected" << std::endl;
+  
+ QPalette lightPalette;
+  
+  // Base background colors
  lightPalette.setColor(QPalette::Window, QColor(240, 240, 240));
  lightPalette.setColor(QPalette::WindowText, QColor(0, 0, 0));
  lightPalette.setColor(QPalette::Base, QColor(255, 255, 255));
@@ -31,4 +42,7 @@ inline void setLightPalette() {
  
  // Apply the palette to the entire application
  qApp->setPalette(lightPalette);
+
+#endif
+
 }
